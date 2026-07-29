@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
@@ -50,6 +51,11 @@ detekt {
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+
+    testLogging {
+        events("failed")
+        exceptionFormat = TestExceptionFormat.FULL
+    }
 }
 
 tasks.named("check") {
