@@ -29,16 +29,15 @@ class DatabaseMigrationHealthIndicator(
                 "Pending Flyway migrations detected"
             }
 
-            val currentMigration = checkNotNull(migrationInfo.current()) {
-                "No Flyway migration has been applied"
-            }
+            val currentMigration =
+                checkNotNull(migrationInfo.current()) {
+                    "No Flyway migration has been applied"
+                }
+            val migrationVersion = currentMigration.version?.version ?: "unversioned"
 
             Health
                 .up()
-                .withDetail(
-                    "migrationVersion",
-                    currentMigration.version?.version ?: "unversioned",
-                )
+                .withDetail("migrationVersion", migrationVersion)
                 .build()
         }.getOrElse {
             Health
