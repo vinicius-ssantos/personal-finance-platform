@@ -27,10 +27,10 @@ kotlin {
 dependencies {
     implementation(platform(SpringBootPlugin.BOM_COORDINATES))
     implementation(libs.spring.boot.starter.actuator)
+    implementation(libs.spring.boot.starter.flyway)
     implementation(libs.spring.boot.starter.jdbc)
     implementation(libs.spring.boot.starter.webmvc)
     implementation(libs.jackson.module.kotlin)
-    implementation(libs.flyway.core)
     implementation(libs.flyway.database.postgresql)
     implementation(kotlin("reflect"))
 
