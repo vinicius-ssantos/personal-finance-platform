@@ -1,0 +1,94 @@
+name: Work item
+description: Feature, hardening, refactor, documentation or technical task
+title: "[Area] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include real financial data, bank documents, credentials or secrets.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - foundation
+        - ingestion
+        - portfolio
+        - analytics
+        - goals
+        - api
+        - security
+        - operations
+        - mcp
+        - android
+        - documentation
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What concrete problem or risk must be addressed?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Expected outcome
+      description: Describe observable behavior, not only implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: In scope
+      placeholder: |
+        - item 1
+        - item 2
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: Explicitly list adjacent work that must not be pulled into this issue.
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Issues, ADRs, contracts or gates that must exist first.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - [ ] verifiable criterion
+        - [ ] tests/documentation updated
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Test strategy
+      description: Unit, integration, property, contract, parser, security or E2E tests.
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Security, privacy and financial correctness
+      description: Data touched, failure modes, redaction, retention and calculation risks.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-flight
+      options:
+        - label: No real financial data or document is attached.
+          required: true
+        - label: The issue is small enough for one reviewable PR.
+          required: true
+        - label: An ADR will be created when the decision is difficult to reverse.
+          required: true
