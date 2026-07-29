@@ -10,15 +10,15 @@ import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.WebApplicationType
-import org.springframework.boot.health.contributor.Status
 import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.boot.health.contributor.Status
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
+import org.springframework.test.context.TestConstructor
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -27,9 +27,8 @@ import org.testcontainers.utility.DockerImageName
 @Testcontainers
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class PersonalFinanceApplicationTests
-    @Autowired
-    constructor(
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class PersonalFinanceApplicationTests(
     private val jdbcTemplate: JdbcTemplate,
     private val flyway: Flyway,
     private val databaseMigrationHealthIndicator: DatabaseMigrationHealthIndicator,
