@@ -12,7 +12,6 @@ on:
   push:
     branches:
       - main
-      - feat/issue-2-kotlin-monorepo-bootstrap
     paths:
       - "backend/**"
       - ".github/workflows/backend-bootstrap.yml"
@@ -21,57 +20,18 @@ on:
       - ".gitattributes"
       - ".gitignore"
 
+permissions:
+  contents: read
+
 concurrency:
   group: backend-bootstrap-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  materialize-wrapper:
-    name: materialize verified wrapper jar
-    if: github.event_name == 'push' && github.ref_name == 'feat/issue-2-kotlin-monorepo-bootstrap'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: write
-
-    steps:
-      - name: Check out feature branch
-        uses: actions/checkout@v4
-        with:
-          ref: feat/issue-2-kotlin-monorepo-bootstrap
-
-      - name: Download and verify official Gradle 9.6.1 wrapper jar
-        shell: bash
-        run: |
-          set -euo pipefail
-          target="backend/gradle/wrapper/gradle-wrapper.jar"
-          curl --fail --silent --show-error --location --retry 3 \
-            "https://raw.githubusercontent.com/gradle/gradle/v9.6.1/gradle/wrapper/gradle-wrapper.jar" \
-            --output "$target"
-          echo "497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7  $target" | sha256sum --check --strict
-
-      - name: Commit wrapper jar when absent
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git diff --quiet -- backend/gradle/wrapper/gradle-wrapper.jar && \
-             git ls-files --error-unmatch backend/gradle/wrapper/gradle-wrapper.jar >/dev/null 2>&1; then
-            echo "Verified wrapper jar is already versioned."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add --force backend/gradle/wrapper/gradle-wrapper.jar
-          git commit -m "chore: add verified Gradle wrapper jar"
-          git push origin HEAD:feat/issue-2-kotlin-monorepo-bootstrap
-
   check:
     name: lint, static analysis and tests
-    if: github.event_name == 'pull_request' || github.ref_name == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: read
 
     steps:
       - name: Check out repository
