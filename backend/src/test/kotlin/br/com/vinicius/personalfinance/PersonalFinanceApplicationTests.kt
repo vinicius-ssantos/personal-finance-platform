@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.WebApplicationType
-import org.springframework.boot.actuate.health.Status
+import org.springframework.boot.health.contributor.Status
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
@@ -27,7 +27,9 @@ import org.testcontainers.utility.DockerImageName
 @Testcontainers
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class PersonalFinanceApplicationTests @Autowired constructor(
+class PersonalFinanceApplicationTests
+    @Autowired
+    constructor(
     private val jdbcTemplate: JdbcTemplate,
     private val flyway: Flyway,
     private val databaseMigrationHealthIndicator: DatabaseMigrationHealthIndicator,
