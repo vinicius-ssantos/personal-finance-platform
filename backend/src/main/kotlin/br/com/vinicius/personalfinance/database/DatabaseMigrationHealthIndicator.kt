@@ -1,10 +1,10 @@
 package br.com.vinicius.personalfinance.database
 
-import javax.sql.DataSource
 import org.flywaydb.core.Flyway
 import org.springframework.boot.health.contributor.Health
 import org.springframework.boot.health.contributor.HealthIndicator
 import org.springframework.stereotype.Component
+import javax.sql.DataSource
 
 @Component("databaseMigration")
 class DatabaseMigrationHealthIndicator(
@@ -35,7 +35,10 @@ class DatabaseMigrationHealthIndicator(
 
             Health
                 .up()
-                .withDetail("migrationVersion", currentMigration.version?.version ?: "unversioned")
+                .withDetail(
+                    "migrationVersion",
+                    currentMigration.version?.version ?: "unversioned",
+                )
                 .build()
         }.getOrElse {
             Health
