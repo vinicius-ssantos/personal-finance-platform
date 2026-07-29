@@ -8,6 +8,7 @@ on:
       - "justfile"
       - ".editorconfig"
       - ".gitattributes"
+      - ".gitignore"
   push:
     branches:
       - main
@@ -18,6 +19,7 @@ on:
       - "justfile"
       - ".editorconfig"
       - ".gitattributes"
+      - ".gitignore"
 
 concurrency:
   group: backend-bootstrap-${{ github.workflow }}-${{ github.ref }}
@@ -59,7 +61,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add backend/gradle/wrapper/gradle-wrapper.jar
+          git add --force backend/gradle/wrapper/gradle-wrapper.jar
           git commit -m "chore: add verified Gradle wrapper jar"
           git push origin HEAD:feat/issue-2-kotlin-monorepo-bootstrap
 
