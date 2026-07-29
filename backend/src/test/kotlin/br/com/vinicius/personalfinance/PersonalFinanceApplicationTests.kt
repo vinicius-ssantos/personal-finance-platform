@@ -19,7 +19,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.TestConstructor
-import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
@@ -71,7 +71,7 @@ class PersonalFinanceApplicationTests(
     @Order(4)
     fun `application startup fails when a migration is invalid`() {
         val exception =
-            assertThrows<Exception> {
+            assertThrows(Exception::class.java) {
                 SpringApplicationBuilder(PersonalFinanceApplication::class.java)
                     .web(WebApplicationType.NONE)
                     .properties(
@@ -111,7 +111,7 @@ class PersonalFinanceApplicationTests(
         @ServiceConnection
         @JvmField
         val postgres =
-            PostgreSQLContainer<Nothing>(DockerImageName.parse(POSTGRES_IMAGE))
+            PostgreSQLContainer(DockerImageName.parse(POSTGRES_IMAGE))
                 .withDatabaseName("personal_finance_test")
                 .withUsername("personal_finance_test")
                 .withPassword("test-only")
