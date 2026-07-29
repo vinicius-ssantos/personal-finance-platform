@@ -1,0 +1,66 @@
+name: Bug report
+description: Report reproducible incorrect behavior using synthetic data only
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not attach real financial documents, personal data, credentials or vulnerability details. Security issues must use a private Security Advisory.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction with synthetic data
+      description: Include the smallest safe sequence and sanitized inputs.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version, commit or branch
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Impact
+      options:
+        - blocks local development
+        - incorrect financial result
+        - data integrity or audit issue
+        - privacy or redaction issue
+        - parser compatibility issue
+        - API or user experience issue
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Logs or screenshots must contain only synthetic data and no secrets.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context and suspected regression
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety check
+      options:
+        - label: I did not include real financial data or a real bank document.
+          required: true
+        - label: This is not a private security vulnerability report.
+          required: true
