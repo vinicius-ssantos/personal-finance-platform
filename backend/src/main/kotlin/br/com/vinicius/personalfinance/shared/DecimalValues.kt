@@ -84,7 +84,10 @@ value class DecimalRatio private constructor(
 ) : Comparable<DecimalRatio> {
     override fun compareTo(other: DecimalRatio): Int = value.compareTo(other.value)
 
-    fun toPercentagePoints(): BigDecimal = value.movePointRight(PERCENTAGE_SHIFT)
+    fun toPercentagePoints(): BigDecimal =
+        FinancialDecimalPolicies.DECIMAL_RATIO.normalize(
+            value.movePointRight(PERCENTAGE_SHIFT),
+        )
 
     companion object {
         private const val PERCENTAGE_SHIFT = 2
