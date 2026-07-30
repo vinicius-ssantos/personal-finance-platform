@@ -36,8 +36,7 @@ data class Money private constructor(
 
     operator fun unaryMinus(): Money = ofMinor(Math.negateExact(amountMinor), currency)
 
-    operator fun times(multiplier: Long): Money =
-        ofMinor(Math.multiplyExact(amountMinor, multiplier), currency)
+    operator fun times(multiplier: Long): Money = ofMinor(Math.multiplyExact(amountMinor, multiplier), currency)
 
     fun toMajor(): BigDecimal = BigDecimal.valueOf(amountMinor, currency.fractionDigits)
 
