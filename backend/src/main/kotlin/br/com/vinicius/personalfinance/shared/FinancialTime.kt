@@ -38,8 +38,7 @@ fun interface DomainClock {
     companion object {
         fun systemUtc(): DomainClock = from(Clock.systemUTC())
 
-        fun fixed(instant: Instant): DomainClock =
-            from(Clock.fixed(instant, ZoneOffset.UTC))
+        fun fixed(instant: Instant): DomainClock = from(Clock.fixed(instant, ZoneOffset.UTC))
 
         fun from(clock: Clock): DomainClock = DomainClock(clock::instant)
     }
