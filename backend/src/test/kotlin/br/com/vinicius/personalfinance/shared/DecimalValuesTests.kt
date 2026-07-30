@@ -1,11 +1,11 @@
 package br.com.vinicius.personalfinance.shared
 
-import java.math.BigDecimal
-import java.util.SplittableRandom
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import java.util.SplittableRandom
 
 class DecimalValuesTests {
     @Test
@@ -22,24 +22,30 @@ class DecimalValuesTests {
     fun `explicit rounding normalizes quantity price and rate deterministically`() {
         assertEquals(
             BigDecimal("1.123456789012"),
-            Quantity.of(
-                BigDecimal("1.1234567890124"),
-                RoundingPolicy.HALF_EVEN,
-            ).value,
+            Quantity
+                .of(
+                    BigDecimal("1.1234567890124"),
+                    RoundingPolicy.HALF_EVEN,
+                )
+                .value,
         )
         assertEquals(
             BigDecimal("10.12345679"),
-            UnitPrice.of(
-                BigDecimal("10.123456789"),
-                RoundingPolicy.HALF_UP,
-            ).value,
+            UnitPrice
+                .of(
+                    BigDecimal("10.123456789"),
+                    RoundingPolicy.HALF_UP,
+                )
+                .value,
         )
         assertEquals(
             BigDecimal("-0.123456789012"),
-            Rate.of(
-                BigDecimal("-0.1234567890124"),
-                RoundingPolicy.HALF_EVEN,
-            ).value,
+            Rate
+                .of(
+                    BigDecimal("-0.1234567890124"),
+                    RoundingPolicy.HALF_EVEN,
+                )
+                .value,
         )
     }
 
