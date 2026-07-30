@@ -1,0 +1,11 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/personal_finance
+    username: personal_finance_local
+    password: personal_finance_local_only
+  sql:
+    init:
+      mode: never

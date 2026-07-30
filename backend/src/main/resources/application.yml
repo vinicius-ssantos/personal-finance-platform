@@ -3,6 +3,25 @@ spring:
     name: personal-finance-platform
   main:
     banner-mode: "off"
+  datasource:
+    hikari:
+      pool-name: personal-finance
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 5000
+      validation-timeout: 2000
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    default-schema: personal_finance
+    schemas: personal_finance
+    create-schemas: true
+    clean-disabled: true
+    baseline-on-migrate: false
+    fail-on-missing-locations: true
+    validate-on-migrate: true
+    connect-retries: 10
+    connect-retries-interval: 1s
 
 server:
   address: 127.0.0.1
@@ -15,3 +34,8 @@ management:
   endpoint:
     health:
       show-details: never
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db,databaseMigration

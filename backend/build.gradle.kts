@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
@@ -26,11 +27,19 @@ kotlin {
 dependencies {
     implementation(platform(SpringBootPlugin.BOM_COORDINATES))
     implementation(libs.spring.boot.starter.actuator)
+    implementation(libs.spring.boot.starter.flyway)
+    implementation(libs.spring.boot.starter.jdbc)
     implementation(libs.spring.boot.starter.webmvc)
     implementation(libs.jackson.module.kotlin)
+    implementation(libs.flyway.database.postgresql)
     implementation(kotlin("reflect"))
 
+    runtimeOnly(libs.postgresql)
+
     testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.boot.testcontainers)
+    testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.testcontainers.postgresql)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
@@ -42,6 +51,11 @@ detekt {
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+
+    testLogging {
+        events("failed")
+        exceptionFormat = TestExceptionFormat.FULL
+    }
 }
 
 tasks.named("check") {

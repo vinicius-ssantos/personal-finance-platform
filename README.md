@@ -2,7 +2,7 @@
 
 Plataforma pessoal de finanças, de usuário único, para consolidar investimentos a partir de documentos reais do Banco Inter, preservar evidências, calcular indicadores determinísticos e apoiar metas financeiras com transparência sobre qualidade e incerteza.
 
-> **Estado:** documentação e arquitetura iniciais. Nenhum código de produção foi iniciado. A primeira implementação será a **Release 0.1 — posição patrimonial local**.
+> **Estado:** fundação técnica em implementação. O bootstrap Kotlin/JVM está em `main`; PostgreSQL, Flyway, Testcontainers e Compose estão sendo entregues pela issue #3. Ainda não existe comportamento financeiro nem dado real no repositório.
 
 ## Visão do produto
 
@@ -75,6 +75,22 @@ Backend e mobile terão builds Gradle independentes. O contrato entre eles será
 
 As versões definitivas serão travadas pelo version catalog e registradas em ADR quando o bootstrap técnico começar.
 
+## Execução da fundação local
+
+Com Docker, JDK 25 e `just` instalados:
+
+```bash
+just backend-run
+```
+
+O comando inicia o PostgreSQL somente em loopback, aguarda o health check e executa o backend com o perfil local. Para validar lint, análise estática, migrações e testes com PostgreSQL real:
+
+```bash
+just backend-check
+```
+
+Operação, credenciais locais e reset protegido estão documentados em [Infraestrutura local](infra/README.md).
+
 ## Privacidade
 
 Este repositório é público, mas **não conterá**:
@@ -92,6 +108,7 @@ Fixtures públicas serão sintéticas e semanticamente equivalentes aos layouts 
 
 - [Produto e limites](docs/product/PRODUCT.md)
 - [Arquitetura](docs/architecture/ARCHITECTURE.md)
+- [Fundação de banco de dados](docs/architecture/DATABASE.md)
 - [Pipeline de ingestão](docs/architecture/INGESTION.md)
 - [Modelo de segurança](docs/security/SECURITY-MODEL.md)
 - [Release 0.1](docs/roadmap/RELEASE-0.1.md)
@@ -100,9 +117,9 @@ Fixtures públicas serão sintéticas e semanticamente equivalentes aos layouts 
 - [Política de segurança](SECURITY.md)
 - [Política de privacidade do repositório](PRIVACY.md)
 
-## Regra para começar o código
+## Governança da implementação
 
-Nenhum código funcional deve ser iniciado antes de a PR de fundação ser revisada e mergeada, as issues da Release 0.1 estarem abertas e os ADRs bloqueantes estarem aceitos.
+A documentação de fundação e o bootstrap técnico já foram revisados e mergeados. A implementação segue uma issue atômica por PR, sem antecipar domínio financeiro, contratos, Android ou MCP antes das respectivas dependências e decisões arquiteturais.
 
 ## Licença
 
