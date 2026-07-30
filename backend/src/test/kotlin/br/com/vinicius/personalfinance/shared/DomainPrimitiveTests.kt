@@ -1,6 +1,5 @@
 package br.com.vinicius.personalfinance.shared
 
-import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -69,7 +68,10 @@ class DomainPrimitiveTests {
         assertEquals(raw, FinancialAccountId.parse(raw).toString())
         assertEquals(raw, AssetId.parse(raw).toString())
         assertEquals(raw, PositionSnapshotId.parse(raw).toString())
-        assertTrue(ImportBatchId.random().value != FinancialAccountId.random().value)
+        assertNotEquals(
+            ImportBatchId.parse(raw)::class,
+            FinancialAccountId.parse(raw)::class,
+        )
     }
 
     @Test
@@ -115,7 +117,6 @@ class DomainPrimitiveTests {
                 Rate::class.java,
                 DecimalRatio::class.java,
                 FinancialTimeline::class.java,
-                BigDecimal::class.java,
             )
     }
 }
