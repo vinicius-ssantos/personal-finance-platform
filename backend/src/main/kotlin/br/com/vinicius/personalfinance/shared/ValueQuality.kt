@@ -19,9 +19,7 @@ fun <T : Any> ValueQuality<T>.valueOrNull(): T? =
         is ValueQuality.Exact -> value
     }
 
-inline fun <T : Any, R : Any> ValueQuality<T>.map(
-    transform: (T) -> R,
-): ValueQuality<R> =
+inline fun <T : Any, R : Any> ValueQuality<T>.map(transform: (T) -> R): ValueQuality<R> =
     when (this) {
         ValueQuality.Unknown -> ValueQuality.Unknown
         is ValueQuality.Estimated -> ValueQuality.Estimated(transform(value))
