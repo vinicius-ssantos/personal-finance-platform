@@ -19,6 +19,7 @@ enum class RoundingPolicy(
     DOWN(RoundingMode.DOWN),
 }
 
+@ConsistentCopyVisibility
 data class Money private constructor(
     val amountMinor: Long,
     val currency: CurrencyCode,
@@ -33,14 +34,12 @@ data class Money private constructor(
         return ofMinor(Math.subtractExact(amountMinor, other.amountMinor), currency)
     }
 
-    operator fun unaryMinus(): Money =
-        ofMinor(Math.negateExact(amountMinor), currency)
+    operator fun unaryMinus(): Money = ofMinor(Math.negateExact(amountMinor), currency)
 
     operator fun times(multiplier: Long): Money =
         ofMinor(Math.multiplyExact(amountMinor, multiplier), currency)
 
-    fun toMajor(): BigDecimal =
-        BigDecimal.valueOf(amountMinor, currency.fractionDigits)
+    fun toMajor(): BigDecimal = BigDecimal.valueOf(amountMinor, currency.fractionDigits)
 
     fun convert(
         exchangeRate: ExchangeRate,
@@ -89,6 +88,7 @@ data class Money private constructor(
     }
 }
 
+@ConsistentCopyVisibility
 data class ExchangeRate private constructor(
     val source: CurrencyCode,
     val target: CurrencyCode,
