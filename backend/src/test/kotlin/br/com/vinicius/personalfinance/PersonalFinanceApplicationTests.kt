@@ -1,6 +1,6 @@
 package br.com.vinicius.personalfinance
 
-import br.com.vinicius.personalfinance.database.DatabaseMigrationHealthIndicator
+import br.com.vinicius.personalfinance.persistence.health.DatabaseMigrationHealthIndicator
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.FlywayException
 import org.junit.jupiter.api.Assertions.assertEquals
