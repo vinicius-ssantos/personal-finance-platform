@@ -4,5 +4,5 @@ package br.com.vinicius.personalfinance.database
     message = "Database adapters belong to the persistence module",
     level = DeprecationLevel.HIDDEN,
 )
-internal typealias LegacyDatabaseMigrationHealthIndicator =
+internal typealias DatabaseMigrationHealthIndicator =
     br.com.vinicius.personalfinance.persistence.health.DatabaseMigrationHealthIndicator
