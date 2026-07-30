@@ -1,13 +1,12 @@
 package br.com.vinicius.personalfinance.shared
 
-import java.time.Instant
-import java.time.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.time.Instant
+import java.time.LocalDate
 
 class DomainPrimitiveTests {
     @Test
