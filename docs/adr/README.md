@@ -66,29 +66,31 @@ Decisões bloqueantes da Release 0.1 devem estar `Accepted` antes do primeiro c�
 | 0043 | Release 0.1 local-first | Loopback, MCP e acesso remoto desabilitados |
 | 0044 | Snapshot síncrono no primeiro corte | Release 0.1 atualiza fotografia efetiva na transação de commit |
 
-## ADRs que devem virar arquivos antes do código
+## ADRs bloqueantes materializados
 
-A PR inicial de implementação deverá materializar, no mínimo:
+Os ADRs abaixo estão `Accepted` e formam o gate arquitetural da Release 0.1:
 
-- `0001-kotlin-jvm-backend.md`;
-- `0003-modular-monolith.md`;
-- `0004-postgresql-source-of-truth.md`;
-- `0005-money-minor-units.md`;
-- `0006-import-preview-before-commit.md`;
-- `0007-immutable-snapshots.md`;
-- `0008-pdfbox-no-ocr-mvp.md`;
-- `0009-versioned-parser-registry.md`;
-- `0014-ephemeral-source-file.md`;
-- `0017-unknown-is-not-zero.md`;
-- `0021-monorepo-isolated-builds.md`;
-- `0029-real-reports-private-fixtures-synthetic.md`;
-- `0030-ephemeral-pdf-password.md`;
-- `0031-explicit-financial-temporality.md`;
-- `0034-multi-currency-reconciliation.md`;
-- `0036-percentage-decimal-ratio.md`;
-- `0039-effective-snapshot-version.md`;
-- `0043-release-01-local-first.md`;
-- `0044-synchronous-snapshot-release-01.md`.
+- [ADR 0001 — Kotlin/JVM no backend](0001-kotlin-jvm-backend.md);
+- [ADR 0003 — Monólito modular](0003-modular-monolith.md);
+- [ADR 0004 — PostgreSQL como fonte de verdade](0004-postgresql-source-of-truth.md);
+- [ADR 0005 — Dinheiro em minor units](0005-money-minor-units.md);
+- [ADR 0006 — Importação com preview antes do commit](0006-import-preview-before-commit.md);
+- [ADR 0007 — Snapshots imutáveis](0007-immutable-snapshots.md);
+- [ADR 0008 — PDFBox sem OCR no MVP](0008-pdfbox-no-ocr-mvp.md);
+- [ADR 0009 — Parser registry versionado](0009-versioned-parser-registry.md);
+- [ADR 0014 — Arquivo bruto efêmero](0014-ephemeral-source-file.md);
+- [ADR 0017 — Dado desconhecido não é zero](0017-unknown-is-not-zero.md);
+- [ADR 0021 — Monorepo com builds isolados](0021-monorepo-isolated-builds.md);
+- [ADR 0029 — Relatórios reais privados e fixtures sintéticas](0029-real-reports-private-fixtures-synthetic.md);
+- [ADR 0030 — Senha de PDF efêmera](0030-ephemeral-pdf-password.md);
+- [ADR 0031 — Temporalidade financeira explícita](0031-explicit-financial-temporality.md);
+- [ADR 0034 — Reconciliação multimoeda](0034-multi-currency-reconciliation.md);
+- [ADR 0036 — Percentuais como razão decimal](0036-percentage-decimal-ratio.md);
+- [ADR 0039 — Versão efetiva de snapshot](0039-effective-snapshot-version.md);
+- [ADR 0043 — Release 0.1 local-first](0043-release-01-local-first.md);
+- [ADR 0044 — Snapshot síncrono na Release 0.1](0044-synchronous-snapshot-release-01.md).
+
+Decisões do catálogo ainda sem arquivo permanecem registradas como direção de produto, mas não bloqueiam o corte atual até que uma issue as materialize.
 
 ## Critérios para novo ADR
 

@@ -26,10 +26,12 @@ kotlin {
 
 dependencies {
     implementation(platform(SpringBootPlugin.BOM_COORDINATES))
+    implementation(platform(libs.spring.modulith.bom))
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.flyway)
     implementation(libs.spring.boot.starter.jdbc)
     implementation(libs.spring.boot.starter.webmvc)
+    implementation(libs.spring.modulith.api)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.flyway.database.postgresql)
     implementation(kotlin("reflect"))
@@ -38,6 +40,8 @@ dependencies {
 
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.boot.testcontainers)
+    testImplementation(platform(libs.spring.modulith.bom))
+    testImplementation(libs.spring.modulith.starter.test)
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
     testRuntimeOnly(libs.junit.platform.launcher)

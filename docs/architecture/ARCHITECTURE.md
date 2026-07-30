@@ -35,20 +35,11 @@ Open Finance futuro ──provider adapter──> contratos canônicos ──> d
 - **PDF/CSV:** conteúdo hostil; passa por limites, detecção, parsing versionado, prévia e confirmação.
 - **Open Finance:** terceiro autorizado; tokens ficam apenas no backend e o consentimento é revogável.
 
-## Módulos backend planejados
+## Módulos backend
 
-```text
-ingestion        arquivos, layout, parser, preview e reconciliação
-portfolio        contas, ativos, posições, movimentos e snapshots
-analytics        patrimônio, aportes, retorno, liquidez e concentração
-goals            metas, projeções e simulação do imóvel
-api              REST, Problem Details e contratos
-mcp              tools e resources read-only
-security         autenticação, autorização, redaction e upload seguro
-audit            trilha imutável e correlation ID
-shared           Money, IDs, Clock e erros básicos
-persistence      adapters PostgreSQL/Flyway
-```
+A Release 0.1 materializa seis módulos: `shared`, `audit`, `portfolio`, `ingestion`, `persistence` e `api`. A matriz de dependências, os pacotes raiz e os testes executáveis estão em [Backend module boundaries](MODULES.md).
+
+`analytics`, `goals`, `mcp`, autenticação remota e provider adapters permanecem planejados, mas não são criados como pacotes vazios antes das respectivas issues.
 
 ## Regras de dependência
 
@@ -61,7 +52,7 @@ persistence      adapters PostgreSQL/Flyway
 7. Credenciais de providers permanecem em adapters específicos.
 8. Android nunca importa classes do backend.
 
-Spring Modulith e testes arquiteturais verificarão as fronteiras. A estrutura de pastas serve à direção de dependência, não à criação de camadas vazias.
+Spring Modulith e ArchUnit verificam essas fronteiras em cada execução de `backend-check`. A estrutura de pastas serve à direção de dependência, não à criação de camadas vazias.
 
 ## Persistência
 

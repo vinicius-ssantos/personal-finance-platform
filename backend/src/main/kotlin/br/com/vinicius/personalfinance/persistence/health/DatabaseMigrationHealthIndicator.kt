@@ -1,4 +1,4 @@
-package br.com.vinicius.personalfinance.database
+package br.com.vinicius.personalfinance.persistence.health
 
 import org.flywaydb.core.Flyway
 import org.springframework.boot.health.contributor.Health
