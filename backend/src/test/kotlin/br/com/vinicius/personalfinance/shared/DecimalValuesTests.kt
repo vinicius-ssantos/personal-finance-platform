@@ -26,8 +26,7 @@ class DecimalValuesTests {
                 .of(
                     BigDecimal("1.1234567890124"),
                     RoundingPolicy.HALF_EVEN,
-                )
-                .value,
+                ).value,
         )
         assertEquals(
             BigDecimal("10.12345679"),
@@ -35,8 +34,7 @@ class DecimalValuesTests {
                 .of(
                     BigDecimal("10.123456789"),
                     RoundingPolicy.HALF_UP,
-                )
-                .value,
+                ).value,
         )
         assertEquals(
             BigDecimal("-0.123456789012"),
@@ -44,8 +42,7 @@ class DecimalValuesTests {
                 .of(
                     BigDecimal("-0.1234567890124"),
                     RoundingPolicy.HALF_EVEN,
-                )
-                .value,
+                ).value,
         )
     }
 
