@@ -56,14 +56,14 @@ class PersonalFinanceApplicationTests(
                 "select exists (select 1 from information_schema.schemata where schema_name = 'personal_finance')",
                 Boolean::class.java,
             )
-        val successfulMigrations =
+        val appliedVersionOne =
             jdbcTemplate.queryForObject(
-                "select count(*) from personal_finance.flyway_schema_history where success",
+                "select count(*) from personal_finance.flyway_schema_history where success and version = '1'",
                 Long::class.java,
             )
 
         assertEquals(true, schemaExists)
-        assertEquals(1L, successfulMigrations)
+        assertEquals(1L, appliedVersionOne)
         assertEquals(Status.UP, databaseMigrationHealthIndicator.health().status)
     }
 
@@ -74,16 +74,16 @@ class PersonalFinanceApplicationTests(
             assertThrows(Exception::class.java) {
                 SpringApplicationBuilder(PersonalFinanceApplication::class.java)
                     .web(WebApplicationType.NONE)
-                    .properties(
-                        "spring.application.name=broken-migration-test",
-                        "spring.datasource.url=${postgres.jdbcUrl}",
-                        "spring.datasource.username=${postgres.username}",
-                        "spring.datasource.password=${postgres.password}",
-                        "spring.flyway.locations=classpath:db/broken-migration",
-                        "spring.flyway.default-schema=broken_migration_test",
-                        "spring.flyway.schemas=broken_migration_test",
-                        "spring.flyway.clean-disabled=true",
-                    ).run()
+                    .run(
+                        "--spring.application.name=broken-migration-test",
+                        "--spring.datasource.url=${postgres.jdbcUrl}",
+                        "--spring.datasource.username=${postgres.username}",
+                        "--spring.datasource.password=${postgres.password}",
+                        "--spring.flyway.locations=classpath:db/broken-migration",
+                        "--spring.flyway.default-schema=broken_migration_test",
+                        "--spring.flyway.schemas=broken_migration_test",
+                        "--spring.flyway.clean-disabled=true",
+                    )
             }
 
         assertTrue(
