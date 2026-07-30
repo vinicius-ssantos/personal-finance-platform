@@ -1,5 +1,6 @@
 [versions]
 kotlin = "2.4.10"
+# Spring Boot 4.1.x requires Spring Modulith 2.1.x; bump both together.
 spring-boot = "4.1.0"
 spring-modulith = "2.1.0"
 ktlint-gradle = "14.2.0"
