@@ -1,11 +1,11 @@
 package br.com.vinicius.personalfinance.shared
 
-import java.math.BigDecimal
-import java.util.SplittableRandom
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import java.util.SplittableRandom
 
 class MoneyTests {
     @Test
@@ -43,7 +43,8 @@ class MoneyTests {
 
         assertEquals(Money.fromMajor(BigDecimal("52.50"), CurrencyCode.BRL), converted)
         assertThrows(IllegalArgumentException::class.java) {
-            Money.ofMinor(1_000L, CurrencyCode.BRL)
+            Money
+                .ofMinor(1_000L, CurrencyCode.BRL)
                 .convert(usdToBrl, RoundingPolicy.EXACT)
         }
     }
