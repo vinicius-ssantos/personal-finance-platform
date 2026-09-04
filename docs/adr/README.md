@@ -65,6 +65,7 @@ Decisões bloqueantes da Release 0.1 devem estar `Accepted` antes do primeiro c�
 | 0042 | Conversão cambial auditável | Taxa, fonte, data e arredondamento explícitos |
 | 0043 | Release 0.1 local-first | Loopback, MCP e acesso remoto desabilitados |
 | 0044 | Snapshot síncrono no primeiro corte | Release 0.1 atualiza fotografia efetiva na transação de commit |
+| 0045 | Especificação canônica como fonte normativa | `docs/specification` precede arquitetura, issue e implementação |
 
 ## ADRs bloqueantes materializados
 
@@ -88,9 +89,25 @@ Os ADRs abaixo estão `Accepted` e formam o gate arquitetural da Release 0.1:
 - [ADR 0036 — Percentuais como razão decimal](0036-percentage-decimal-ratio.md);
 - [ADR 0039 — Versão efetiva de snapshot](0039-effective-snapshot-version.md);
 - [ADR 0043 — Release 0.1 local-first](0043-release-01-local-first.md);
-- [ADR 0044 — Snapshot síncrono na Release 0.1](0044-synchronous-snapshot-release-01.md).
+- [ADR 0044 — Snapshot síncrono na Release 0.1](0044-synchronous-snapshot-release-01.md);
+- [ADR 0045 — Especificação canônica como fonte normativa](0045-especificacao-canonica-como-fonte-normativa.md).
 
 Decisões do catálogo ainda sem arquivo permanecem registradas como direção de produto, mas não bloqueiam o corte atual até que uma issue as materialize.
+
+## Precedência
+
+ADR aceito fica acima dos documentos de arquitetura e abaixo da especificação canônica:
+
+```text
+docs/specification/PRODUCT-SPECIFICATION.md
+→ ADR aceito aplicável
+→ documento de arquitetura
+→ contrato derivado em docs/specification
+→ issue/PR
+→ implementação atual
+```
+
+A regra completa está em [ADR 0045](0045-especificacao-canonica-como-fonte-normativa.md).
 
 ## Critérios para novo ADR
 

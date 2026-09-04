@@ -106,6 +106,7 @@ Fixtures públicas serão sintéticas e semanticamente equivalentes aos layouts 
 
 ## Documentação
 
+- [Especificação canônica do produto](docs/specification/README.md)
 - [Produto e limites](docs/product/PRODUCT.md)
 - [Arquitetura](docs/architecture/ARCHITECTURE.md)
 - [Fundação de banco de dados](docs/architecture/DATABASE.md)
@@ -120,6 +121,8 @@ Fixtures públicas serão sintéticas e semanticamente equivalentes aos layouts 
 ## Governança da implementação
 
 A documentação de fundação e o bootstrap técnico já foram revisados e mergeados. A implementação segue uma issue atômica por PR, sem antecipar domínio financeiro, contratos, Android ou MCP antes das respectivas dependências e decisões arquiteturais.
+
+A autoridade normativa sobre comportamento é a [especificação canônica](docs/specification/PRODUCT-SPECIFICATION.md), com 326 requisitos identificados por `FR-*`, `NFR-*` e `INV-*`. Issues e PRs de comportamento citam os IDs que implementam. A regra de precedência entre especificação, ADR, arquitetura, issue e código está em [ADR 0045](docs/adr/0045-especificacao-canonica-como-fonte-normativa.md).
 
 ## Licença
 

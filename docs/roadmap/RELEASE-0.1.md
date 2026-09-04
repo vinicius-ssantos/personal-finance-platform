@@ -1,5 +1,10 @@
 # Release 0.1 — posição patrimonial local
 
+> Documento único de release. Escopo, gates e Definition of Done da Release 0.1 vivem aqui.
+> A autoridade normativa sobre requisitos é a
+> [especificação canônica](../specification/PRODUCT-SPECIFICATION.md); este documento
+> declara o recorte e as condições de aceite, não redefine requisitos.
+
 ## Objetivo
 
 Entregar o menor corte vertical capaz de importar com segurança um extrato consolidado de posição do Banco Inter, reconciliar os valores, exigir revisão humana e disponibilizar um snapshot patrimonial consultável localmente.
@@ -45,7 +50,7 @@ PDF protegido
 
 ### Ingestão
 
-- upload PDF até 15 MB;
+- upload PDF até 25 MiB por padrão, configurável;
 - senha efêmera por uso único;
 - extração PDFBox sem OCR;
 - hash bruto e fingerprint semântico;
@@ -103,6 +108,64 @@ PDF protegido
 14. E2E, testes de segurança, backup e restore.
 15. Tag `v0.1.0` somente após o gate completo.
 
+## Gates de execução
+
+Estado verificado em 2026-09-04.
+
+### Fundação
+
+- [x] Kotlin/JVM e monorepo — #2
+- [x] PostgreSQL, Flyway e Testcontainers — #3
+- [x] fronteiras modulares e ADRs bloqueantes — #4
+- [ ] primitivos financeiros e temporais — #5
+
+### Núcleo de importação
+
+- [ ] ImportBatch, auditoria e catálogo de erros — #6
+- [ ] upload, fingerprint e storage efêmero — #7
+- [ ] continuidade de senha e extração PDFBox — #8
+
+### Parsing
+
+- [ ] fixtures sintéticas e golden files — #9
+- [ ] detector de layout, parser registry e parsers de seção — #10
+- [ ] normalização, evidência e resolução de ativo — #11
+
+### Confirmação
+
+- [ ] reconciliação multimoeda, preview versionada, blockers e stale preview — #12
+- [ ] commit transacional, reject e snapshot efetivo — #13
+
+### Entrega
+
+- [ ] contrato REST e OpenAPI — #14
+- [ ] CI, E2E de segurança, backup/restore e runbooks — #15
+
+O gate consolidado da release é o épico #16.
+
+## Golden E2E obrigatórios
+
+Nenhum é opcional para a release:
+
+- [ ] sucesso — fixture protegida chega a `PREVIEW_READY` e commita;
+- [ ] senha — continuação por uso único, tentativa inválida e limite excedido;
+- [ ] duplicata — mesmo fingerprint não cria snapshot duplicado;
+- [ ] blocker — divergência acima da tolerância leva a `BLOCKED` e impede commit;
+- [ ] stale preview — commit com `previewVersion` desatualizada é rejeitado;
+- [ ] rollback — falha na transação de commit não deixa estado parcial.
+
+## Primeiro source suportado
+
+O primeiro source deve ser declarado explicitamente antes da tag:
+
+```text
+institution:
+documentFamily:
+layoutVersion:
+parserVersion:
+knownLimitations:
+```
+
 ## Definition of Done
 
 ### Funcional
@@ -141,6 +204,17 @@ PDF protegido
 - purge de arquivos é verificável;
 - logs estruturados possuem correlation ID e não possuem valores;
 - limitações conhecidas estão no README e release notes.
+
+### Release
+
+- todos os gates acima estão marcados;
+- golden flows passam no commit candidato;
+- migrations reproduzíveis do zero;
+- matriz de sources suportados atualizada;
+- runbook atualizado;
+- release manifest criado;
+- nenhum dado real no repositório ou em artefatos de CI;
+- CI verde no commit candidato à tag.
 
 ## Critérios de não aceitação
 
