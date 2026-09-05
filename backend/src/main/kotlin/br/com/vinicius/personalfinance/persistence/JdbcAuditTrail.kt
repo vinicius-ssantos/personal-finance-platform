@@ -1,4 +1,4 @@
-package br.com.vinicius.personalfinance.persistence.audit
+package br.com.vinicius.personalfinance.persistence
 
 import br.com.vinicius.personalfinance.audit.AuditEvent
 import br.com.vinicius.personalfinance.audit.AuditTrail

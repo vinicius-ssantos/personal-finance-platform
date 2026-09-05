@@ -98,9 +98,13 @@ class PersonalFinanceApplicationTests(
         flyway.clean()
         assertEquals(Status.DOWN, databaseMigrationHealthIndicator.health().status)
 
+        // Derived from the resolved scripts, so adding a migration does not
+        // require editing this assertion.
+        val expectedMigrations = flyway.info().all().count { entry -> entry.version != null }
+
         val migrationResult = flyway.migrate()
 
-        assertEquals(2, migrationResult.migrationsExecuted)
+        assertEquals(expectedMigrations, migrationResult.migrationsExecuted)
         assertEquals(Status.UP, databaseMigrationHealthIndicator.health().status)
     }
 
