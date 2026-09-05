@@ -48,6 +48,7 @@ data class ImportBatch(
     val rawSha256: String,
     val semanticFingerprint: String?,
     val parser: ParserMetadata?,
+    val storedDocumentRef: StoredDocumentRef?,
     val correlationId: CorrelationId,
     val createdAt: Instant,
     val updatedAt: Instant,
@@ -168,6 +169,7 @@ data class ImportBatch(
         fun receive(
             id: ImportBatchId,
             rawSha256: String,
+            storedDocumentRef: StoredDocumentRef? = null,
             correlationId: CorrelationId,
             clock: DomainClock,
         ): ImportBatch {
@@ -180,6 +182,7 @@ data class ImportBatch(
                 rawSha256 = rawSha256,
                 semanticFingerprint = null,
                 parser = null,
+                storedDocumentRef = storedDocumentRef,
                 correlationId = correlationId,
                 createdAt = now,
                 updatedAt = now,

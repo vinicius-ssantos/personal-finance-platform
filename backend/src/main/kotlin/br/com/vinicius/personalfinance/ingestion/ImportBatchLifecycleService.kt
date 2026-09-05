@@ -33,11 +33,13 @@ class ImportBatchLifecycleService(
         id: ImportBatchId,
         rawSha256: String,
         actor: AuditActor,
+        storedDocumentRef: StoredDocumentRef? = null,
     ): ImportBatch {
         val batch =
             ImportBatch.receive(
                 id = id,
                 rawSha256 = rawSha256,
+                storedDocumentRef = storedDocumentRef,
                 correlationId = CorrelationId.random(),
                 clock = clock,
             )

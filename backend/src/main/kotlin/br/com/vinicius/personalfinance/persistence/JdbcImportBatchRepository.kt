@@ -1,9 +1,10 @@
-package br.com.vinicius.personalfinance.persistence.ingestion
+package br.com.vinicius.personalfinance.persistence
 
 import br.com.vinicius.personalfinance.ingestion.ImportBatch
 import br.com.vinicius.personalfinance.ingestion.ImportBatchRepository
 import br.com.vinicius.personalfinance.ingestion.ImportBatchStatus
 import br.com.vinicius.personalfinance.ingestion.ParserMetadata
+import br.com.vinicius.personalfinance.ingestion.StoredDocumentRef
 import br.com.vinicius.personalfinance.shared.CorrelationId
 import br.com.vinicius.personalfinance.shared.ImportBatchId
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
@@ -23,11 +24,11 @@ class JdbcImportBatchRepository(
             INSERT INTO import_batch (
                 id, status, version, preview_version, raw_sha256,
                 semantic_fingerprint, parser_id, parser_version,
-                correlation_id, created_at, updated_at
+                correlation_id, created_at, updated_at, stored_document_ref
             ) VALUES (
                 :id, :status, :version, :previewVersion, :rawSha256,
                 :semanticFingerprint, :parserId, :parserVersion,
-                :correlationId, :createdAt, :updatedAt
+                :correlationId, :createdAt, :updatedAt, :storedDocumentRef
             )
             """.trimIndent(),
             parametersOf(batch),
@@ -63,6 +64,7 @@ class JdbcImportBatchRepository(
                     semantic_fingerprint = :semanticFingerprint,
                     parser_id = :parserId,
                     parser_version = :parserVersion,
+                    stored_document_ref = :storedDocumentRef,
                     updated_at = :updatedAt
                 WHERE id = :id AND version = :expectedVersion
                 """.trimIndent(),
@@ -81,6 +83,7 @@ class JdbcImportBatchRepository(
             .addValue("semanticFingerprint", batch.semanticFingerprint)
             .addValue("parserId", batch.parser?.parserId)
             .addValue("parserVersion", batch.parser?.parserVersion)
+            .addValue("storedDocumentRef", batch.storedDocumentRef?.value)
             .addValue("correlationId", batch.correlationId.value)
             .addValue("createdAt", Timestamp.from(batch.createdAt))
             .addValue("updatedAt", Timestamp.from(batch.updatedAt))
@@ -101,6 +104,10 @@ class JdbcImportBatchRepository(
                 } else {
                     null
                 },
+            storedDocumentRef =
+                rs
+                    .getObject("stored_document_ref", UUID::class.java)
+                    ?.let { StoredDocumentRef(it) },
             correlationId = CorrelationId(rs.getObject("correlation_id", UUID::class.java)),
             createdAt = rs.getTimestamp("created_at").toInstant(),
             updatedAt = rs.getTimestamp("updated_at").toInstant(),

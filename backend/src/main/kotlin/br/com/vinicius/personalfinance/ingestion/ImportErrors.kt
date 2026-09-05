@@ -133,6 +133,27 @@ enum class ImportErrorCode(
         retryClass = RetryClass.NEVER,
         detailExposure = DetailExposure.SAFE_SUMMARY,
     ),
+    UPLOAD_TOO_LARGE(
+        code = "PF_UPLOAD_TOO_LARGE",
+        httpStatus = 413,
+        severity = ErrorSeverity.FAILURE,
+        retryClass = RetryClass.NEVER,
+        detailExposure = DetailExposure.SAFE_SUMMARY,
+    ),
+    UPLOAD_NOT_A_PDF(
+        code = "PF_UPLOAD_NOT_A_PDF",
+        httpStatus = 415,
+        severity = ErrorSeverity.FAILURE,
+        retryClass = RetryClass.NEVER,
+        detailExposure = DetailExposure.SAFE_SUMMARY,
+    ),
+    UPLOAD_ACTIVE_CONTENT(
+        code = "PF_UPLOAD_ACTIVE_CONTENT",
+        httpStatus = 422,
+        severity = ErrorSeverity.FAILURE,
+        retryClass = RetryClass.NEVER,
+        detailExposure = DetailExposure.SAFE_SUMMARY,
+    ),
     DATABASE_UNAVAILABLE(
         code = "PF_DATABASE_UNAVAILABLE",
         httpStatus = 503,
