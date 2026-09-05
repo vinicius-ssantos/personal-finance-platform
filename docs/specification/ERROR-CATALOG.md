@@ -32,6 +32,9 @@ REPROCESS_REQUIRED
 
 | Código | HTTP | Severity | RetryClass | Descrição |
 |---|---:|---|---|---|
+| PF_UPLOAD_TOO_LARGE | 413 | FAILURE | NEVER | upload acima do limite |
+| PF_UPLOAD_NOT_A_PDF | 415 | FAILURE | NEVER | assinatura não é de PDF |
+| PF_UPLOAD_ACTIVE_CONTENT | 422 | FAILURE | NEVER | documento com conteúdo ativo |
 | PF_IMPORT_INVALID_TRANSITION | 409 | FAILURE | NEVER | transição inválida |
 | PF_IMPORT_DUPLICATE_SOURCE | 409 | INFO/WARNING | USER_ACTION_REQUIRED | fonte já conhecida |
 | PF_PDF_PASSWORD_REQUIRED | 409 | INFO | USER_ACTION_REQUIRED | senha requerida |
@@ -53,4 +56,6 @@ REPROCESS_REQUIRED
 - stack trace não chega ao cliente;
 - correlation ID deve existir;
 - senha/PII não entra em detail;
-- retry não é inferido apenas pelo HTTP.
+- retry não é inferido apenas pelo HTTP;
+- onde a tabela lista dois status para um código, o primeiro é o primário e o
+  segundo é aceitável; a implementação DEVE escolher um e mantê-lo estável.
