@@ -6,6 +6,8 @@ spring:
   datasource:
     hikari:
       pool-name: personal-finance
+      # Flyway owns the schema; connections must resolve unqualified names to it.
+      schema: personal_finance
       maximum-pool-size: 5
       minimum-idle: 1
       connection-timeout: 5000
