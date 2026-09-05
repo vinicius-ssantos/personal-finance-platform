@@ -100,7 +100,7 @@ class PersonalFinanceApplicationTests(
 
         val migrationResult = flyway.migrate()
 
-        assertEquals(1, migrationResult.migrationsExecuted)
+        assertEquals(2, migrationResult.migrationsExecuted)
         assertEquals(Status.UP, databaseMigrationHealthIndicator.health().status)
     }
 
