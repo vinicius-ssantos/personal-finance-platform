@@ -12,27 +12,52 @@ Os PDFs observados são protegidos por senha e possuem texto digital extraível.
 
 ## Estados
 
-```text
-UPLOADED
-  -> PASSWORD_REQUIRED -> DECRYPTED
-  -> SCANNED
-  -> EXTRACTED
-  -> PARSED
-  -> ENRICHED
-  -> VALIDATED
-  -> PREVIEW_READY
-  -> COMMITTED
+A máquina de estados canônica é definida pela
+[especificação do produto](../specification/PRODUCT-SPECIFICATION.md) e reproduzida aqui.
 
-Estados terminais alternativos: REJECTED, FAILED e DUPLICATE.
+```text
+RECEIVED
+  -> FINGERPRINTED
+       -> DUPLICATE            (terminal)
+       -> PASSWORD_REQUIRED -> EXTRACTING | FAILED
+       -> EXTRACTING
+  -> EXTRACTING
+       -> LAYOUT_DETECTED | FAILED
+  -> LAYOUT_DETECTED
+       -> PARSING | FAILED
+  -> PARSING
+       -> NORMALIZING | FAILED
+  -> NORMALIZING
+       -> RECONCILING | FAILED
+  -> RECONCILING
+       -> PREVIEW_READY | BLOCKED | FAILED
+  -> PREVIEW_READY
+       -> COMMITTING | REJECTED
+  -> BLOCKED
+       -> REJECTED
+  -> COMMITTING
+       -> COMMITTED | FAILED
+
+Estados terminais: COMMITTED, REJECTED, FAILED e DUPLICATE.
 ```
 
-Somente `PREVIEW_READY` pode virar `COMMITTED`. Estados finais não retornam a estados anteriores.
+Regras de transição:
+
+- somente `PREVIEW_READY` pode iniciar `COMMITTING`, e somente `COMMITTING` produz `COMMITTED`;
+- `BLOCKED` sinaliza divergência de reconciliação acima da tolerância e não é commitável;
+- estado terminal não aceita transição do lifecycle normal (`INV-015`);
+- `FAILED` não retorna silenciosamente a um estado anterior (`FR-IMPORT-001`);
+- transição inválida falha com código estável, nunca em silêncio.
+
+A implementação pode combinar estados internos quando não houver diferença semântica
+observável, desde que os nomes acima permaneçam a autoridade do contrato externo.
 
 ## Recepção
 
 - MIME inicial: `application/pdf`;
-- limite inicial: 15 MB, configurável;
-- limite de páginas e tempo de parsing;
+- limite de tamanho: 25 MiB por padrão, configurável;
+- limite de páginas: 250 por padrão, configurável;
+- limite de tempo de parsing, configurável;
 - `importId` gerado antes do processamento;
 - nome original apenas para exibição sanitizada;
 - armazenamento temporário com nome aleatório;
@@ -44,15 +69,19 @@ Somente `PREVIEW_READY` pode virar `COMMITTED`. Estados finais não retornam a e
 A senha do documento é segredo efêmero:
 
 - enviada separadamente do arquivo;
-- máximo de tentativas e tamanho limitado;
+- máximo de 5 tentativas por padrão, configurável, e tamanho limitado;
 - nunca persistida, registrada, medida ou reenviada;
 - usada somente em memória ou diretório temporário restrito;
 - referências ao segredo eliminadas tão cedo quanto possível;
 - cópia descriptografada removida imediatamente;
-- ausência gera `PDF_PASSWORD_REQUIRED`;
-- valor inválido gera `INVALID_PDF_PASSWORD` sem detalhes adicionais.
+- ausência gera `PF_PDF_PASSWORD_REQUIRED`;
+- valor inválido gera `PF_PDF_INVALID_PASSWORD` sem detalhes adicionais;
+- limite excedido gera `PF_PDF_PASSWORD_ATTEMPTS_EXCEEDED`.
 
-O endpoint de continuidade deverá aceitar a senha por uso único e TTL curto, vinculado ao `importId`. O corpo não entra em tracing, access log ou métricas.
+Os códigos seguem o [catálogo de erros](../specification/ERROR-CATALOG.md), convenção
+`PF_<AREA>_<ERROR>`. Código estável não muda de significado após publicado.
+
+O endpoint de continuidade deverá aceitar a senha por uso único, com TTL de 15 minutos por padrão, configurável, vinculado ao `importId`. O corpo não entra em tracing, access log ou métricas.
 
 ## Idempotência
 
@@ -124,7 +153,7 @@ A data de geração não substitui automaticamente a data financeira.
 3. comparar subtotais com o total declarado quando comparável;
 4. usar tolerância padrão de 1 centavo para BRL;
 5. nunca tratar conversão implícita como cotação declarada;
-6. bloquear commit em divergência acima da tolerância;
+6. bloquear commit em divergência acima da tolerância, levando o batch a `BLOCKED`;
 7. registrar diferença, seção, moeda e evidência sem copiar PII.
 
 ## Prévia

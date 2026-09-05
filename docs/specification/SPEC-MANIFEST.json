@@ -1,0 +1,34 @@
+{
+  "specVersion": "5.0",
+  "canonicalDocument": "PRODUCT-SPECIFICATION.md",
+  "documents": [
+    "PRODUCT-SPECIFICATION.md",
+    "REQUIREMENTS-INDEX.md",
+    "DOMAIN-MODEL.md",
+    "IMPORT-SPECIFICATION.md",
+    "API-CONTRACT.md",
+    "ERROR-CATALOG.md"
+  ],
+  "externalDocuments": [
+    {
+      "path": "../roadmap/RELEASE-0.1.md",
+      "role": "escopo, gates e Definition of Done da Release 0.1"
+    },
+    {
+      "path": "../adr/README.md",
+      "role": "catalogo de decisoes arquiteturais"
+    }
+  ],
+  "requirementsCount": 326,
+  "requirementIdPattern": "^(?:(?:FR|NFR)-[A-Z0-9]+(?:-[A-Z0-9]+)?-[0-9]{3}|INV-[0-9]{3})$",
+  "requirementReferenceStyle": "anchor",
+  "precedence": [
+    "PRODUCT-SPECIFICATION.md",
+    "docs/adr/*.md (Accepted)",
+    "docs/architecture/*.md",
+    "docs/specification/* (contratos derivados)",
+    "issue",
+    "pull request",
+    "implementacao"
+  ]
+}
