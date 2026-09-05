@@ -5,8 +5,15 @@ import br.com.vinicius.personalfinance.shared.DomainClock
 import br.com.vinicius.personalfinance.shared.ImportBatchId
 import java.time.Instant
 
-/** Immutable identity of the parser that produced the current interpretation. */
+/**
+ * Immutable identity of the interpretation applied to a document.
+ *
+ * Carries the layout as well as the parser because `FR-PARSER-004` requires the
+ * version used to be persisted, and a parser version means nothing without the
+ * layout it was selected for.
+ */
 data class ParserMetadata(
+    val layout: LayoutDescriptor,
     val parserId: String,
     val parserVersion: String,
 ) {
@@ -99,6 +106,27 @@ data class ImportBatch(
         }
         return transitionTo(ImportBatchStatus.FINGERPRINTED, clock)
             .copy(semanticFingerprint = fingerprint)
+    }
+
+    /**
+     * Records the interpretation chosen for this document and moves to
+     * `LAYOUT_DETECTED`.
+     *
+     * The semantic fingerprint can only exist once text has been extracted, so
+     * it is set here rather than at reception. Like the raw digest, it is
+     * immutable once recorded: a second extraction that disagrees is a defect,
+     * not an update.
+     */
+    fun interpretedBy(
+        semanticFingerprint: String,
+        parser: ParserMetadata,
+        clock: DomainClock,
+    ): ImportBatch {
+        require(
+            this.semanticFingerprint == null || this.semanticFingerprint == semanticFingerprint,
+        ) { "semanticFingerprint is immutable once recorded" }
+        return transitionTo(ImportBatchStatus.LAYOUT_DETECTED, clock)
+            .copy(semanticFingerprint = semanticFingerprint, parser = parser)
     }
 
     /** Attaches parser metadata, auditable when reprocessing changes it (`FR-IMPORT-003`). */

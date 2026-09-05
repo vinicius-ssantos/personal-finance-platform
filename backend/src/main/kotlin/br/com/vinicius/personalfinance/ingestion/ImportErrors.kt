@@ -189,4 +189,5 @@ class ImportLifecycleException(
     val code: ImportErrorCode,
     val correlationId: CorrelationId,
     val summary: String,
-) : RuntimeException("${code.code}: $summary (correlationId=$correlationId)")
+    cause: Throwable? = null,
+) : RuntimeException("${code.code}: $summary (correlationId=$correlationId)", cause)

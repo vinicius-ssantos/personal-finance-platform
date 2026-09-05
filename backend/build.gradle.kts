@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.spring.modulith.api)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.flyway.database.postgresql)
+    implementation(libs.pdfbox)
     implementation(kotlin("reflect"))
 
     runtimeOnly(libs.postgresql)
