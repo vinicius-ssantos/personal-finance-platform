@@ -57,6 +57,13 @@ detekt {
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 
+    // Lets the fixture goldens be rewritten with -DupdateGoldenFiles=true; the
+    // resulting diff is reviewed like any other change.
+    systemProperty(
+        "updateGoldenFiles",
+        providers.systemProperty("updateGoldenFiles").getOrElse("false"),
+    )
+
     testLogging {
         events("failed")
         exceptionFormat = TestExceptionFormat.FULL

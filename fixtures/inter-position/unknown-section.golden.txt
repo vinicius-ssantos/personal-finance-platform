@@ -1,0 +1,18 @@
+banco inter s.a.
+posicao consolidada de investimentos
+data da posicao: 31/01/2026
+documento gerado em: 02/02/2026 08:15
+referencia de mercado: 30/01/2026
+titular: fulano de tal da silva
+conta: 00000000-0
+tesouro direto
+titulo quantidade valor bruto (brl)
+tesouro selic 2029 1,50000 15.000,00
+tesouro ipca+ 2035 0,75000 8.250,00
+subtotal tesouro direto 23.250,00
+produto estruturado desconhecido
+descricao valor (brl)
+estrutura ficticia xyz 1.000,00
+totais por moeda
+total brl 24.250,00
+total usd 1.500,00
