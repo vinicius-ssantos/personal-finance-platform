@@ -3,6 +3,7 @@ package br.com.vinicius.personalfinance.persistence
 import br.com.vinicius.personalfinance.ingestion.ImportBatch
 import br.com.vinicius.personalfinance.ingestion.ImportBatchRepository
 import br.com.vinicius.personalfinance.ingestion.ImportBatchStatus
+import br.com.vinicius.personalfinance.ingestion.LayoutDescriptor
 import br.com.vinicius.personalfinance.ingestion.ParserMetadata
 import br.com.vinicius.personalfinance.ingestion.StoredDocumentRef
 import br.com.vinicius.personalfinance.shared.CorrelationId
@@ -24,10 +25,12 @@ class JdbcImportBatchRepository(
             INSERT INTO import_batch (
                 id, status, version, preview_version, raw_sha256,
                 semantic_fingerprint, parser_id, parser_version,
+                institution, document_family, layout_version,
                 correlation_id, created_at, updated_at, stored_document_ref
             ) VALUES (
                 :id, :status, :version, :previewVersion, :rawSha256,
                 :semanticFingerprint, :parserId, :parserVersion,
+                :institution, :documentFamily, :layoutVersion,
                 :correlationId, :createdAt, :updatedAt, :storedDocumentRef
             )
             """.trimIndent(),
@@ -64,6 +67,9 @@ class JdbcImportBatchRepository(
                     semantic_fingerprint = :semanticFingerprint,
                     parser_id = :parserId,
                     parser_version = :parserVersion,
+                    institution = :institution,
+                    document_family = :documentFamily,
+                    layout_version = :layoutVersion,
                     stored_document_ref = :storedDocumentRef,
                     updated_at = :updatedAt
                 WHERE id = :id AND version = :expectedVersion
@@ -83,27 +89,23 @@ class JdbcImportBatchRepository(
             .addValue("semanticFingerprint", batch.semanticFingerprint)
             .addValue("parserId", batch.parser?.parserId)
             .addValue("parserVersion", batch.parser?.parserVersion)
+            .addValue("institution", batch.parser?.layout?.institution)
+            .addValue("documentFamily", batch.parser?.layout?.documentFamily)
+            .addValue("layoutVersion", batch.parser?.layout?.layoutVersion)
             .addValue("storedDocumentRef", batch.storedDocumentRef?.value)
             .addValue("correlationId", batch.correlationId.value)
             .addValue("createdAt", Timestamp.from(batch.createdAt))
             .addValue("updatedAt", Timestamp.from(batch.updatedAt))
 
-    private fun mapRow(rs: ResultSet): ImportBatch {
-        val parserId: String? = rs.getString("parser_id")
-        val parserVersion: String? = rs.getString("parser_version")
-        return ImportBatch(
+    private fun mapRow(rs: ResultSet): ImportBatch =
+        ImportBatch(
             id = ImportBatchId(rs.getObject("id", UUID::class.java)),
             status = ImportBatchStatus.valueOf(rs.getString("status")),
             version = rs.getLong("version"),
             previewVersion = rs.getInt("preview_version"),
             rawSha256 = rs.getString("raw_sha256"),
             semanticFingerprint = rs.getString("semantic_fingerprint"),
-            parser =
-                if (parserId != null && parserVersion != null) {
-                    ParserMetadata(parserId, parserVersion)
-                } else {
-                    null
-                },
+            parser = parserMetadataOf(rs),
             storedDocumentRef =
                 rs
                     .getObject("stored_document_ref", UUID::class.java)
@@ -112,5 +114,27 @@ class JdbcImportBatchRepository(
             createdAt = rs.getTimestamp("created_at").toInstant(),
             updatedAt = rs.getTimestamp("updated_at").toInstant(),
         )
+
+    /** Parser identity is all-or-nothing, matching the table constraint. */
+    private fun parserMetadataOf(rs: ResultSet): ParserMetadata? {
+        val layout = layoutOf(rs)
+        val parserId: String? = rs.getString("parser_id")
+        val parserVersion: String? = rs.getString("parser_version")
+        return if (layout != null && parserId != null && parserVersion != null) {
+            ParserMetadata(layout = layout, parserId = parserId, parserVersion = parserVersion)
+        } else {
+            null
+        }
+    }
+
+    private fun layoutOf(rs: ResultSet): LayoutDescriptor? {
+        val institution: String? = rs.getString("institution")
+        val documentFamily: String? = rs.getString("document_family")
+        val layoutVersion: String? = rs.getString("layout_version")
+        return if (institution != null && documentFamily != null && layoutVersion != null) {
+            LayoutDescriptor(institution, documentFamily, layoutVersion)
+        } else {
+            null
+        }
     }
 }

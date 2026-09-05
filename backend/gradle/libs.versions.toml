@@ -5,6 +5,8 @@ spring-boot = "4.1.0"
 spring-modulith = "2.1.0"
 ktlint-gradle = "14.2.0"
 detekt = "2.0.0-alpha.5"
+# ADR 0008 fixes PDFBox as the extraction library for Release 0.1.
+pdfbox = "3.0.6"
 
 [libraries]
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
@@ -17,6 +19,7 @@ spring-modulith-bom = { module = "org.springframework.modulith:spring-modulith-b
 spring-modulith-api = { module = "org.springframework.modulith:spring-modulith-api" }
 spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 jackson-module-kotlin = { module = "tools.jackson.module:jackson-module-kotlin" }
+pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql" }
 postgresql = { module = "org.postgresql:postgresql" }
 testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter" }

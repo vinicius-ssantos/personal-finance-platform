@@ -106,6 +106,39 @@ class ImportBatchLifecycleService(
     }
 
     /**
+     * Records the extracted fingerprint and the selected parser, moving the
+     * batch to `LAYOUT_DETECTED`.
+     *
+     * The parser version travels into the audit trail, so a later
+     * reinterpretation shows which version produced which reading
+     * (`FR-PARSER-004`, `FR-IMPORT-003`).
+     */
+    @Transactional
+    fun recordInterpretation(
+        id: ImportBatchId,
+        semanticFingerprint: String,
+        parser: ParserMetadata,
+        actor: AuditActor,
+    ): ImportBatch {
+        val current = load(id)
+        val interpreted = current.interpretedBy(semanticFingerprint, parser, clock)
+        persist(interpreted, current.version)
+        audit(
+            batch = interpreted,
+            action = AuditAction.IMPORT_TRANSITIONED,
+            actor = actor,
+            details =
+                mapOf(
+                    "from" to current.status.name,
+                    "to" to interpreted.status.name,
+                    "layout" to parser.layout.toString(),
+                    "parser" to "${parser.parserId}@${parser.parserVersion}",
+                ),
+        )
+        return interpreted
+    }
+
+    /**
      * Rejects the batch. Repeating it is a no-op that writes no second event
      * (`FR-REJECT-004`, `FR-REJECT-005`).
      */
