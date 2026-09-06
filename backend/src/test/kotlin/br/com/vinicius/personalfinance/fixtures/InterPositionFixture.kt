@@ -183,7 +183,9 @@ object InterPositionFixture {
             identityPage(),
             summaryPage(fixedIncomeSummaryTotal),
             pageHeader() + distributionIntro() + treasurySection() + brazilianEquitySection(),
-            pageHeader() + fixedIncomeHeader(fixedIncomeSectionTotal) + fixedIncomeRows(fixedIncomeSubtotalGross, malformedGross),
+            pageHeader() +
+                fixedIncomeHeader(fixedIncomeSectionTotal) +
+                fixedIncomeRows(fixedIncomeSubtotalGross, malformedGross),
             pageHeader() + internationalSection(),
             pageHeader() + fundsSection(),
             legalPage(),
@@ -282,7 +284,7 @@ object InterPositionFixture {
 
     val unsupportedMovements: Case =
         Case(
-            name = "unsupported-movements",
+            name = "unsupported-layout",
             description = "same institution, but movement-statement family",
             pages =
                 listOf(
