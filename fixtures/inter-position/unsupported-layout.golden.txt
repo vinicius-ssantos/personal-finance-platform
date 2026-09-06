@@ -1,23 +1,10 @@
-comprovante de operacao
-este documento nao e um extrato de posicao.
-numero da operacao: 000000
-linha irrelevante 1
-linha irrelevante 2
-linha irrelevante 3
-linha irrelevante 4
-linha irrelevante 5
-linha irrelevante 6
-linha irrelevante 7
-linha irrelevante 8
-linha irrelevante 9
-linha irrelevante 10
-linha irrelevante 11
-linha irrelevante 12
-linha irrelevante 13
-linha irrelevante 14
-linha irrelevante 15
-linha irrelevante 16
-linha irrelevante 17
-linha irrelevante 18
-linha irrelevante 19
-linha irrelevante 20
+extrato de movimentações
+extrato de movimentações de 01/01/2026 a 31/01/2026
+visão geral
+seu patrimônio inicial r$ 10.000,00
+seu patrimônio final r$ 11.000,00
+entradas
+renda fixa +r$ 1.000,00
+movimentações
+produto ativo código ativo quantidade valor iof previsto ir previsto valor líquido
+renda fixa cdb fictício ficticio001 100,00 +r$ 1.000,00 0,00% 0,00% +r$ 1.000,00
