@@ -146,7 +146,7 @@ As fixtures `unsupported-movements` e `unsupported-fixed-income-notes` são tota
 | `malformed-value` | token monetário pt-BR deliberadamente malformado |
 | `controlled-mismatch` | subtotal de renda fixa divergente do total declarado da seção |
 | `unknown-section` | seção nova que nenhum parser conhece |
-| `unsupported-movements` | mesma instituição, família de movimentações |
+| `unsupported-layout` | mesma instituição, família de movimentações |
 | `unsupported-fixed-income-notes` | mesma instituição, família de notas de renda fixa |
 
 ## Por que os PDFs não são versionados
