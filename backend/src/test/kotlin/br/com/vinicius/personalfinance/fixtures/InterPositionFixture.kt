@@ -3,23 +3,14 @@ package br.com.vinicius.personalfinance.fixtures
 /**
  * Synthetic Banco Inter consolidated-position reports.
  *
- * ## Provisional structure
+ * The structure below is based on a privately inspected real export. Only the
+ * non-sensitive shape was carried over: section names/order, column labels,
+ * numeric/date/currency conventions, subtotal placement and page boundaries.
+ * Every identity, code, date and amount in this file is invented.
  *
- * The section names come from `docs/roadmap/RELEASE-0.1.md`; the column
- * headers, ordering and number formatting below are **invented**, because
- * ADR 0029 keeps real reports out of the repository and no observed layout is
- * recorded anywhere in it.
- *
- * That is deliberate and it has a cost: these fixtures exercise the pipeline
- * faithfully, but they do not yet prove the parser will read a real statement.
- * Replacing the invented structure with the observed one is a change to this
- * file alone — the generator, goldens, checks and tests do not move.
- *
- * ## Invented by construction
- *
- * Every identity, code, date and amount here is made up. Amounts are chosen so
- * the arithmetic is checkable by hand, and no value corresponds to a real
- * holding.
+ * The two unsupported cases model other Banco Inter document families observed
+ * privately. They exist to prove that a same-institution document is not enough
+ * evidence for the position detector to claim a layout.
  */
 object InterPositionFixture {
     /** Test-only password. Never a real document password. */
@@ -29,145 +20,330 @@ object InterPositionFixture {
 
     const val DOCUMENT_FAMILY: String = "POSITION_CONSOLIDATED"
 
-    const val LAYOUT_VERSION: String = "provisional-2026.1"
+    /** First layout observed privately from the current Inter Wealth export. */
+    const val LAYOUT_VERSION: String = "2026_07"
 
-    /** Distinct on purpose: ADR 0031 forbids collapsing these into one date. */
+    /** Distinct on purpose: financial position date and export instant are not one concept. */
     const val POSITION_DATE: String = "31/01/2026"
 
-    const val GENERATED_AT: String = "02/02/2026 08:15"
+    const val GENERATED_DATE: String = "02/02/2026"
 
-    const val MARKET_REFERENCE_DATE: String = "30/01/2026"
+    const val GENERATED_AT: String = "$GENERATED_DATE 08:15"
 
-    /** A case the pipeline should handle, with the text it is built from. */
+    /**
+     * The source exposes this date inside the fixed-income "Valor Mercado" column header,
+     * not as a standalone document field.
+     */
+    const val MARKET_REFERENCE_DATE: String = GENERATED_DATE
+
+    /**
+     * Deliberately cannot be derived from the section totals without FX evidence.
+     *
+     * The observed report declares one BRL "Posição Total" while the international
+     * category is denominated in US$. No exchange rate is printed. ADR 0034 therefore
+     * forbids the application from reconstructing this value by an implicit conversion.
+     */
+    const val DECLARED_POSITION_TOTAL_BRL: String = "12.000,00"
+
     data class Case(
         val name: String,
         val description: String,
-        val lines: List<String>,
+        val pages: List<List<String>>,
         val protected: Boolean = true,
-    )
+    ) {
+        val lines: List<String>
+            get() = pages.flatten()
+    }
 
-    private fun header(): List<String> =
+    private fun pageHeader(): List<String> =
         listOf(
-            "BANCO INTER S.A.",
-            "POSICAO CONSOLIDADA DE INVESTIMENTOS",
-            "Data da posicao: $POSITION_DATE",
-            "Documento gerado em: $GENERATED_AT",
-            "Referencia de mercado: $MARKET_REFERENCE_DATE",
-            "Titular: FULANO DE TAL DA SILVA",
-            "Conta: 00000000-0",
-            "",
+            "CPF XXX.XXX.XXX-XX / Conta 00000000",
+            "Extrato de posição em $POSITION_DATE",
         )
 
-    private fun treasury(): List<String> =
+    private fun coverPage(): List<String> =
         listOf(
-            "TESOURO DIRETO",
-            "Titulo                        Quantidade      Valor bruto (BRL)",
-            "Tesouro Selic 2029              1,50000              15.000,00",
-            "Tesouro IPCA+ 2035              0,75000               8.250,00",
-            "Subtotal Tesouro Direto                              23.250,00",
-            "",
+            "POSIÇÃO CONSOLIDADA",
+            "Extrato de posição referente a $POSITION_DATE",
         )
 
-    private fun brazilianEquity(): List<String> =
+    private fun identityPage(positionTotal: String = DECLARED_POSITION_TOTAL_BRL): List<String> =
+        pageHeader() +
+            listOf(
+                "TITULAR FICTÍCIO",
+                "Solicitado no dia $GENERATED_AT",
+                "Posição Total R$ $positionTotal",
+            )
+
+    private fun summaryPage(fixedIncomeTotal: String = "3.000,00"): List<String> =
+        pageHeader() +
+            listOf(
+                "Seu patrimônio atual",
+                "R$ $DECLARED_POSITION_TOTAL_BRL",
+                "Tesouro Direto R$ 1.000,00",
+                "Renda Variável R$ 2.000,00",
+                "Renda Fixa R$ $fixedIncomeTotal",
+                "Renda Variável Internacional US$ 400,00",
+                "Fundos de Investimentos R$ 4.000,00",
+                "Extrato de posição em $POSITION_DATE",
+            )
+
+    private fun distributionIntro(): List<String> =
         listOf(
-            "RENDA VARIAVEL - BOLSA NACIONAL",
-            "Ativo         Quantidade    Preco medio    Valor bruto (BRL)",
-            "AAAA3               100,00          25,00           2.500,00",
-            "BBBB11               50,00          40,00           2.000,00",
-            "Subtotal Bolsa Nacional                              4.500,00",
-            "",
+            "Distribuição da carteira",
+            "Aqui você acompanha a organização da sua carteira, visualizando a",
+            "distribuição das posições por ativo.",
         )
 
-    private fun fixedIncome(): List<String> =
+    private fun treasurySection(): List<String> =
         listOf(
-            "RENDA FIXA",
-            "Emissor            Indexador   Vencimento    Valor bruto (BRL)",
-            "Emissor Ficticio A  CDI 105%   15/06/2027           10.000,00",
-            "Emissor Ficticio B  IPCA+5,00% 20/12/2029            7.500,00",
-            "Subtotal Renda Fixa                                 17.500,00",
-            "",
+            "10,00% Tesouro Direto Valor Bruto R$ 1.000,00",
+            "Tesouro Fictício 2029",
+            "Aplicação Vencimento Quantidade Valor Aplicado (R$) Valor Bruto (R$)",
+            "10/01/2026 01/03/2029 0,50 R$ 900,00 R$ 1.000,00",
         )
 
-    private fun international(): List<String> =
+    private fun brazilianEquitySection(): List<String> =
         listOf(
-            "INTERNACIONAL",
-            "Ativo      Quantidade    Preco medio    Valor bruto (USD)",
-            "ZZZZ            10,00         150,00           1.500,00",
-            "Subtotal Internacional (USD)                     1.500,00",
-            "",
+            "20,00% Renda Variável Valor Bruto R$ 2.000,00",
+            "AAAA3",
+            "Quantidade Valor Bruto (R$)",
+            "10 R$ 1.000,00",
+            "BBBB11",
+            "Quantidade Valor Bruto (R$)",
+            "5 R$ 1.000,00",
         )
 
-    private fun funds(): List<String> =
+    private fun fixedIncomeHeader(total: String = "3.000,00"): List<String> =
         listOf(
-            "FUNDOS DE INVESTIMENTO",
-            "Fundo                        Cotas        Valor bruto (BRL)",
-            "Fundo Ficticio Multimercado  1.000,000000        4.750,00",
-            "Subtotal Fundos                                   4.750,00",
-            "",
+            "30,00% Renda Fixa Valor Bruto R$ $total",
+            "LCI FICTÍCIA 3 ANOS",
+            "Código Ativo Vencimento Aplicação Taxa Indexador",
+            "Valor Aplicado (R$) IOF Previsto (R$) IR Previsto (R$) Valor Bruto (R$)",
+            "Valor Mercado ($MARKET_REFERENCE_DATE) Valor Líquido (R$)",
         )
 
-    /** BRL and USD are totalled separately: ADR 0034 forbids implicit conversion. */
-    private fun totals(brl: String = "50.000,00"): List<String> =
+    private fun fixedIncomeRows(
+        subtotalGross: String = "3.000,00",
+        malformedGross: String? = null,
+    ): List<String> {
+        val firstGross = malformedGross ?: "1.250,00"
+        return listOf(
+            "FICTICIO001 20/01/2029 16/01/2026 100,00% IPCA R$ 1.200,00 0,00 0,00 R$ $firstGross - R$ 1.250,00",
+            "CDB FICTÍCIO",
+            "Código Ativo Vencimento Aplicação Taxa Indexador",
+            "Valor Aplicado (R$) IOF Previsto (R$) IR Previsto (R$) Valor Bruto (R$)",
+            "Valor Mercado ($MARKET_REFERENCE_DATE) Valor Líquido (R$)",
+            "FICTICIO002 07/07/2029 16/07/2026 100,00% CDI R$ 1.700,00 0,00 0,00 R$ 1.750,00 - R$ 1.750,00",
+            "Subtotal R$ 2.900,00 R$ $subtotalGross R$ $subtotalGross",
+        )
+    }
+
+    private fun internationalSection(): List<String> =
         listOf(
-            "TOTAIS POR MOEDA",
-            "Total BRL                                          $brl",
-            "Total USD                                           1.500,00",
+            "4,00% Renda Variável Internacional Valor Bruto US$ 400,00",
+            "ZZZZ",
+            "Quantidade Valor Bruto (US$)",
+            "0,50000 US$ 200,00",
+            "YYYY",
+            "Quantidade Valor Bruto (US$)",
+            "0,25000 US$ 200,00",
         )
 
-    /** Every section present, totals consistent with the subtotals. */
+    private fun fundsSection(missingOptional: Boolean = false): List<String> {
+        val redemption = if (missingOptional) "-" else "R$ 100,00"
+        return listOf(
+            "40,00% Fundos de Investimentos Valor Bruto R$ 4.000,00",
+            "FUNDO FICTÍCIO MULTIMERCADO",
+            "Quantidade de cotas Preço mercado (R$) Valor aplicado (R$) Disp. Resgate (R$)",
+            "Valor Bruto (R$) Valor Líquido (R$) Valor IOF (R$) Valor IR (R$)",
+            "1.000,00000000 R$ 2,00 R$ 1.800,00 $redemption R$ 2.000,00 R$ 1.990,00 - R$ 10,00",
+            "FUNDO FICTÍCIO RENDA FIXA",
+            "Quantidade de cotas Preço mercado (R$) Valor aplicado (R$) Disp. Resgate (R$)",
+            "Valor Bruto (R$) Valor Líquido (R$) Valor IOF (R$) Valor IR (R$)",
+            "500,00000000 R$ 4,00 R$ 1.900,00 - R$ 2.000,00 R$ 2.000,00 - R$ 0,00",
+        )
+    }
+
+    private fun legalPage(): List<String> =
+        pageHeader() +
+            listOf(
+                "Material informativo sintético para fixture de teste.",
+                "Nenhuma informação desta página corresponde a cliente, ativo ou saldo real.",
+            )
+
+    private fun completePages(
+        fixedIncomeSummaryTotal: String = "3.000,00",
+        fixedIncomeSectionTotal: String = "3.000,00",
+        fixedIncomeSubtotalGross: String = "3.000,00",
+        malformedGross: String? = null,
+    ): List<List<String>> =
+        listOf(
+            coverPage(),
+            identityPage(),
+            summaryPage(fixedIncomeSummaryTotal),
+            pageHeader() + distributionIntro() + treasurySection() + brazilianEquitySection(),
+            pageHeader() + fixedIncomeHeader(fixedIncomeSectionTotal) + fixedIncomeRows(fixedIncomeSubtotalGross, malformedGross),
+            pageHeader() + internationalSection(),
+            pageHeader() + fundsSection(),
+            legalPage(),
+            pageHeader(),
+        )
+
     val complete: Case =
         Case(
             name = "complete",
-            description = "all observed sections, BRL and USD, totals reconcile",
-            lines =
-                header() + treasury() + brazilianEquity() + fixedIncome() +
-                    international() + funds() + totals(),
+            description = "observed position layout with all supported sections and BRL plus USD",
+            pages = completePages(),
         )
 
-    /**
-     * The declared BRL total is 100,00 above the sum of subtotals.
-     *
-     * Deliberately larger than the one-cent tolerance, so reconciliation must
-     * block rather than round it away.
-     */
+    val summaryOnly: Case =
+        Case(
+            name = "summary-only",
+            description = "dedicated summary-page fixture",
+            pages = listOf(coverPage(), identityPage(), summaryPage()),
+        )
+
+    val treasuryOnly: Case =
+        Case(
+            name = "treasury-only",
+            description = "dedicated Treasury section fixture",
+            pages = listOf(pageHeader() + distributionIntro() + treasurySection()),
+        )
+
+    val brazilianEquityOnly: Case =
+        Case(
+            name = "brazilian-equity-only",
+            description = "dedicated Brazilian equity section fixture",
+            pages = listOf(pageHeader() + distributionIntro() + brazilianEquitySection()),
+        )
+
+    val fixedIncomeOnly: Case =
+        Case(
+            name = "fixed-income-only",
+            description = "dedicated fixed-income section fixture",
+            pages = listOf(pageHeader() + distributionIntro() + fixedIncomeHeader() + fixedIncomeRows()),
+        )
+
+    val internationalOnly: Case =
+        Case(
+            name = "international-only",
+            description = "dedicated international USD section fixture",
+            pages = listOf(pageHeader() + distributionIntro() + internationalSection()),
+        )
+
+    val fundsOnly: Case =
+        Case(
+            name = "funds-only",
+            description = "dedicated investment-funds section fixture",
+            pages = listOf(pageHeader() + distributionIntro() + fundsSection()),
+        )
+
+    val missingOptionalField: Case =
+        Case(
+            name = "missing-optional-field",
+            description = "observed dash placeholder for an unavailable optional fund field",
+            pages = listOf(pageHeader() + distributionIntro() + fundsSection(missingOptional = true)),
+        )
+
+    val malformedValue: Case =
+        Case(
+            name = "malformed-value",
+            description = "known layout with a deliberately malformed pt-BR money token",
+            pages = completePages(malformedGross = "1.25X,00"),
+        )
+
     val controlledMismatch: Case =
         Case(
             name = "controlled-mismatch",
-            description = "declared BRL total exceeds the subtotals by 100,00",
-            lines =
-                header() + treasury() + brazilianEquity() + fixedIncome() +
-                    international() + funds() + totals(brl = "50.100,00"),
+            description = "fixed-income subtotal disagrees with its declared section total",
+            pages = completePages(fixedIncomeSubtotalGross = "2.900,00"),
         )
 
-    /** A section no parser knows, to prove unknown content is not silently dropped. */
     val unknownSection: Case =
         Case(
             name = "unknown-section",
-            description = "carries a section the parser does not know",
-            lines =
-                header() + treasury() +
-                    listOf(
-                        "PRODUTO ESTRUTURADO DESCONHECIDO",
-                        "Descricao                              Valor (BRL)",
-                        "Estrutura ficticia XYZ                    1.000,00",
-                        "",
-                    ) + totals(brl = "24.250,00"),
+            description = "known position document carrying a section no parser knows",
+            pages =
+                listOf(
+                    coverPage(),
+                    identityPage(),
+                    summaryPage(),
+                    pageHeader() +
+                        distributionIntro() +
+                        treasurySection() +
+                        listOf(
+                            "PRODUTO ESTRUTURADO DESCONHECIDO",
+                            "Descrição Valor Bruto (R$)",
+                            "Estrutura fictícia XYZ R$ 500,00",
+                        ),
+                ),
         )
 
-    /** Not a position report at all, so detection must fail closed. */
-    val unsupportedLayout: Case =
+    val unsupportedMovements: Case =
         Case(
-            name = "unsupported-layout",
-            description = "a document no detector should claim",
-            lines =
+            name = "unsupported-movements",
+            description = "same institution, but movement-statement family",
+            pages =
                 listOf(
-                    "COMPROVANTE DE OPERACAO",
-                    "Este documento nao e um extrato de posicao.",
-                    "Numero da operacao: 000000",
-                ) + (1..20).map { index -> "Linha irrelevante $index" },
+                    listOf(
+                        "EXTRATO DE MOVIMENTAÇÕES",
+                        "Extrato de movimentações de 01/01/2026 a 31/01/2026",
+                    ),
+                    listOf(
+                        "Visão geral",
+                        "Seu patrimônio inicial R$ 10.000,00",
+                        "Seu patrimônio final R$ 11.000,00",
+                        "Entradas",
+                        "Renda Fixa +R$ 1.000,00",
+                    ),
+                    listOf(
+                        "Movimentações",
+                        "Produto Ativo Código Ativo Quantidade Valor IOF Previsto IR Previsto Valor Líquido",
+                        "Renda Fixa CDB FICTÍCIO FICTICIO001 100,00 +R$ 1.000,00 0,00% 0,00% +R$ 1.000,00",
+                    ),
+                ),
+            protected = false,
+        )
+
+    val unsupportedFixedIncomeNotes: Case =
+        Case(
+            name = "unsupported-fixed-income-notes",
+            description = "same institution, but fixed-income negotiation-note family",
+            pages =
+                listOf(
+                    listOf(
+                        "NOTAS DE RENDA FIXA",
+                        "Notas de renda fixa do período de 01/01/2026 a 31/01/2026",
+                    ),
+                    listOf(
+                        "Nota de Negociação: 000000000",
+                        "Tipo de Operação: Aplicação",
+                        "Data da Operação 15/01/2026",
+                        "Dados Cliente",
+                        "Características do Título",
+                        "Ativo Emissão Vencimento Indexador Taxa Nominal Local de Custódia",
+                        "Características de Operação",
+                        "Quantidade/Valor Nominal PU da Operação Indexador/Taxa negociada Forma de Liquidação",
+                    ),
+                ),
             protected = false,
         )
 
     val all: List<Case> =
-        listOf(complete, controlledMismatch, unknownSection, unsupportedLayout)
+        listOf(
+            complete,
+            summaryOnly,
+            treasuryOnly,
+            brazilianEquityOnly,
+            fixedIncomeOnly,
+            internationalOnly,
+            fundsOnly,
+            missingOptionalField,
+            malformedValue,
+            controlledMismatch,
+            unknownSection,
+            unsupportedMovements,
+            unsupportedFixedIncomeNotes,
+        )
 }
