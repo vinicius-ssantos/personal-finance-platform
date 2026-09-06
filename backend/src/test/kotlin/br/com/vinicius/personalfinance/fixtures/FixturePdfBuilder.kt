@@ -23,30 +23,25 @@ import java.util.TimeZone
  *   is exactly how personal data escapes;
  * - the source of every fixture stays readable in Kotlin, so a reviewer can see
  *   that the content is invented;
- * - nothing that ever touched a real document can end up in the repository by
- *   accident.
+ * - explicit fixture pages preserve the observed page-provenance shape without
+ *   ever carrying a real report into the repository.
  *
  * Document timestamps are pinned, so nothing about the build clock leaks into a
- * fixture. The bytes of a *protected* fixture still differ between runs:
- * encryption derives a random salt, by design. What is reproducible is the
- * extracted text, which is what the goldens pin.
+ * fixture. The bytes of a *protected* fixture still differ between runs because
+ * encryption derives a random salt, by design. Extracted text is reproducible.
  */
 object FixturePdfBuilder {
-    private const val LINES_PER_PAGE = 42
+    private const val FONT_SIZE = 8f
 
-    private const val FONT_SIZE = 9f
+    private const val LEADING = 11f
 
-    private const val LEADING = 12f
+    private const val MARGIN_LEFT = 32f
 
-    private const val MARGIN_LEFT = 40f
-
-    private const val MARGIN_TOP = 780f
+    private const val MARGIN_TOP = 790f
 
     fun build(case: InterPositionFixture.Case): ByteArray {
         PDDocument().use { document ->
-            case.lines.chunked(LINES_PER_PAGE).forEach { pageLines ->
-                writePage(document, pageLines)
-            }
+            case.pages.forEach { pageLines -> writePage(document, pageLines) }
             document.documentInformation = pinnedInformation()
             if (case.protected) {
                 document.protect(
@@ -83,9 +78,9 @@ object FixturePdfBuilder {
     }
 
     /**
-     * The standard 14 fonts cannot encode every character. Fixture text is
-     * written without accents for that reason; this guards against a stray one
-     * failing the build with an encoding error instead of a clear message.
+     * The observed Portuguese labels fit WinAnsi, including the accents used by
+     * the Inter export. Characters outside the single-byte fixture alphabet are
+     * replaced so an accidental unsupported glyph cannot make generation flaky.
      */
     private fun sanitizeForWinAnsi(line: String): String =
         line.map { character -> if (character.code in 32..255) character else '?' }.joinToString("")
