@@ -15,7 +15,7 @@ Foram registrados apenas elementos não sensíveis da forma:
 - quebras de página relevantes à proveniência;
 - marcadores de duas outras famílias do próprio Inter para casos negativos.
 
-Somente **uma emissão da família `POSITION_CONSOLIDATED`** foi observada até agora. Portanto `2026_07` identifica o primeiro layout suportado, mas não afirma compatibilidade com toda variação histórica ou futura do Banco Inter.
+Somente **uma emissão da família `POSITION_CONSOLIDATED`** foi observada até agora. Portanto `2024_07` identifica o primeiro layout suportado, mas não afirma compatibilidade com toda variação histórica ou futura do Banco Inter.
 
 ## Forma observada do documento alvo
 
@@ -129,7 +129,7 @@ Dois outros relatórios reais foram inspecionados apenas para evitar falso posit
 - `Extrato de movimentações`, com marcadores `Visão geral` e `Movimentações`;
 - `Notas de renda fixa`, com marcadores `Nota de Negociação`, `Características do Título` e `Características de Operação`.
 
-As fixtures `unsupported-movements` e `unsupported-fixed-income-notes` são totalmente sintéticas e reproduzem somente esses marcadores estruturais. O detector de posição deve recusá-las mesmo sendo documentos do Banco Inter.
+As fixtures `unsupported-layout` e `unsupported-fixed-income-notes` são totalmente sintéticas e reproduzem somente esses marcadores estruturais. O detector de posição deve recusá-las mesmo sendo documentos do Banco Inter.
 
 ## Casos versionados
 
