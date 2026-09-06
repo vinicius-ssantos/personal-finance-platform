@@ -1,0 +1,10 @@
+notas de renda fixa
+notas de renda fixa do período de 01/01/2026 a 31/01/2026
+nota de negociação: 000000000
+tipo de operação: aplicação
+data da operação 15/01/2026
+dados cliente
+características do título
+ativo emissão vencimento indexador taxa nominal local de custódia
+características de operação
+quantidade/valor nominal pu da operação indexador/taxa negociada forma de liquidação
