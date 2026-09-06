@@ -55,7 +55,7 @@ object InterPositionFixture {
             get() = pages.flatten()
     }
 
-    private fun pageHeader(): List<String> =
+    private val pageHeader: List<String> =
         listOf(
             "CPF XXX.XXX.XXX-XX / Conta 00000000",
             "Extrato de posição em $POSITION_DATE",
@@ -68,7 +68,7 @@ object InterPositionFixture {
         )
 
     private fun identityPage(positionTotal: String = DECLARED_POSITION_TOTAL_BRL): List<String> =
-        pageHeader() +
+        pageHeader +
             listOf(
                 "TITULAR FICTÍCIO",
                 "Solicitado no dia $GENERATED_AT",
@@ -76,7 +76,7 @@ object InterPositionFixture {
             )
 
     private fun summaryPage(fixedIncomeTotal: String = "3.000,00"): List<String> =
-        pageHeader() +
+        pageHeader +
             listOf(
                 "Seu patrimônio atual",
                 "R$ $DECLARED_POSITION_TOTAL_BRL",
@@ -88,7 +88,7 @@ object InterPositionFixture {
                 "Extrato de posição em $POSITION_DATE",
             )
 
-    private fun distributionIntro(): List<String> =
+    private val distributionIntro: List<String> =
         listOf(
             "Distribuição da carteira",
             "Aqui você acompanha a organização da sua carteira, visualizando a",
@@ -165,8 +165,8 @@ object InterPositionFixture {
         )
     }
 
-    private fun legalPage(): List<String> =
-        pageHeader() +
+    private val legalPage: List<String> =
+        pageHeader +
             listOf(
                 "Material informativo sintético para fixture de teste.",
                 "Nenhuma informação desta página corresponde a cliente, ativo ou saldo real.",
@@ -182,14 +182,14 @@ object InterPositionFixture {
             coverPage(),
             identityPage(),
             summaryPage(fixedIncomeSummaryTotal),
-            pageHeader() + distributionIntro() + treasurySection() + brazilianEquitySection(),
-            pageHeader() +
+            pageHeader + distributionIntro + treasurySection() + brazilianEquitySection(),
+            pageHeader +
                 fixedIncomeHeader(fixedIncomeSectionTotal) +
                 fixedIncomeRows(fixedIncomeSubtotalGross, malformedGross),
-            pageHeader() + internationalSection(),
-            pageHeader() + fundsSection(),
-            legalPage(),
-            pageHeader(),
+            pageHeader + internationalSection(),
+            pageHeader + fundsSection(),
+            legalPage,
+            pageHeader,
         )
 
     val complete: Case =
@@ -210,42 +210,42 @@ object InterPositionFixture {
         Case(
             name = "treasury-only",
             description = "dedicated Treasury section fixture",
-            pages = listOf(pageHeader() + distributionIntro() + treasurySection()),
+            pages = listOf(pageHeader + distributionIntro + treasurySection()),
         )
 
     val brazilianEquityOnly: Case =
         Case(
             name = "brazilian-equity-only",
             description = "dedicated Brazilian equity section fixture",
-            pages = listOf(pageHeader() + distributionIntro() + brazilianEquitySection()),
+            pages = listOf(pageHeader + distributionIntro + brazilianEquitySection()),
         )
 
     val fixedIncomeOnly: Case =
         Case(
             name = "fixed-income-only",
             description = "dedicated fixed-income section fixture",
-            pages = listOf(pageHeader() + distributionIntro() + fixedIncomeHeader() + fixedIncomeRows()),
+            pages = listOf(pageHeader + distributionIntro + fixedIncomeHeader() + fixedIncomeRows()),
         )
 
     val internationalOnly: Case =
         Case(
             name = "international-only",
             description = "dedicated international USD section fixture",
-            pages = listOf(pageHeader() + distributionIntro() + internationalSection()),
+            pages = listOf(pageHeader + distributionIntro + internationalSection()),
         )
 
     val fundsOnly: Case =
         Case(
             name = "funds-only",
             description = "dedicated investment-funds section fixture",
-            pages = listOf(pageHeader() + distributionIntro() + fundsSection()),
+            pages = listOf(pageHeader + distributionIntro + fundsSection()),
         )
 
     val missingOptionalField: Case =
         Case(
             name = "missing-optional-field",
             description = "observed dash placeholder for an unavailable optional fund field",
-            pages = listOf(pageHeader() + distributionIntro() + fundsSection(missingOptional = true)),
+            pages = listOf(pageHeader + distributionIntro + fundsSection(missingOptional = true)),
         )
 
     val malformedValue: Case =
@@ -271,8 +271,8 @@ object InterPositionFixture {
                     coverPage(),
                     identityPage(),
                     summaryPage(),
-                    pageHeader() +
-                        distributionIntro() +
+                    pageHeader +
+                        distributionIntro +
                         treasurySection() +
                         listOf(
                             "PRODUTO ESTRUTURADO DESCONHECIDO",
