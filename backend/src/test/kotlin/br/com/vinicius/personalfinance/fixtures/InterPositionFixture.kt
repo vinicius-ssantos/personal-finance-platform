@@ -20,8 +20,8 @@ object InterPositionFixture {
 
     const val DOCUMENT_FAMILY: String = "POSITION_CONSOLIDATED"
 
-    /** First layout observed privately from the current Inter Wealth export. */
-    const val LAYOUT_VERSION: String = "2026_07"
+    /** First consolidated-position layout observed privately. */
+    const val LAYOUT_VERSION: String = "2024_07"
 
     /** Distinct on purpose: financial position date and export instant are not one concept. */
     const val POSITION_DATE: String = "31/01/2026"
