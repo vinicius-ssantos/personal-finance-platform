@@ -8,17 +8,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.streams.asSequence
 
-/**
- * Automated guard against real data reaching the public fixture pack.
- *
- * ADR 0029 allows real reports to be inspected privately and forbids anything
- * derived from them being versioned. A reviewer can miss a stray digit; this
- * cannot.
- *
- * The patterns are structural, not exhaustive: they catch the shapes that
- * personal data takes in a Brazilian financial document. Passing here is a
- * floor, not a certificate.
- */
+/** Automated guard against real data reaching the public fixture pack. */
 class FixturePrivacyTests {
     private data class Forbidden(
         val name: String,
@@ -88,11 +78,20 @@ class FixturePrivacyTests {
 
     @Test
     fun `the account number is obviously fabricated`() {
-        val account = InterPositionFixture.complete.lines.first { it.startsWith("Conta:") }
+        val account =
+            InterPositionFixture.complete.lines.first { line -> line.contains("/ Conta ") }
 
         assertTrue(
             account.contains("00000000"),
             "a fixture account must be visibly fake, got: $account",
+        )
+    }
+
+    @Test
+    fun `the holder identity is visibly synthetic`() {
+        assertTrue(
+            InterPositionFixture.complete.lines.contains("TITULAR FICTÍCIO"),
+            "a fixture must never carry a real holder identity",
         )
     }
 
@@ -106,13 +105,11 @@ class FixturePrivacyTests {
 
     @Test
     fun `ticker symbols are placeholders rather than real listed companies`() {
-        val tickerLine = Regex("""^[A-Z]{4}\d{1,2}\s""")
+        val tickerLine = Regex("""^[A-Z]{4}(?:\d{1,2})?$""")
         val tickers =
-            InterPositionFixture.complete.lines
-                .filter { line -> tickerLine.containsMatchIn(line) }
-                .map { line -> line.substringBefore(" ") }
+            InterPositionFixture.complete.lines.filter { line -> tickerLine.matches(line) }
 
-        assertTrue(tickers.isNotEmpty(), "the equity section should carry tickers")
+        assertTrue(tickers.isNotEmpty(), "the equity sections should carry placeholder tickers")
         tickers.forEach { ticker ->
             assertTrue(
                 ticker.take(4).toSet().size == 1,
