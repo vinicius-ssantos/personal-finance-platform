@@ -57,7 +57,7 @@ data class InterPositionSourceDocument(
     val parserId: String,
     val parserVersion: String,
     val sections: List<InterPositionSourceSection>,
-)
+) : ParsedSourceDocument
 
 /**
  * Fail-closed detector for the first observed consolidated-position layout.
@@ -119,7 +119,7 @@ class InterPositionDocumentParser : DocumentParser {
 
     override val parserVersion: String = InterPositionLayout2024_07.PARSER_VERSION
 
-    fun parse(document: ExtractedDocument): InterPositionSourceDocument {
+    override fun parse(document: ExtractedDocument): InterPositionSourceDocument {
         val sourceLines =
             document.pages.flatMap { page ->
                 page.text
