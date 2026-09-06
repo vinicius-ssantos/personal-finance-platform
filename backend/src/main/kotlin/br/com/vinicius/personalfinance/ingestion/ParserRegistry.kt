@@ -12,12 +12,16 @@ import org.springframework.stereotype.Component
  * `FR-PARSER-003`: an incompatible change means a new [parserVersion], never an
  * edit that silently changes what past imports would have produced.
  */
+interface ParsedSourceDocument
+
 interface DocumentParser {
     val descriptor: LayoutDescriptor
 
     val parserId: String
 
     val parserVersion: String
+
+    fun parse(document: ExtractedDocument): ParsedSourceDocument
 }
 
 /** The outcome of asking the registry to handle a document. */
