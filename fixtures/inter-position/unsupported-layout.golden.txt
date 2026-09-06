@@ -1,0 +1,10 @@
+extrato de movimentações
+extrato de movimentações de 01/01/2026 a 31/01/2026
+visão geral
+seu patrimônio inicial r$ 10.000,00
+seu patrimônio final r$ 11.000,00
+entradas
+renda fixa +r$ 1.000,00
+movimentações
+produto ativo código ativo quantidade valor iof previsto ir previsto valor líquido
+renda fixa cdb fictício ficticio001 100,00 +r$ 1.000,00 0,00% 0,00% +r$ 1.000,00

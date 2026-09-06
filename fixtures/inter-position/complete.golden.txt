@@ -1,0 +1,73 @@
+posição consolidada
+extrato de posição referente a 31/01/2026
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
+titular fictício
+solicitado no dia 02/02/2026 08:15
+posição total r$ 12.000,00
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
+seu patrimônio atual
+r$ 12.000,00
+tesouro direto r$ 1.000,00
+renda variável r$ 2.000,00
+renda fixa r$ 3.000,00
+renda variável internacional us$ 400,00
+fundos de investimentos r$ 4.000,00
+extrato de posição em 31/01/2026
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
+distribuição da carteira
+aqui você acompanha a organização da sua carteira, visualizando a
+distribuição das posições por ativo.
+10,00% tesouro direto valor bruto r$ 1.000,00
+tesouro fictício 2029
+aplicação vencimento quantidade valor aplicado (r$) valor bruto (r$)
+10/01/2026 01/03/2029 0,50 r$ 900,00 r$ 1.000,00
+20,00% renda variável valor bruto r$ 2.000,00
+aaaa3
+quantidade valor bruto (r$)
+10 r$ 1.000,00
+bbbb11
+quantidade valor bruto (r$)
+5 r$ 1.000,00
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
+30,00% renda fixa valor bruto r$ 3.000,00
+lci fictícia 3 anos
+código ativo vencimento aplicação taxa indexador
+valor aplicado (r$) iof previsto (r$) ir previsto (r$) valor bruto (r$)
+valor mercado (02/02/2026) valor líquido (r$)
+ficticio001 20/01/2029 16/01/2026 100,00% ipca r$ 1.200,00 0,00 0,00 r$ 1.250,00 - r$ 1.250,00
+cdb fictício
+código ativo vencimento aplicação taxa indexador
+valor aplicado (r$) iof previsto (r$) ir previsto (r$) valor bruto (r$)
+valor mercado (02/02/2026) valor líquido (r$)
+ficticio002 07/07/2029 16/07/2026 100,00% cdi r$ 1.700,00 0,00 0,00 r$ 1.750,00 - r$ 1.750,00
+subtotal r$ 2.900,00 r$ 3.000,00 r$ 3.000,00
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
+4,00% renda variável internacional valor bruto us$ 400,00
+zzzz
+quantidade valor bruto (us$)
+0,50000 us$ 200,00
+yyyy
+quantidade valor bruto (us$)
+0,25000 us$ 200,00
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
+40,00% fundos de investimentos valor bruto r$ 4.000,00
+fundo fictício multimercado
+quantidade de cotas preço mercado (r$) valor aplicado (r$) disp. resgate (r$)
+valor bruto (r$) valor líquido (r$) valor iof (r$) valor ir (r$)
+1.000,00000000 r$ 2,00 r$ 1.800,00 r$ 100,00 r$ 2.000,00 r$ 1.990,00 - r$ 10,00
+fundo fictício renda fixa
+quantidade de cotas preço mercado (r$) valor aplicado (r$) disp. resgate (r$)
+valor bruto (r$) valor líquido (r$) valor iof (r$) valor ir (r$)
+500,00000000 r$ 4,00 r$ 1.900,00 - r$ 2.000,00 r$ 2.000,00 - r$ 0,00
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
+material informativo sintético para fixture de teste.
+nenhuma informação desta página corresponde a cliente, ativo ou saldo real.
+cpf xxx.xxx.xxx-xx / conta 00000000
+extrato de posição em 31/01/2026
