@@ -21,11 +21,15 @@ private class StubDetector(
         }
 }
 
+private object StubParsedSourceDocument : ParsedSourceDocument
+
 private class StubParser(
     override val descriptor: LayoutDescriptor,
     override val parserId: String = "stub-parser",
     override val parserVersion: String = "1.0.0",
-) : DocumentParser
+) : DocumentParser {
+    override fun parse(document: ExtractedDocument): ParsedSourceDocument = StubParsedSourceDocument
+}
 
 class ParserRegistryTests {
     private val document =
