@@ -1,62 +1,164 @@
-# Fixtures — extrato consolidado de posição
+# Fixtures - extrato consolidado de posição
 
-Pacote sintético que reproduz a **estrutura** de um extrato consolidado de posição,
-sem conter nenhum dado real.
+Pacote sintético que reproduz a **estrutura observada** de um extrato consolidado de posição do Banco Inter sem conter dado real.
 
-## Aviso: a estrutura é provisória
+## Fonte da estrutura
 
-Os nomes das seções vêm de `docs/roadmap/RELEASE-0.1.md`. **Os cabeçalhos de coluna,
-a ordem e a formatação numérica foram inventados**, porque a ADR 0029 mantém
-relatórios reais fora do repositório e nenhum layout observado está registrado nele.
+Um relatório real da família alvo foi inspecionado somente em ambiente privado. Nenhum PDF real, texto extraído integral, identidade, conta, posição, código de ativo ou valor foi copiado para o repositório.
 
-Consequência prática: estas fixtures exercitam o pipeline com fidelidade de
-comportamento, mas **ainda não provam que o parser lerá um extrato real**. Elas
-provam que a detecção, a extração e a reconciliação funcionam sobre um documento
-com essa forma.
+Foram registrados apenas elementos não sensíveis da forma:
 
-Trocar a estrutura inventada pela observada é uma alteração em
-`InterPositionFixture.kt` e uma regeneração dos goldens. Nada mais se move.
+- nomes e ordem das seções;
+- cabeçalhos de coluna;
+- convenções de data, número e moeda;
+- posição dos subtotais e totais declarados;
+- quebras de página relevantes à proveniência;
+- marcadores de duas outras famílias do próprio Inter para casos negativos.
 
-## Casos
+Somente **uma emissão da família `POSITION_CONSOLIDATED`** foi observada até agora. Portanto `2026_07` identifica o primeiro layout suportado, mas não afirma compatibilidade com toda variação histórica ou futura do Banco Inter.
+
+## Forma observada do documento alvo
+
+A sequência relevante é:
+
+```text
+capa: Posição Consolidada
+-> identificação / Posição Total
+-> Seu patrimônio atual
+-> Distribuição da carteira
+   -> Tesouro Direto
+   -> Renda Variável
+   -> Renda Fixa
+   -> Renda Variável Internacional
+   -> Fundos de Investimentos
+-> material legal / fechamento
+```
+
+O cabeçalho das páginas de conteúdo repete a família e a data de posição. A data da posição usa `DD/MM/YYYY`; o instante de solicitação usa `DD/MM/YYYY HH:mm`.
+
+### Resumo
+
+`Seu patrimônio atual` lista as categorias na mesma ordem acima. Valores locais usam `R$`; a categoria internacional usa `US$`.
+
+O relatório também declara uma `Posição Total R$`, mas **não expõe a taxa de câmbio usada para incorporar a parcela internacional**. Essa declaração pode ser preservada como valor bruto da fonte, porém a aplicação não pode reconstruí-la nem reconciliá-la por conversão implícita (ADR 0034 / `INV-002`).
+
+### Tesouro Direto
+
+Cabeçalhos observados:
+
+```text
+Aplicação
+Vencimento
+Quantidade
+Valor Aplicado (R$)
+Valor Bruto (R$)
+```
+
+### Renda Variável
+
+Cada ativo aparece como um bloco, seguido de:
+
+```text
+Quantidade
+Valor Bruto (R$)
+```
+
+A seção pode continuar em páginas seguintes sem repetir o título da categoria.
+
+### Renda Fixa
+
+Cada produto possui nome próprio e uma tabela com:
+
+```text
+Código Ativo
+Vencimento
+Aplicação
+Taxa
+Indexador
+Valor Aplicado (R$)
+IOF Previsto (R$)
+IR Previsto (R$)
+Valor Bruto (R$)
+Valor Mercado (DD/MM/YYYY)
+Valor Líquido (R$)
+```
+
+O `Valor Mercado` carrega uma data no próprio cabeçalho. Campos indisponíveis podem aparecer como `-`. A seção encerra com `Subtotal`, preenchendo somente as colunas financeiras aplicáveis.
+
+### Renda Variável Internacional
+
+Cada ativo aparece como bloco com:
+
+```text
+Quantidade
+Valor Bruto (US$)
+```
+
+Quantidades fracionárias usam vírgula decimal.
+
+### Fundos de Investimentos
+
+Cada fundo aparece com:
+
+```text
+Quantidade de cotas
+Preço mercado (R$)
+Valor aplicado (R$)
+Disp. Resgate (R$)
+Valor Bruto (R$)
+Valor Líquido (R$)
+Valor IOF (R$)
+Valor IR (R$)
+```
+
+Quantidade de cotas pode possuir muitas casas decimais; campos não disponíveis também podem aparecer como `-`.
+
+## Formatação observada
+
+- BRL: `R$ 1.234,56`;
+- USD: `US$ 1.234,56`;
+- percentual: vírgula decimal e quantidade variável de casas;
+- datas financeiras: `DD/MM/YYYY`;
+- instante de solicitação: `DD/MM/YYYY HH:mm`;
+- valores ausentes: `-` onde o layout prevê coluna mas não há valor.
+
+## Famílias negativas do mesmo Banco Inter
+
+Dois outros relatórios reais foram inspecionados apenas para evitar falso positivo do detector:
+
+- `Extrato de movimentações`, com marcadores `Visão geral` e `Movimentações`;
+- `Notas de renda fixa`, com marcadores `Nota de Negociação`, `Características do Título` e `Características de Operação`.
+
+As fixtures `unsupported-movements` e `unsupported-fixed-income-notes` são totalmente sintéticas e reproduzem somente esses marcadores estruturais. O detector de posição deve recusá-las mesmo sendo documentos do Banco Inter.
+
+## Casos versionados
 
 | Caso | O que exercita |
 |---|---|
-| `complete` | todas as seções, BRL e USD, totais que reconciliam |
-| `controlled-mismatch` | total BRL declarado 100,00 acima dos subtotais, acima da tolerância |
-| `unknown-section` | uma seção que nenhum parser conhece |
-| `unsupported-layout` | documento que nenhum detector deve reivindicar |
-
-Os três primeiros são protegidos por senha; o último não, para que a recusa por
-layout seja testada sem depender da senha.
-
-Conferência do caso `complete`, feita à mão de propósito:
-
-```text
-23.250,00  Tesouro Direto
- 4.500,00  Bolsa nacional
-17.500,00  Renda fixa
- 4.750,00  Fundos
----------
-50.000,00  Total BRL declarado
-
- 1.500,00  Total USD declarado, sem conversão
-```
+| `complete` | layout observado completo, BRL + USD, documento protegido e páginas explícitas |
+| `summary-only` | resumo dedicado |
+| `treasury-only` | Tesouro Direto dedicado |
+| `brazilian-equity-only` | renda variável nacional dedicada |
+| `fixed-income-only` | renda fixa dedicada, subtotal e data no cabeçalho de valor de mercado |
+| `international-only` | renda variável internacional em USD |
+| `funds-only` | fundos dedicados |
+| `missing-optional-field` | campo opcional indisponível representado por `-` |
+| `malformed-value` | token monetário pt-BR deliberadamente malformado |
+| `controlled-mismatch` | subtotal de renda fixa divergente do total declarado da seção |
+| `unknown-section` | seção nova que nenhum parser conhece |
+| `unsupported-movements` | mesma instituição, família de movimentações |
+| `unsupported-fixed-income-notes` | mesma instituição, família de notas de renda fixa |
 
 ## Por que os PDFs não são versionados
 
-Os PDFs são **gerados em tempo de teste** por `FixturePdfBuilder`, não commitados:
+Os PDFs são gerados em tempo de teste por `FixturePdfBuilder`:
 
-- um blob binário não pode ser revisado, e a ADR 0029 alerta que é justamente por
-  metadado residual que dado pessoal escapa;
-- a fonte de cada fixture permanece legível em Kotlin, então quem revisa vê que o
-  conteúdo é inventado;
-- nada que tenha encostado num documento real pode entrar aqui por acidente.
+- o conteúdo sintético permanece revisável em Kotlin;
+- páginas são explícitas, preservando proveniência;
+- nada que tenha encostado num documento real pode entrar no Git por acidente;
+- metadados são controlados pelo gerador.
 
-O que é versionado são os **goldens em texto**: a forma canônica do texto extraído,
-que é sobre o que o pipeline raciocina.
-
-Os bytes de uma fixture protegida **não** são reprodutíveis entre execuções — a
-cifragem deriva um salt aleatório, por design. O texto extraído é.
+O que fica em `fixtures/` são os goldens da forma canônica do texto extraído.
 
 ## Regenerar os goldens
 
@@ -65,35 +167,12 @@ cd backend
 ./gradlew test -DupdateGoldenFiles=true --tests '*FixtureGoldenTests'
 ```
 
-O diff resultante é revisado como qualquer outra mudança. Um golden que muda sem
-que a fixture tenha mudado é sinal de regressão na extração, não ruído.
+O diff resultante deve ser revisado. Golden que muda sem a fixture ter mudado é regressão de extração ou alteração semântica do layout.
 
-## Processo de descoberta privada
+## Regra para futuras observações privadas
 
-A ADR 0029 permite inspecionar relatórios reais **apenas** em ambiente privado e
-temporário, para descobrir estrutura, campos e variações.
+Ao inspecionar outra emissão do relatório de posição, registrar somente diferenças de forma: seção ausente/nova, cabeçalho alterado, coluna extra, formato diferente ou quebra de página relevante.
 
-Ao observar um relatório real, registre aqui somente a **forma**:
+Nunca registrar: identidade do titular, CPF, número de conta, endereço, telefone, saldos, quantidades, códigos de ativos reais, senha ou trechos financeiros copiados do documento.
 
-- nomes de seção e a ordem em que aparecem;
-- cabeçalhos de coluna e alinhamento;
-- formato de número, data e moeda;
-- onde aparecem subtotais e totais;
-- variações entre emissões (seção ausente, coluna extra, quebra de página no meio
-  de uma seção).
-
-Nunca registre: identidade do titular, número de conta, saldos, quantidades,
-códigos de ativo reais, nem trechos copiados do texto extraído.
-
-O arquivo real não é anexado a issue, PR ou artifact de CI, e não é copiado para
-dentro do repositório em nenhuma etapa.
-
-## Verificação automatizada
-
-`FixturePrivacyTests` varre este diretório e as próprias definições em busca de
-CPF, CNPJ, e-mail, telefone, cartão, chave PIX aleatória e segredo atribuído, e
-falha se encontrar qualquer um. Também recusa PDF, ZIP, XLSX, OFX e CSV
-commitados aqui.
-
-Passar nesse check é piso, não certificado: os padrões cobrem as formas que dado
-pessoal costuma tomar, não todas as possíveis.
+`FixturePrivacyTests` é um piso automatizado, não um certificado de anonimização.
