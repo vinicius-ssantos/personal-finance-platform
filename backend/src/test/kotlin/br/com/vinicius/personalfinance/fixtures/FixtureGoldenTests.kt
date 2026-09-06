@@ -18,18 +18,7 @@ import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
 
-/**
- * Golden files for the synthetic fixture pack.
- *
- * The golden is the *canonical* extracted text, not the raw one. Raw output
- * carries alignment whitespace that shifts with PDFBox internals, which would
- * make the goldens fail on a library bump for no semantic reason. The canonical
- * form is what the pipeline actually reasons about, so a change to it is a real
- * change.
- *
- * Set `-DupdateGoldenFiles=true` to rewrite them; the diff is then reviewed like
- * any other change.
- */
+/** Golden files for the fully synthetic Banco Inter fixture pack. */
 class FixtureGoldenTests {
     private val extractor = PdfBoxTextExtractor()
 
@@ -72,25 +61,45 @@ class FixtureGoldenTests {
         val present =
             Files
                 .list(FixturePaths.interPositionDirectory)
-                .use { entries ->
-                    entries.map { it.fileName.toString() }.toList()
-                }.filter { name -> name.endsWith(".golden.txt") }
+                .use { entries -> entries.map { it.fileName.toString() }.toList() }
+                .filter { name -> name.endsWith(".golden.txt") }
                 .toSet()
 
         assertEquals(expected, present, "golden files and fixture cases disagree")
     }
 
     @Test
-    fun `regenerating a fixture yields the same text, though not the same bytes`() {
+    fun `complete fixture preserves the observed page-provenance shape`() {
+        val pdf = FixturePdfBuilder.build(InterPositionFixture.complete)
+        val document =
+            extractor.extract(pdf, DocumentPassword.of(InterPositionFixture.TEST_PASSWORD))
+        val markers =
+            listOf(
+                "POSIÇÃO CONSOLIDADA",
+                "TITULAR FICTÍCIO",
+                "Seu patrimônio atual",
+                "Distribuição da carteira",
+                "Renda Fixa",
+                "Renda Variável Internacional",
+                "Fundos de Investimentos",
+                "Material informativo sintético",
+                "Extrato de posição em",
+            )
+
+        assertEquals(InterPositionFixture.complete.pages.size, document.pages.size)
+        markers.zip(document.pages).forEach { (marker, page) ->
+            assertTrue(page.text.contains(marker), "page ${page.pageNumber} should contain $marker")
+        }
+    }
+
+    @Test
+    fun `regenerating a fixture yields the same text though not the same protected bytes`() {
         val first = FixturePdfBuilder.build(InterPositionFixture.complete)
         val second = FixturePdfBuilder.build(InterPositionFixture.complete)
 
-        // Encryption derives a random salt, so identical bytes are neither
-        // expected nor desirable. The goldens pin the extracted text instead,
-        // which is what the pipeline actually reads.
         assertFalse(
             first.contentEquals(second),
-            "identical bytes would mean the encryption salt is fixed",
+            "identical protected bytes would mean the encryption salt is fixed",
         )
         assertEquals(
             canonicalTextOf(InterPositionFixture.complete),
@@ -133,15 +142,29 @@ class FixtureGoldenTests {
     }
 
     @Test
-    fun `both currencies are present without an implicit conversion`() {
+    fun `the observed shape preserves BRL and USD without inventing an exchange rate`() {
         val text = canonicalTextOf(InterPositionFixture.complete)
 
-        assertTrue(text.contains("total brl"), "BRL total missing")
-        assertTrue(text.contains("total usd"), "USD total missing")
+        assertTrue(text.contains("posição total r$"), "declared BRL position total missing")
         assertTrue(
-            !text.contains("convertido") && !text.contains("equivalente"),
-            "fixtures must not imply a currency conversion",
+            text.contains("renda variável internacional us$"),
+            "international USD category missing",
         )
+        assertTrue(
+            !text.contains("câmbio") && !text.contains("convertido") && !text.contains("exchange rate"),
+            "fixtures must not invent FX evidence that the observed layout does not expose",
+        )
+    }
+
+    @Test
+    fun `same institution alternate families remain explicit negative cases`() {
+        val movements = canonicalTextOf(InterPositionFixture.unsupportedMovements)
+        val notes = canonicalTextOf(InterPositionFixture.unsupportedFixedIncomeNotes)
+
+        assertTrue(movements.contains("extrato de movimentações"))
+        assertTrue(notes.contains("notas de renda fixa"))
+        assertTrue(!movements.contains("posição consolidada"))
+        assertTrue(!notes.contains("posição consolidada"))
     }
 
     @Test
@@ -154,16 +177,15 @@ class FixtureGoldenTests {
         val pdfsInFixtures =
             Files
                 .list(FixturePaths.interPositionDirectory)
-                .use { entries ->
-                    entries.map { it.fileName.toString() }.toList()
-                }.filter { name -> name.endsWith(".pdf") }
+                .use { entries -> entries.map { it.fileName.toString() }.toList() }
+                .filter { name -> name.endsWith(".pdf") }
 
         assertTrue(Files.exists(target))
         assertTrue(pdfsInFixtures.isEmpty(), "PDFs must not be committed: $pdfsInFixtures")
     }
 
     @Test
-    fun `raw and semantic digests of a fixture disagree, as they must`() {
+    fun `raw and semantic digests of a fixture disagree as they must`() {
         val pdf = FixturePdfBuilder.build(InterPositionFixture.complete)
         val document =
             extractor.extract(pdf, DocumentPassword.of(InterPositionFixture.TEST_PASSWORD))
