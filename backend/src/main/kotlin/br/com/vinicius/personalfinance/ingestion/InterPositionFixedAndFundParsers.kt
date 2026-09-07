@@ -115,16 +115,15 @@ private fun parseFundRecord(block: List<SourceLine>, headerIndex: Int): FundRawR
     val row = block.getOrNull(headerIndex + 2) ?: parserFailure("fund row is missing")
     if (secondHeader.raw != FUNDS_HEADER_2) parserFailure("fund second header changed structure")
     val match = FUNDS_ROW.matchEntire(row.raw) ?: parserFailure("fund row changed structure: ${row.raw}")
-    val (
-        quantity,
-        marketPrice,
-        appliedValue,
-        redemptionAvailability,
-        grossValue,
-        netValue,
-        iofValue,
-        irValue,
-    ) = match.destructured
+    val fields = match.destructured.toList().iterator()
+    val quantity = fields.next()
+    val marketPrice = fields.next()
+    val appliedValue = fields.next()
+    val redemptionAvailability = fields.next()
+    val grossValue = fields.next()
+    val netValue = fields.next()
+    val iofValue = fields.next()
+    val irValue = fields.next()
     return FundRawRecord(
         descriptionRaw = description.raw,
         quantity = SourceField.present(quantity, row.pageNumber),
