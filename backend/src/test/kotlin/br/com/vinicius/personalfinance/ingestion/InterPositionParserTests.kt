@@ -178,7 +178,7 @@ class InterPositionParserTests {
             )
         val actual =
             cases.joinToString(separator = "\n\n", postfix = "\n") { case ->
-                "=== ${case.name} ===\n${parser.parse(extract(case))}"
+                "=== ${case.name} ===\n${renderRawSnapshot(parser.parse(extract(case)))}"
             }
         val golden = FixturePaths.interPositionDirectory.resolve("raw-parser.golden.txt")
 
