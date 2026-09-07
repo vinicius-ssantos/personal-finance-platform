@@ -44,19 +44,18 @@ private fun parseFixedIncomeRecord(block: List<SourceLine>, headerIndex: Int): P
     val rowMatch =
         FIXED_INCOME_ROW.matchEntire(row.raw)
             ?: parserFailure("fixed-income row changed structure: ${row.raw}")
-    val (
-        assetCode,
-        maturityDate,
-        applicationDate,
-        rate,
-        indexer,
-        appliedValue,
-        expectedIof,
-        expectedIr,
-        grossValue,
-        marketValue,
-        netValue,
-    ) = rowMatch.destructured
+    val fields = rowMatch.destructured.toList().iterator()
+    val assetCode = fields.next()
+    val maturityDate = fields.next()
+    val applicationDate = fields.next()
+    val rate = fields.next()
+    val indexer = fields.next()
+    val appliedValue = fields.next()
+    val expectedIof = fields.next()
+    val expectedIr = fields.next()
+    val grossValue = fields.next()
+    val marketValue = fields.next()
+    val netValue = fields.next()
 
     return ParsedFixedIncomeRecord(
         record =
