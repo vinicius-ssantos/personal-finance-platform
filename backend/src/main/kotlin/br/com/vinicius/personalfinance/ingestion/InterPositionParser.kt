@@ -205,7 +205,10 @@ internal fun sectionHeadingType(raw: String): InterPositionSectionType? =
         }
     }
 
-internal fun isUnknownHeading(lines: List<SourceLine>, index: Int): Boolean =
+internal fun isUnknownHeading(
+    lines: List<SourceLine>,
+    index: Int,
+): Boolean =
     lines.getOrNull(index + 1)?.let { next ->
         val raw = lines[index].raw
         !raw.contains('%') &&
