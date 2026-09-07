@@ -50,10 +50,15 @@ class ParserRegistry(
     fun select(document: ExtractedDocument): LayoutSelection {
         val claims = detectors.mapNotNull { it.detect(document) }
         return when {
-            claims.isEmpty() -> unsupported(LayoutSelection.Unsupported.Reason.NO_LAYOUT_RECOGNISED, "no detector recognised the document")
+            claims.isEmpty() ->
+                unsupported(
+                    LayoutSelection.Unsupported.Reason.NO_LAYOUT_RECOGNISED,
+                    "no detector recognised the document",
+                )
             claims.size > 1 -> unsupported(
                 LayoutSelection.Unsupported.Reason.AMBIGUOUS_LAYOUT,
-                "several detectors claimed the document: " + claims.map { it.descriptor.toString() }.sorted().joinToString(),
+                "several detectors claimed the document: " +
+                    claims.map { it.descriptor.toString() }.sorted().joinToString(),
             )
             claims.single().confidence < minimumConfidence -> unsupported(
                 LayoutSelection.Unsupported.Reason.BELOW_CONFIDENCE_THRESHOLD,
