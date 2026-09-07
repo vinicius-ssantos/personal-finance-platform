@@ -53,8 +53,7 @@ class StubLayoutConfiguration {
             override val parserId = "test-position-parser"
             override val parserVersion = "1.4.2"
 
-            override fun parse(document: ExtractedDocument): ParsedSourceDocument =
-                object : ParsedSourceDocument {}
+            override fun parse(document: ExtractedDocument): ParsedSourceDocument = object : ParsedSourceDocument {}
         }
 }
 
