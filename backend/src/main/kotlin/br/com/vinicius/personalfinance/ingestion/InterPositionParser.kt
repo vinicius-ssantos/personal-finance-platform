@@ -25,7 +25,15 @@ data class SourceField(val tokenRaw: String, val raw: String?, val pageNumber: I
     }
 }
 
-enum class InterPositionSectionType { SUMMARY, TREASURY, BRAZILIAN_EQUITY, FIXED_INCOME, INTERNATIONAL_EQUITY, FUNDS, UNKNOWN }
+enum class InterPositionSectionType {
+    SUMMARY,
+    TREASURY,
+    BRAZILIAN_EQUITY,
+    FIXED_INCOME,
+    INTERNATIONAL_EQUITY,
+    FUNDS,
+    UNKNOWN,
+}
 
 sealed interface InterPositionRawSection {
     val type: InterPositionSectionType
@@ -155,7 +163,10 @@ class InterPositionLayoutDetector : LayoutDetector {
             when (sectionHeadingType(heading)) {
                 InterPositionSectionType.TREASURY -> raw.any { it == TREASURY_HEADER }
                 InterPositionSectionType.BRAZILIAN_EQUITY -> raw.any { it == BRAZILIAN_EQUITY_HEADER }
-                InterPositionSectionType.FIXED_INCOME -> raw.any { it == FIXED_INCOME_HEADER_1 } && raw.any { it == FIXED_INCOME_HEADER_2 } && raw.any { it.startsWith(FIXED_INCOME_HEADER_3_PREFIX) }
+                InterPositionSectionType.FIXED_INCOME ->
+                    raw.any { it == FIXED_INCOME_HEADER_1 } &&
+                        raw.any { it == FIXED_INCOME_HEADER_2 } &&
+                        raw.any { it.startsWith(FIXED_INCOME_HEADER_3_PREFIX) }
                 InterPositionSectionType.INTERNATIONAL_EQUITY -> raw.any { it == INTERNATIONAL_EQUITY_HEADER }
                 InterPositionSectionType.FUNDS -> raw.any { it == FUNDS_HEADER_1 } && raw.any { it == FUNDS_HEADER_2 }
                 else -> true
@@ -165,8 +176,22 @@ class InterPositionLayoutDetector : LayoutDetector {
 
     companion object {
         private val REQUIRED_MARKERS = listOf("posição consolidada", "seu patrimônio atual", "distribuição da carteira")
-        private val NEGATIVE_FAMILY_MARKERS = listOf("extrato de movimentações", "\nmovimentações\n", "notas de renda fixa", "nota de negociação", "características do título", "características de operação")
-        private val EVIDENCE_MARKERS = listOf("document-family-title", "portfolio-summary", "portfolio-distribution", "known-section-structures")
+        private val NEGATIVE_FAMILY_MARKERS =
+            listOf(
+                "extrato de movimentações",
+                "\nmovimentações\n",
+                "notas de renda fixa",
+                "nota de negociação",
+                "características do título",
+                "características de operação",
+            )
+        private val EVIDENCE_MARKERS =
+            listOf(
+                "document-family-title",
+                "portfolio-summary",
+                "portfolio-distribution",
+                "known-section-structures",
+            )
     }
 }
 
@@ -223,11 +248,24 @@ class InterPositionDocumentParser : DocumentParser {
         val allocations = block.mapNotNull { source ->
             SUMMARY_ALLOCATION.matchEntire(source.raw)?.let { allocation ->
                 val allocationCurrency = allocation.groupValues[2]
-                SummaryAllocationRawRecord(allocation.groupValues[1], allocationCurrency, SourceField.present("$allocationCurrency ${allocation.groupValues[3]}", source.pageNumber))
+                SummaryAllocationRawRecord(
+                    allocation.groupValues[1],
+                    allocationCurrency,
+                    SourceField.present(
+                        "$allocationCurrency ${allocation.groupValues[3]}",
+                        source.pageNumber,
+                    ),
+                )
             }
         }
         if (allocations.isEmpty()) fail("summary allocations are missing")
-        return SummaryRawSection(heading.pageNumber, heading.raw, currency, SourceField.present("$currency ${match.groupValues[2]}", line.pageNumber), allocations)
+        return SummaryRawSection(
+            heading.pageNumber,
+            heading.raw,
+            currency,
+            SourceField.present("$currency ${match.groupValues[2]}", line.pageNumber),
+            allocations,
+        )
     }
 
     private fun parseTreasury(block: List<SourceLine>): TreasuryRawSection {
@@ -238,8 +276,18 @@ class InterPositionDocumentParser : DocumentParser {
             if (line.raw == TREASURY_HEADER) {
                 val description = block.getOrNull(index - 1) ?: fail("Treasury description is missing")
                 val row = block.getOrNull(index + 1) ?: fail("Treasury row is missing")
-                val match = TREASURY_ROW.matchEntire(row.raw) ?: fail("Treasury row changed structure: ${row.raw}")
-                records += TreasuryRawRecord(description.raw, SourceField.present(match.groupValues[1], row.pageNumber), SourceField.present(match.groupValues[2], row.pageNumber), SourceField.present(match.groupValues[3], row.pageNumber), SourceField.present(match.groupValues[4], row.pageNumber), SourceField.present(match.groupValues[5], row.pageNumber))
+                val match =
+                    TREASURY_ROW.matchEntire(row.raw)
+                        ?: fail("Treasury row changed structure: ${row.raw}")
+                records +=
+                    TreasuryRawRecord(
+                        description.raw,
+                        SourceField.present(match.groupValues[1], row.pageNumber),
+                        SourceField.present(match.groupValues[2], row.pageNumber),
+                        SourceField.present(match.groupValues[3], row.pageNumber),
+                        SourceField.present(match.groupValues[4], row.pageNumber),
+                        SourceField.present(match.groupValues[5], row.pageNumber),
+                    )
             }
         }
         if (records.isEmpty()) fail("Treasury records are missing")
@@ -249,13 +297,25 @@ class InterPositionDocumentParser : DocumentParser {
     private fun parseBrazilianEquity(block: List<SourceLine>): BrazilianEquityRawSection {
         val heading = block.first()
         val value = parseSectionHeading(heading, "Renda Variável")
-        return BrazilianEquityRawSection(heading.pageNumber, heading.raw, value.first, value.second, parseEquityRecords(block, BRAZILIAN_EQUITY_HEADER, BRAZILIAN_EQUITY_ROW))
+        return BrazilianEquityRawSection(
+            heading.pageNumber,
+            heading.raw,
+            value.first,
+            value.second,
+            parseEquityRecords(block, BRAZILIAN_EQUITY_HEADER, BRAZILIAN_EQUITY_ROW),
+        )
     }
 
     private fun parseInternationalEquity(block: List<SourceLine>): InternationalEquityRawSection {
         val heading = block.first()
         val value = parseSectionHeading(heading, "Renda Variável Internacional")
-        return InternationalEquityRawSection(heading.pageNumber, heading.raw, value.first, value.second, parseEquityRecords(block, INTERNATIONAL_EQUITY_HEADER, INTERNATIONAL_EQUITY_ROW))
+        return InternationalEquityRawSection(
+            heading.pageNumber,
+            heading.raw,
+            value.first,
+            value.second,
+            parseEquityRecords(block, INTERNATIONAL_EQUITY_HEADER, INTERNATIONAL_EQUITY_ROW),
+        )
     }
 
     private fun parseEquityRecords(block: List<SourceLine>, header: String, rowRegex: Regex): List<EquityRawRecord> {
@@ -265,7 +325,12 @@ class InterPositionDocumentParser : DocumentParser {
                 val asset = block.getOrNull(index - 1) ?: fail("equity asset code is missing")
                 val row = block.getOrNull(index + 1) ?: fail("equity row is missing")
                 val match = rowRegex.matchEntire(row.raw) ?: fail("equity row changed structure: ${row.raw}")
-                records += EquityRawRecord(asset.raw, SourceField.present(match.groupValues[1], row.pageNumber), SourceField.present(match.groupValues[2], row.pageNumber))
+                records +=
+                    EquityRawRecord(
+                        asset.raw,
+                        SourceField.present(match.groupValues[1], row.pageNumber),
+                        SourceField.present(match.groupValues[2], row.pageNumber),
+                    )
             }
         }
         if (records.isEmpty()) fail("equity records are missing")
@@ -284,19 +349,56 @@ class InterPositionDocumentParser : DocumentParser {
                 val header3 = block.getOrNull(index + 2) ?: fail("fixed-income market header is missing")
                 val row = block.getOrNull(index + 3) ?: fail("fixed-income row is missing")
                 if (header2.raw != FIXED_INCOME_HEADER_2) fail("fixed-income second header changed structure")
-                val marketHeader = FIXED_INCOME_HEADER_3.matchEntire(header3.raw) ?: fail("fixed-income market header changed structure")
+                val marketHeader =
+                    FIXED_INCOME_HEADER_3.matchEntire(header3.raw)
+                        ?: fail("fixed-income market header changed structure")
                 val reference = marketHeader.groupValues[1]
-                if (marketReferenceDate != null && marketReferenceDate != reference) fail("fixed-income market reference dates disagree")
+                if (marketReferenceDate != null && marketReferenceDate != reference) {
+                    fail("fixed-income market reference dates disagree")
+                }
                 marketReferenceDate = reference
-                val match = FIXED_INCOME_ROW.matchEntire(row.raw) ?: fail("fixed-income row changed structure: ${row.raw}")
-                records += FixedIncomeRawRecord(description.raw, match.groupValues[1], SourceField.present(match.groupValues[2], row.pageNumber), SourceField.present(match.groupValues[3], row.pageNumber), SourceField.present(match.groupValues[4], row.pageNumber), match.groupValues[5], SourceField.present(match.groupValues[6], row.pageNumber), SourceField.fromToken(match.groupValues[7], row.pageNumber), SourceField.fromToken(match.groupValues[8], row.pageNumber), SourceField.present(match.groupValues[9], row.pageNumber), SourceField.fromToken(match.groupValues[10], row.pageNumber), SourceField.present(match.groupValues[11], row.pageNumber))
+                val match =
+                    FIXED_INCOME_ROW.matchEntire(row.raw)
+                        ?: fail("fixed-income row changed structure: ${row.raw}")
+                records +=
+                    FixedIncomeRawRecord(
+                        description.raw,
+                        match.groupValues[1],
+                        SourceField.present(match.groupValues[2], row.pageNumber),
+                        SourceField.present(match.groupValues[3], row.pageNumber),
+                        SourceField.present(match.groupValues[4], row.pageNumber),
+                        match.groupValues[5],
+                        SourceField.present(match.groupValues[6], row.pageNumber),
+                        SourceField.fromToken(match.groupValues[7], row.pageNumber),
+                        SourceField.fromToken(match.groupValues[8], row.pageNumber),
+                        SourceField.present(match.groupValues[9], row.pageNumber),
+                        SourceField.fromToken(match.groupValues[10], row.pageNumber),
+                        SourceField.present(match.groupValues[11], row.pageNumber),
+                    )
             }
         }
         if (records.isEmpty()) fail("fixed-income records are missing")
-        val subtotalLine = block.singleOrNull { it.raw.startsWith("Subtotal ") } ?: fail("fixed-income subtotal is missing or ambiguous")
-        val subtotalMatch = FIXED_INCOME_SUBTOTAL.matchEntire(subtotalLine.raw) ?: fail("fixed-income subtotal changed structure")
-        val subtotal = FixedIncomeSubtotalRaw(SourceField.present(subtotalMatch.groupValues[1], subtotalLine.pageNumber), SourceField.present(subtotalMatch.groupValues[2], subtotalLine.pageNumber), SourceField.present(subtotalMatch.groupValues[3], subtotalLine.pageNumber))
-        return FixedIncomeRawSection(heading.pageNumber, heading.raw, value.first, value.second, marketReferenceDate ?: fail("fixed-income market reference date is missing"), records, subtotal)
+        val subtotalLine =
+            block.singleOrNull { it.raw.startsWith("Subtotal ") }
+                ?: fail("fixed-income subtotal is missing or ambiguous")
+        val subtotalMatch =
+            FIXED_INCOME_SUBTOTAL.matchEntire(subtotalLine.raw)
+                ?: fail("fixed-income subtotal changed structure")
+        val subtotal =
+            FixedIncomeSubtotalRaw(
+                SourceField.present(subtotalMatch.groupValues[1], subtotalLine.pageNumber),
+                SourceField.present(subtotalMatch.groupValues[2], subtotalLine.pageNumber),
+                SourceField.present(subtotalMatch.groupValues[3], subtotalLine.pageNumber),
+            )
+        return FixedIncomeRawSection(
+            heading.pageNumber,
+            heading.raw,
+            value.first,
+            value.second,
+            marketReferenceDate ?: fail("fixed-income market reference date is missing"),
+            records,
+            subtotal,
+        )
     }
 
     private fun parseFunds(block: List<SourceLine>): FundRawSection {
@@ -310,7 +412,18 @@ class InterPositionDocumentParser : DocumentParser {
                 val row = block.getOrNull(index + 2) ?: fail("fund row is missing")
                 if (header2.raw != FUNDS_HEADER_2) fail("fund second header changed structure")
                 val match = FUNDS_ROW.matchEntire(row.raw) ?: fail("fund row changed structure: ${row.raw}")
-                records += FundRawRecord(description.raw, SourceField.present(match.groupValues[1], row.pageNumber), SourceField.present(match.groupValues[2], row.pageNumber), SourceField.present(match.groupValues[3], row.pageNumber), SourceField.fromToken(match.groupValues[4], row.pageNumber), SourceField.present(match.groupValues[5], row.pageNumber), SourceField.present(match.groupValues[6], row.pageNumber), SourceField.fromToken(match.groupValues[7], row.pageNumber), SourceField.present(match.groupValues[8], row.pageNumber))
+                records +=
+                    FundRawRecord(
+                        description.raw,
+                        SourceField.present(match.groupValues[1], row.pageNumber),
+                        SourceField.present(match.groupValues[2], row.pageNumber),
+                        SourceField.present(match.groupValues[3], row.pageNumber),
+                        SourceField.fromToken(match.groupValues[4], row.pageNumber),
+                        SourceField.present(match.groupValues[5], row.pageNumber),
+                        SourceField.present(match.groupValues[6], row.pageNumber),
+                        SourceField.fromToken(match.groupValues[7], row.pageNumber),
+                        SourceField.present(match.groupValues[8], row.pageNumber),
+                    )
             }
         }
         if (records.isEmpty()) fail("fund records are missing")
@@ -319,11 +432,17 @@ class InterPositionDocumentParser : DocumentParser {
 
     private fun parseUnknown(block: List<SourceLine>): UnknownRawSection {
         val heading = block.first()
-        return UnknownRawSection(heading.pageNumber, heading.raw, UnknownRawRecord(SourceField.present(heading.raw, heading.pageNumber), block.drop(1)))
+        return UnknownRawSection(
+            heading.pageNumber,
+            heading.raw,
+            UnknownRawRecord(SourceField.present(heading.raw, heading.pageNumber), block.drop(1)),
+        )
     }
 
     private fun parseSectionHeading(heading: SourceLine, expectedLabel: String): Pair<String, SourceField> {
-        val match = SECTION_HEADING.matchEntire(heading.raw) ?: fail("section heading changed structure: ${heading.raw}")
+        val match =
+            SECTION_HEADING.matchEntire(heading.raw)
+                ?: fail("section heading changed structure: ${heading.raw}")
         if (match.groupValues[1] != expectedLabel) fail("expected $expectedLabel section, got ${match.groupValues[1]}")
         val currency = match.groupValues[2]
         return currency to SourceField.present("$currency ${match.groupValues[3]}", heading.pageNumber)
@@ -337,26 +456,52 @@ private const val TREASURY_HEADER = "Aplicação Vencimento Quantidade Valor Apl
 private const val BRAZILIAN_EQUITY_HEADER = "Quantidade Valor Bruto (R$)"
 private const val INTERNATIONAL_EQUITY_HEADER = "Quantidade Valor Bruto (US$)"
 private const val FIXED_INCOME_HEADER_1 = "Código Ativo Vencimento Aplicação Taxa Indexador"
-private const val FIXED_INCOME_HEADER_2 = "Valor Aplicado (R$) IOF Previsto (R$) IR Previsto (R$) Valor Bruto (R$)"
+private const val FIXED_INCOME_HEADER_2 =
+    "Valor Aplicado (R$) IOF Previsto (R$) IR Previsto (R$) Valor Bruto (R$)"
 private const val FIXED_INCOME_HEADER_3_PREFIX = "Valor Mercado ("
-private const val FUNDS_HEADER_1 = "Quantidade de cotas Preço mercado (R$) Valor aplicado (R$) Disp. Resgate (R$)"
+private const val FUNDS_HEADER_1 =
+    "Quantidade de cotas Preço mercado (R$) Valor aplicado (R$) Disp. Resgate (R$)"
 private const val FUNDS_HEADER_2 = "Valor Bruto (R$) Valor Líquido (R$) Valor IOF (R$) Valor IR (R$)"
 private val DECLARED_POSITION_TOTAL = Regex("^Posição Total (R\\$|US\\$) (\\S+)$")
 private val SUMMARY_TOTAL = Regex("^(R\\$|US\\$) (\\S+)$")
-private val SUMMARY_ALLOCATION = Regex("^(Tesouro Direto|Renda Variável Internacional|Renda Variável|Renda Fixa|Fundos de Investimentos) (R\\$|US\\$) (\\S+)$")
-private val SECTION_HEADING = Regex("^\\S+% (Tesouro Direto|Renda Variável Internacional|Renda Variável|Renda Fixa|Fundos de Investimentos) Valor Bruto (R\\$|US\\$) (\\S+)$")
+private val SUMMARY_ALLOCATION =
+    Regex(
+        "^(Tesouro Direto|Renda Variável Internacional|Renda Variável|Renda Fixa|" +
+            "Fundos de Investimentos) (R\\$|US\\$) (\\S+)$",
+    )
+private val SECTION_HEADING =
+    Regex(
+        "^\\S+% (Tesouro Direto|Renda Variável Internacional|Renda Variável|Renda Fixa|" +
+            "Fundos de Investimentos) Valor Bruto (R\\$|US\\$) (\\S+)$",
+    )
 private val TREASURY_ROW = Regex("^(\\S+) (\\S+) (\\S+) (R\\$ \\S+) (R\\$ \\S+)$")
 private val BRAZILIAN_EQUITY_ROW = Regex("^(\\S+) (R\\$ \\S+)$")
 private val INTERNATIONAL_EQUITY_ROW = Regex("^(\\S+) (US\\$ \\S+)$")
 private val FIXED_INCOME_HEADER_3 = Regex("^Valor Mercado \\(([^)]+)\\) Valor Líquido \\(R\\$\\)$")
-private val FIXED_INCOME_ROW = Regex("^(\\S+) (\\S+) (\\S+) (\\S+) (\\S+) (R\\$ \\S+) (\\S+) (\\S+) (R\\$ \\S+) ((?:R\\$ \\S+)|-) (R\\$ \\S+)$")
+private val FIXED_INCOME_ROW =
+    Regex(
+        "^(\\S+) (\\S+) (\\S+) (\\S+) (\\S+) (R\\$ \\S+) " +
+            "(\\S+) (\\S+) (R\\$ \\S+) ((?:R\\$ \\S+)|-) (R\\$ \\S+)$",
+    )
 private val FIXED_INCOME_SUBTOTAL = Regex("^Subtotal (R\\$ \\S+) (R\\$ \\S+) (R\\$ \\S+)$")
-private val FUNDS_ROW = Regex("^(\\S+) (R\\$ \\S+) (R\\$ \\S+) ((?:R\\$ \\S+)|-) (R\\$ \\S+) (R\\$ \\S+) ((?:R\\$ \\S+)|-) (R\\$ \\S+)$")
+private val FUNDS_ROW =
+    Regex(
+        "^(\\S+) (R\\$ \\S+) (R\\$ \\S+) ((?:R\\$ \\S+)|-) " +
+            "(R\\$ \\S+) (R\\$ \\S+) ((?:R\\$ \\S+)|-) (R\\$ \\S+)$",
+    )
 
 private fun sourceLines(document: ExtractedDocument): List<SourceLine> = document.pages.flatMap { page ->
     page.text.lineSequence().filter(String::isNotBlank).map { SourceLine(page.pageNumber, it) }.toList()
 }
-private fun knownSectionHeading(raw: String): Boolean = sectionHeadingType(raw) in setOf(InterPositionSectionType.TREASURY, InterPositionSectionType.BRAZILIAN_EQUITY, InterPositionSectionType.FIXED_INCOME, InterPositionSectionType.INTERNATIONAL_EQUITY, InterPositionSectionType.FUNDS)
+private fun knownSectionHeading(raw: String): Boolean =
+    sectionHeadingType(raw) in
+        setOf(
+            InterPositionSectionType.TREASURY,
+            InterPositionSectionType.BRAZILIAN_EQUITY,
+            InterPositionSectionType.FIXED_INCOME,
+            InterPositionSectionType.INTERNATIONAL_EQUITY,
+            InterPositionSectionType.FUNDS,
+        )
 private fun sectionHeadingType(raw: String): InterPositionSectionType? {
     if (raw == "Seu patrimônio atual") return InterPositionSectionType.SUMMARY
     val match = SECTION_HEADING.matchEntire(raw) ?: return null
