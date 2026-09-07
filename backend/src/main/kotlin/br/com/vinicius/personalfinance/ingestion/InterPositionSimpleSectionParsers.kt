@@ -3,7 +3,8 @@ package br.com.vinicius.personalfinance.ingestion
 internal fun parseSummarySection(block: List<SourceLine>): SummaryRawSection {
     val heading = block.first()
     val totalMatch =
-        block.mapNotNull { line -> SUMMARY_TOTAL.matchEntire(line.raw)?.let { match -> match to line } }
+        block
+            .mapNotNull { line -> SUMMARY_TOTAL.matchEntire(line.raw)?.let { match -> match to line } }
             .firstOrNull()
             ?: parserFailure("summary total is missing")
     val (currency, amount) = totalMatch.first.destructured
@@ -45,7 +46,10 @@ internal fun parseTreasurySection(block: List<SourceLine>): TreasuryRawSection {
     )
 }
 
-private fun parseTreasuryRecord(block: List<SourceLine>, headerIndex: Int): TreasuryRawRecord {
+private fun parseTreasuryRecord(
+    block: List<SourceLine>,
+    headerIndex: Int,
+): TreasuryRawRecord {
     val description = block.getOrNull(headerIndex - 1) ?: parserFailure("Treasury description is missing")
     val row = block.getOrNull(headerIndex + 1) ?: parserFailure("Treasury row is missing")
     val match = TREASURY_ROW.matchEntire(row.raw) ?: parserFailure("Treasury row changed structure: ${row.raw}")
