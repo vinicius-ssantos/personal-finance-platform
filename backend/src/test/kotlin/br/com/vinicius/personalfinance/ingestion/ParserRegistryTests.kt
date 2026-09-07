@@ -25,7 +25,10 @@ private class StubParser(
     override val descriptor: LayoutDescriptor,
     override val parserId: String = "stub-parser",
     override val parserVersion: String = "1.0.0",
-) : DocumentParser
+) : DocumentParser {
+    override fun parse(document: ExtractedDocument): ParsedSourceDocument =
+        object : ParsedSourceDocument {}
+}
 
 class ParserRegistryTests {
     private val document =
@@ -107,6 +110,24 @@ class ParserRegistryTests {
                     listOf(
                         StubDetector(INTER_POSITION, confidence = 0.9),
                         StubDetector(OTHER_LAYOUT, confidence = 0.8),
+                    ),
+                parsers = listOf(StubParser(INTER_POSITION), StubParser(OTHER_LAYOUT)),
+            )
+
+        assertEquals(
+            LayoutSelection.Unsupported.Reason.AMBIGUOUS_LAYOUT,
+            unsupportedReason(registry.select(document)),
+        )
+    }
+
+    @Test
+    fun `a low confidence competing detector is still an ambiguity`() {
+        val registry =
+            registryOf(
+                detectors =
+                    listOf(
+                        StubDetector(INTER_POSITION, confidence = 0.95),
+                        StubDetector(OTHER_LAYOUT, confidence = 0.60),
                     ),
                 parsers = listOf(StubParser(INTER_POSITION), StubParser(OTHER_LAYOUT)),
             )
