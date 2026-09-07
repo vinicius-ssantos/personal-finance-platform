@@ -30,7 +30,10 @@ internal fun parseFixedIncomeSection(block: List<SourceLine>): FixedIncomeRawSec
     )
 }
 
-private fun parseFixedIncomeRecord(block: List<SourceLine>, headerIndex: Int): ParsedFixedIncomeRecord {
+private fun parseFixedIncomeRecord(
+    block: List<SourceLine>,
+    headerIndex: Int,
+): ParsedFixedIncomeRecord {
     val description = block.getOrNull(headerIndex - 1) ?: parserFailure("fixed-income description is missing")
     val secondHeader = block.getOrNull(headerIndex + 1) ?: parserFailure("fixed-income second header is missing")
     val marketHeader = block.getOrNull(headerIndex + 2) ?: parserFailure("fixed-income market header is missing")
@@ -109,7 +112,10 @@ internal fun parseFundSection(block: List<SourceLine>): FundRawSection {
     )
 }
 
-private fun parseFundRecord(block: List<SourceLine>, headerIndex: Int): FundRawRecord {
+private fun parseFundRecord(
+    block: List<SourceLine>,
+    headerIndex: Int,
+): FundRawRecord {
     val description = block.getOrNull(headerIndex - 1) ?: parserFailure("fund description is missing")
     val secondHeader = block.getOrNull(headerIndex + 1) ?: parserFailure("fund second header is missing")
     val row = block.getOrNull(headerIndex + 2) ?: parserFailure("fund row is missing")
