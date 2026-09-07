@@ -26,8 +26,7 @@ private class StubParser(
     override val parserId: String = "stub-parser",
     override val parserVersion: String = "1.0.0",
 ) : DocumentParser {
-    override fun parse(document: ExtractedDocument): ParsedSourceDocument =
-        object : ParsedSourceDocument {}
+    override fun parse(document: ExtractedDocument): ParsedSourceDocument = object : ParsedSourceDocument {}
 }
 
 class ParserRegistryTests {
