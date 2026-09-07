@@ -23,10 +23,15 @@ data class SourceField(
     val pageNumber: Int,
 ) {
     companion object {
-        fun present(tokenRaw: String, pageNumber: Int): SourceField =
-            SourceField(tokenRaw = tokenRaw, raw = tokenRaw, pageNumber = pageNumber)
+        fun present(
+            tokenRaw: String,
+            pageNumber: Int,
+        ): SourceField = SourceField(tokenRaw = tokenRaw, raw = tokenRaw, pageNumber = pageNumber)
 
-        fun fromToken(tokenRaw: String, pageNumber: Int): SourceField =
+        fun fromToken(
+            tokenRaw: String,
+            pageNumber: Int,
+        ): SourceField =
             if (tokenRaw == "-") {
                 SourceField(tokenRaw = tokenRaw, raw = null, pageNumber = pageNumber)
             } else {
@@ -189,4 +194,6 @@ data class InterPositionSourceDocument(
     val sections: List<InterPositionRawSection>,
 ) : ParsedSourceDocument
 
-class InterPositionParserException(message: String) : IllegalArgumentException(message)
+class InterPositionParserException(
+    message: String,
+) : IllegalArgumentException(message)
