@@ -49,7 +49,12 @@ private fun parseTreasuryRecord(block: List<SourceLine>, headerIndex: Int): Trea
     val description = block.getOrNull(headerIndex - 1) ?: parserFailure("Treasury description is missing")
     val row = block.getOrNull(headerIndex + 1) ?: parserFailure("Treasury row is missing")
     val match = TREASURY_ROW.matchEntire(row.raw) ?: parserFailure("Treasury row changed structure: ${row.raw}")
-    val (applicationDate, maturityDate, quantity, appliedValue, grossValue) = match.destructured
+    val fields = match.destructured.toList().iterator()
+    val applicationDate = fields.next()
+    val maturityDate = fields.next()
+    val quantity = fields.next()
+    val appliedValue = fields.next()
+    val grossValue = fields.next()
     return TreasuryRawRecord(
         descriptionRaw = description.raw,
         applicationDate = SourceField.present(applicationDate, row.pageNumber),
@@ -124,7 +129,9 @@ internal fun parseSectionHeadingValue(
     heading: SourceLine,
     expectedLabel: String,
 ): Pair<String, SourceField> {
-    val match = SECTION_HEADING.matchEntire(heading.raw) ?: parserFailure("section heading changed structure: ${heading.raw}")
+    val match =
+        SECTION_HEADING.matchEntire(heading.raw)
+            ?: parserFailure("section heading changed structure: ${heading.raw}")
     val (label, currency, amount) = match.destructured
     if (label != expectedLabel) parserFailure("expected $expectedLabel section, got $label")
     return currency to SourceField.present("$currency $amount", heading.pageNumber)
