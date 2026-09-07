@@ -80,16 +80,25 @@ class InterPositionParserTests {
     @Test
     fun `malformed financial token remains exactly raw`() {
         val section =
-            parser.parse(extract(InterPositionFixture.malformedValue)).sections
+            parser
+                .parse(extract(InterPositionFixture.malformedValue))
+                .sections
                 .single { it.type == InterPositionSectionType.FIXED_INCOME } as FixedIncomeRawSection
+        val grossValue =
+            section.records
+                .first()
+                .grossValue
+                .raw
 
-        assertEquals("R$ 1.25X,00", section.records.first().grossValue.raw)
+        assertEquals("R$ 1.25X,00", grossValue)
     }
 
     @Test
     fun `controlled mismatch preserves declared section total and subtotal independently`() {
         val section =
-            parser.parse(extract(InterPositionFixture.controlledMismatch)).sections
+            parser
+                .parse(extract(InterPositionFixture.controlledMismatch))
+                .sections
                 .single { it.type == InterPositionSectionType.FIXED_INCOME } as FixedIncomeRawSection
 
         assertEquals("R$ 3.000,00", section.declaredGross.raw)
@@ -99,7 +108,10 @@ class InterPositionParserTests {
     @Test
     fun `international section stays USD without implicit conversion`() {
         val section =
-            parser.parse(extract(InterPositionFixture.internationalOnly)).sections.single()
+            parser
+                .parse(extract(InterPositionFixture.internationalOnly))
+                .sections
+                .single()
                 .let { it as InternationalEquityRawSection }
 
         assertEquals("US$", section.currencyToken)
