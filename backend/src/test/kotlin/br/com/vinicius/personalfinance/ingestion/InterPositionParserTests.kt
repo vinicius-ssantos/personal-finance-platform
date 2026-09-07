@@ -27,7 +27,7 @@ class InterPositionParserTests {
         val evidence = detector.detect(extract(InterPositionFixture.complete))
 
         requireNotNull(evidence)
-        assertEquals(InterPositionLayout2024_07.descriptor, evidence.descriptor)
+        assertEquals(InterPositionLayout202407.descriptor, evidence.descriptor)
         assertEquals(1.0, evidence.confidence)
         assertEquals(
             listOf(
