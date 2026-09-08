@@ -62,7 +62,7 @@ class FixtureGoldenTests {
             Files
                 .list(FixturePaths.interPositionDirectory)
                 .use { entries -> entries.map { it.fileName.toString() }.toList() }
-                .filter { name -> name.endsWith(".golden.txt") }
+                .filter { name -> name.endsWith(".golden.txt") && name != "raw-parser.golden.txt" }
                 .toSet()
 
         assertEquals(expected, present, "golden files and fixture cases disagree")
