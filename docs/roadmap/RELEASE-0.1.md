@@ -128,7 +128,7 @@ Estado verificado em 2026-09-08.
 ### Parsing
 
 - [x] fixtures sintéticas e golden files — #9
-- [ ] detector de layout, parser registry e parsers de seção — #10
+- [x] detector de layout, parser registry e parsers de seção — #10
 - [ ] normalização, evidência e resolução de ativo — #11
 
 ### Confirmação
@@ -159,11 +159,22 @@ Nenhum é opcional para a release:
 O primeiro source deve ser declarado explicitamente antes da tag:
 
 ```text
-institution:
-documentFamily:
-layoutVersion:
-parserVersion:
+institution:      BANCO_INTER
+documentFamily:   POSITION_CONSOLIDATED
+layoutVersion:    2024_07
+parserVersion:    banco-inter-position / 2024_07.1
 knownLimitations:
+  - apenas uma emissão da família foi observada em privado; o layout
+    2024_07 não afirma compatibilidade com toda variação histórica ou
+    futura do Banco Inter;
+  - o detector exige os cabeçalhos de coluna exatos dessa emissão e
+    recusa fechado qualquer alteração estrutural;
+  - `Posição Total` declarada em BRL incorpora a parcela internacional
+    sem expor a taxa de câmbio, então é preservada como valor bruto da
+    fonte e nunca reconstruída por conversão implícita (ADR 0034);
+  - sem OCR: relatório digitalizado não é suportado;
+  - o parser produz apenas DTOs crus; normalização, resolução de ativo e
+    reconciliação chegam com as issues #11 e #12.
 ```
 
 ## Definition of Done
