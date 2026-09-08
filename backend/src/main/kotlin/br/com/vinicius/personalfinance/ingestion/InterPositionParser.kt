@@ -19,21 +19,27 @@ class InterPositionLayoutDetector : LayoutDetector {
     }
 
     private fun knownStructuresAreValid(lines: List<SourceLine>): Boolean {
-        val raw = lines.map { line -> line.raw }
-        return raw.filter(::knownSectionHeading).all { heading ->
-            when (sectionHeadingType(heading)) {
-                InterPositionSectionType.TREASURY -> raw.any { line -> line == TREASURY_HEADER }
-                InterPositionSectionType.BRAZILIAN_EQUITY -> raw.any { line -> line == BRAZILIAN_EQUITY_HEADER }
-                InterPositionSectionType.FIXED_INCOME ->
-                    raw.any { line -> line == FIXED_INCOME_HEADER_1 } &&
-                        raw.any { line -> line == FIXED_INCOME_HEADER_2 } &&
-                        raw.any { line -> line.startsWith(FIXED_INCOME_HEADER_3_PREFIX) }
-                InterPositionSectionType.INTERNATIONAL_EQUITY ->
-                    raw.any { line -> line == INTERNATIONAL_EQUITY_HEADER }
-                InterPositionSectionType.FUNDS ->
-                    raw.any { line -> line == FUNDS_HEADER_1 } && raw.any { line -> line == FUNDS_HEADER_2 }
-                else -> true
-            }
+        val starts = lines.indices.filter { index -> knownSectionHeading(lines[index].raw) }
+        return starts.mapIndexed { index, start ->
+            val end = starts.getOrNull(index + 1) ?: lines.size
+            lines.subList(start, end)
+        }.all(::knownStructureIsValid)
+    }
+
+    private fun knownStructureIsValid(block: List<SourceLine>): Boolean {
+        val raw = block.map { line -> line.raw }
+        return when (sectionHeadingType(raw.first())) {
+            InterPositionSectionType.TREASURY -> raw.any { line -> line == TREASURY_HEADER }
+            InterPositionSectionType.BRAZILIAN_EQUITY -> raw.any { line -> line == BRAZILIAN_EQUITY_HEADER }
+            InterPositionSectionType.FIXED_INCOME ->
+                raw.any { line -> line == FIXED_INCOME_HEADER_1 } &&
+                    raw.any { line -> line == FIXED_INCOME_HEADER_2 } &&
+                    raw.any { line -> line.startsWith(FIXED_INCOME_HEADER_3_PREFIX) }
+            InterPositionSectionType.INTERNATIONAL_EQUITY ->
+                raw.any { line -> line == INTERNATIONAL_EQUITY_HEADER }
+            InterPositionSectionType.FUNDS ->
+                raw.any { line -> line == FUNDS_HEADER_1 } && raw.any { line -> line == FUNDS_HEADER_2 }
+            else -> true
         }
     }
 
