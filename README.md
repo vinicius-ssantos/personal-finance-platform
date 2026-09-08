@@ -2,7 +2,7 @@
 
 Plataforma pessoal de finanças, de usuário único, para consolidar investimentos a partir de documentos reais do Banco Inter, preservar evidências, calcular indicadores determinísticos e apoiar metas financeiras com transparência sobre qualidade e incerteza.
 
-> **Estado:** fundação técnica em implementação. O bootstrap Kotlin/JVM está em `main`; PostgreSQL, Flyway, Testcontainers e Compose estão sendo entregues pela issue #3. Ainda não existe comportamento financeiro nem dado real no repositório.
+> **Estado:** núcleo de importação em implementação. Estão em `main` o bootstrap Kotlin/JVM, PostgreSQL/Flyway/Testcontainers/Compose, as fronteiras modulares e ADRs, os primitivos financeiros e temporais, o ciclo de vida do `ImportBatch` com auditoria e catálogo de erros, o upload seguro com senha efêmera, a extração PDFBox com fingerprint semântico e registry de parsers versionado, e as fixtures sintéticas com golden files. Falta o domínio de posição: parsing por seção, normalização, resolução de ativo, reconciliação, preview, commit e API REST. Nenhum dado real existe no repositório.
 
 ## Visão do produto
 
