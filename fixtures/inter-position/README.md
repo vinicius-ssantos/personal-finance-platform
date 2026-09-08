@@ -168,6 +168,7 @@ O que fica em `fixtures/` são os goldens da forma canônica do texto extraído.
 | `raw-parser.golden.txt` | DTO cru do parser para todos os casos parseáveis |
 | `canonical.golden.txt` | representação canônica normalizada, com issues e evidência |
 | `asset-resolution.golden.txt` | reivindicação de identidade e decisão por candidato |
+| `reconciliation.golden.txt` | comparações por regra, com ambos os lados e o desfecho |
 
 O golden canônico registra dinheiro em minor units com a moeda (`100000BRL`),
 para que um diff mostre mudança de valor e não de formatação, e marca valor

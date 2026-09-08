@@ -213,6 +213,50 @@ Fictício 2029` e `2030` não podem colidir.
 
 ## Reconciliação de posições
 
+### Estado da implementação
+
+Quatro regras rodam sobre o layout `2024_07`, cada uma com código estável e
+escopo declarado, e cada resultado carrega os dois lados da comparação, a
+diferença em minor units, a tolerância aplicada e o identificador da política de
+tolerância:
+
+| Regra | Escopo | Compara |
+|---|---|---|
+| `RECON_SECTION_GROSS` | seção | linhas da seção contra o total do cabeçalho |
+| `RECON_FIXED_INCOME_SUBTOTAL` | subtotal | subtotal impresso contra as linhas |
+| `RECON_SUMMARY_ALLOCATION` | categoria | linha do resumo contra a seção correspondente |
+| `RECON_DOCUMENT_TOTAL` | documento | apenas registra o total declarado |
+
+O casamento entre resumo e seção é por categoria e moeda, nunca por posição na
+lista: um relatório que reordene o resumo não pode comparar o par errado em
+silêncio.
+
+O reconciliador lê, nunca conserta. Divergência aparece com os dois números,
+porque preferir silenciosamente o declarado ou o calculado destruiria a evidência
+de que discordavam.
+
+#### Quatro desfechos, não três
+
+Além de `PASS`, `WARNING` e `BLOCKER`, existe `NOT_EVIDENCED`. Ele existe porque
+a alternativa é proibida: quando a fonte não publica total comparável, relatar
+`PASS` afirmaria uma verificação que nunca aconteceu (`FR-RECON-009`).
+
+A distinção que governa bloqueio não é "faltou um lado", e sim *por que* faltou.
+Valor que não conseguimos ler bloqueia, porque commitar um montante que ninguém
+verificou é pior que commitar uma divergência que alguém viu. Valor que a fonte
+nunca publicou não bloqueia, porque não há defeito a corrigir.
+
+Uma linha ilegível torna a soma inteira desconhecida, não menor: tratar montante
+ausente como zero produziria um total confiante e errado, e apontaria a
+divergência resultante para o lugar errado.
+
+#### O total do documento
+
+`RECON_DOCUMENT_TOTAL` é sempre `NOT_EVIDENCED` no layout observado. O relatório
+imprime um `Posição Total` em BRL que já absorve a categoria em USD sem publicar
+a taxa usada, então qualquer soma nossa discordaria dele por um motivo que não é
+erro. A regra registra o valor declarado e se recusa a concluir.
+
 1. reconciliar cada moeda separadamente;
 2. comparar soma das posições com subtotal da categoria;
 3. comparar subtotais com o total declarado quando comparável;
