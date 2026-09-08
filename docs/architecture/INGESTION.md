@@ -282,6 +282,60 @@ A prévia inclui:
 
 A prévia não altera o domínio.
 
+### Estado da implementação
+
+A prévia é persistida em três tabelas — cabeçalho, posições e findings —
+e não em um documento JSON. Dinheiro fica em minor units num `BIGINT` com moeda
+explícita, para que as constraints do schema possam defender o `INV-003` em vez
+de confiar que a aplicação serializou um blob corretamente. Uma delas recusa
+linha com qualidade `UNKNOWN` que carregue valor: ausente não é zero, e isso
+agora é regra do banco.
+
+`canCommit` é derivado dos blockers, nunca armazenado como opinião independente.
+Uma prévia com blocker não pode ser commitável, e manter os dois no mesmo lugar
+elimina a chance de discordarem.
+
+Reconciliação, normalização e revisão de identidade desembocam numa lista única
+de findings. A pergunta que a pessoa faz é "por que não posso commitar?", e
+separar a resposta por subsistema que a produziu transformaria essa pergunta num
+join.
+
+#### O que bloqueia, e o que apenas avisa
+
+| Origem | Situação | Severidade |
+|---|---|---|
+| Reconciliação | diferença acima da tolerância | `BLOCKER` |
+| Reconciliação | valor ilegível participando de uma regra | `BLOCKER` |
+| Reconciliação | fonte não publica total comparável | `NOT_EVIDENCED` |
+| Normalização | campo ausente ou ilegível | `INFO` / `WARNING` |
+| Identidade | identificadores fortes em conflito | `BLOCKER` |
+| Identidade | tipo indeterminado | `BLOCKER` |
+| Identidade | sem identificador forte | `WARNING` |
+
+A última linha é a decisão de produto desta fatia. O `FR-ASSET-004` proíbe
+*merge* automático com baixa confiança, e um ativo sem identificador forte não é
+ambíguo: não há com o que fundi-lo, então pode ser criado como novo. Bloquear ali
+significaria que nenhum relatório comum jamais commita — o layout observado não
+imprime identificador forte para Tesouro, fundos e internacional, seis das nove
+posições da fixture de referência.
+
+Um problema de leitura é aviso, não blocker: o valor a que ele se refere já está
+desconhecido, e o que dependia dele reprova na reconciliação por conta própria.
+Bloquear duas vezes pela mesma causa mandaria a pessoa consertar duas coisas
+quando existe uma.
+
+#### Versão e stale
+
+`previewVersion` avança ao entrar em `PREVIEW_READY`, e em nenhum outro lugar.
+Uma prévia é superseder por reconciliação nova: `PREVIEW_READY -> RECONCILING ->
+PREVIEW_READY` retira a oferta atual e emite a próxima. Enquanto o lote está de
+volta em `RECONCILING` nada pode commitar, então não existe janela em que uma
+proposta superada pareça atual.
+
+Cada versão é escrita uma vez e nunca reescrita. Uma versão anterior continua
+legível; apenas a última está em oferta. Commit com versão antiga responde
+`PF_PREVIEW_VERSION_CONFLICT`.
+
 ## Confirmação
 
 O commit:

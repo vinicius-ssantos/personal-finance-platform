@@ -58,7 +58,13 @@ class ImportBatchLifecycleService(
         val current = load(id)
         val moved =
             try {
-                current.transitionTo(target, clock)
+                // Entering PREVIEW_READY mints a new proposal, so the counter a
+                // commit is checked against advances here and nowhere else
+                // (`FR-PREVIEW-002`).
+                when (target) {
+                    ImportBatchStatus.PREVIEW_READY -> current.previewReady(clock)
+                    else -> current.transitionTo(target, clock)
+                }
             } catch (failure: ImportLifecycleException) {
                 refusalAuditRecorder.record(
                     auditEventFor(

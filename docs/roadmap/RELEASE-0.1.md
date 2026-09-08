@@ -133,7 +133,7 @@ Estado verificado em 2026-09-08.
 
 ### Confirmação
 
-- [ ] reconciliação multimoeda, preview versionada, blockers e stale preview — #12
+- [x] reconciliação multimoeda, preview versionada, blockers e stale preview — #12
 - [ ] commit transacional, reject e snapshot efetivo — #13
 
 ### Entrega

@@ -34,7 +34,11 @@ object ImportBatchTransitions {
             PARSING to setOf(NORMALIZING, FAILED),
             NORMALIZING to setOf(RECONCILING, FAILED),
             RECONCILING to setOf(PREVIEW_READY, BLOCKED, FAILED),
-            PREVIEW_READY to setOf(COMMITTING, REJECTED),
+            // A preview may be superseded: re-reconciling withdraws the current
+            // offer and produces a new version. Nothing can commit while the
+            // batch is back in RECONCILING, which is what makes the previous
+            // offer detectably stale rather than silently replaced.
+            PREVIEW_READY to setOf(COMMITTING, REJECTED, RECONCILING),
             BLOCKED to setOf(REJECTED),
             COMMITTING to setOf(COMMITTED, FAILED),
             COMMITTED to emptySet(),
