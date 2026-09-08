@@ -12,6 +12,7 @@ internal fun fixedIncomeSection(
     return CanonicalSection(
         category = PositionCategory.FIXED_INCOME,
         currency = currency,
+        sourceIndex = index,
         pageNumber = section.pageNumber,
         declaredGross = issues.money(section.declaredGross, "$path.declaredGross", currency),
         declaredSubtotal = fixedIncomeSubtotal(section.subtotal, currency, "$path.subtotal", issues),
@@ -89,6 +90,7 @@ internal fun fundSection(
     return CanonicalSection(
         category = PositionCategory.FUNDS,
         currency = currency,
+        sourceIndex = index,
         pageNumber = section.pageNumber,
         declaredGross = issues.money(section.declaredGross, "$path.declaredGross", currency),
         declaredSubtotal = null,

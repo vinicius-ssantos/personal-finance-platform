@@ -115,6 +115,8 @@ data class FixedIncomeSubtotal(
 data class CanonicalSection(
     val category: PositionCategory,
     val currency: CurrencyCode,
+    /** Index in the parser section list, so every field path agrees. */
+    val sourceIndex: Int,
     val pageNumber: Int,
     val declaredGross: EvidencedValue<Money>,
     val declaredSubtotal: FixedIncomeSubtotal?,

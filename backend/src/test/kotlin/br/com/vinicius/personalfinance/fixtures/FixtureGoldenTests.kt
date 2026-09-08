@@ -199,6 +199,10 @@ class FixtureGoldenTests {
          * case, so the per-case pairing check must not treat them as orphans.
          */
         val DOCUMENT_LEVEL_GOLDENS =
-            setOf("raw-parser.golden.txt", "canonical.golden.txt")
+            setOf(
+                "raw-parser.golden.txt",
+                "canonical.golden.txt",
+                "asset-resolution.golden.txt",
+            )
     }
 }
