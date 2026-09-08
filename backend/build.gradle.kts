@@ -57,6 +57,13 @@ detekt {
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 
+    // The goldens live outside the source sets, so without declaring them Gradle
+    // keeps `test` up to date after a golden changed and reports a stale green.
+    inputs
+        .files(fileTree(layout.projectDirectory.dir("../fixtures")))
+        .withPropertyName("repositoryFixtures")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
+
     // Lets the fixture goldens be rewritten with -DupdateGoldenFiles=true; the
     // resulting diff is reviewed like any other change.
     systemProperty(
@@ -72,4 +79,11 @@ tasks.withType<Test>().configureEach {
 
 tasks.named("check") {
     dependsOn("ktlintCheck", "detekt")
+}
+
+// The ktlint format tasks rewrite sources as a side effect the build cache does
+// not restore, so a cached run reports success while formatting nothing.
+tasks.matching { task -> task.name.startsWith("ktlint") && task.name.endsWith("Format") }.configureEach {
+    outputs.cacheIf { false }
+    outputs.upToDateWhen { false }
 }

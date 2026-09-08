@@ -5,6 +5,8 @@ on:
     paths:
       - "backend/**"
       - "infra/**"
+      - "fixtures/**"
+      - "contracts/**"
       - "docs/architecture/DATABASE.md"
       - ".github/workflows/backend-bootstrap.yml"
       - "justfile"
@@ -17,6 +19,8 @@ on:
     paths:
       - "backend/**"
       - "infra/**"
+      - "fixtures/**"
+      - "contracts/**"
       - "docs/architecture/DATABASE.md"
       - ".github/workflows/backend-bootstrap.yml"
       - "justfile"
