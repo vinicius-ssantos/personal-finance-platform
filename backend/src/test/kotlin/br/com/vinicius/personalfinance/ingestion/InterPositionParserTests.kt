@@ -152,6 +152,30 @@ class InterPositionParserTests {
     }
 
     @Test
+    fun `each repeated known section must validate its own structure`() {
+        val original = extract(InterPositionFixture.complete)
+        val changed =
+            original.copy(
+                pages =
+                    original.pages.map { page ->
+                        if (page.text.contains(TREASURY_HEADER)) {
+                            page.copy(
+                                text =
+                                    page.text +
+                                        "\n10,00% Tesouro Direto Valor Bruto R$ 1.000,00" +
+                                        "\nTesouro Fictício Quebrado 2029" +
+                                        "\nAplicação Vencimento Quantidade Valor Aplicado Valor Bruto",
+                            )
+                        } else {
+                            page
+                        }
+                    },
+            )
+
+        assertNull(detector.detect(changed))
+    }
+
+    @Test
     fun `detection and parsing ignore JVM default locale and timezone`() {
         val document = extract(InterPositionFixture.complete)
         val originalLocale = Locale.getDefault()
