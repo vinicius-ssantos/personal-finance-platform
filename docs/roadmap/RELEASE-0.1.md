@@ -162,7 +162,7 @@ O primeiro source deve ser declarado explicitamente antes da tag:
 institution:      BANCO_INTER
 documentFamily:   POSITION_CONSOLIDATED
 layoutVersion:    2024_07
-parserVersion:    banco-inter-position / 2024_07.1
+parserVersion:    banco-inter-position / 2024_07.2
 knownLimitations:
   - apenas uma emissão da família foi observada em privado; o layout
     2024_07 não afirma compatibilidade com toda variação histórica ou
@@ -173,8 +173,8 @@ knownLimitations:
     sem expor a taxa de câmbio, então é preservada como valor bruto da
     fonte e nunca reconstruída por conversão implícita (ADR 0034);
   - sem OCR: relatório digitalizado não é suportado;
-  - o parser produz apenas DTOs crus; normalização, resolução de ativo e
-    reconciliação chegam com as issues #11 e #12.
+  - a normalização produz candidatos canônicos, não posições confirmadas;
+    resolução de ativo e reconciliação chegam com as issues #11 e #12.
 ```
 
 ## Definition of Done

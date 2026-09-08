@@ -1,0 +1,280 @@
+=== complete ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|1200000BRL@p2
+temporality|2026-01-31|2026-02-02T11:15:00Z|2026-02-02
+summary|BRL|p3|1200000BRL@p3
+allocation|Tesouro Direto|BRL|100000BRL@p3
+allocation|Renda Variável|BRL|200000BRL@p3
+allocation|Renda Fixa|BRL|300000BRL@p3
+allocation|Renda Variável Internacional|USD|40000USD@p3
+allocation|Fundos de Investimentos|BRL|400000BRL@p3
+section|TREASURY|BRL|p4|100000BRL@p4
+candidate|TREASURY|Tesouro Fictício 2029|<none>|<none>|p4
+holding|0.500000000000@p4|<none>
+amounts|100000BRL@p4|90000BRL@p4|<none>|<none>|<none>
+schedule|2026-01-10@p4|2029-03-01@p4|<none>
+section|BRAZILIAN_EQUITY|BRL|p4|200000BRL@p4
+candidate|BRAZILIAN_EQUITY|AAAA3|AAAA3|<none>|p4
+holding|10.000000000000@p4|<none>
+amounts|100000BRL@p4|<none>|<none>|<none>|<none>
+candidate|BRAZILIAN_EQUITY|BBBB11|BBBB11|<none>|p4
+holding|5.000000000000@p4|<none>
+amounts|100000BRL@p4|<none>|<none>|<none>|<none>
+section|FIXED_INCOME|BRL|p5|300000BRL@p5
+subtotal|290000BRL@p5|300000BRL@p5|300000BRL@p5
+candidate|FIXED_INCOME|LCI FICTÍCIA 3 ANOS|FICTICIO001|IPCA|p5
+holding|<none>|<none>
+amounts|125000BRL@p5|120000BRL@p5|125000BRL@p5|<unknown>@p5|<none>
+taxes|0BRL@p5|0BRL@p5
+schedule|2026-01-16@p5|2029-01-20@p5|1.000000000000@p5
+candidate|FIXED_INCOME|CDB FICTÍCIO|FICTICIO002|CDI|p5
+holding|<none>|<none>
+amounts|175000BRL@p5|170000BRL@p5|175000BRL@p5|<unknown>@p5|<none>
+taxes|0BRL@p5|0BRL@p5
+schedule|2026-07-16@p5|2029-07-07@p5|1.000000000000@p5
+section|INTERNATIONAL_EQUITY|USD|p6|40000USD@p6
+candidate|INTERNATIONAL_EQUITY|ZZZZ|ZZZZ|<none>|p6
+holding|0.500000000000@p6|<none>
+amounts|20000USD@p6|<none>|<none>|<none>|<none>
+candidate|INTERNATIONAL_EQUITY|YYYY|YYYY|<none>|p6
+holding|0.250000000000@p6|<none>
+amounts|20000USD@p6|<none>|<none>|<none>|<none>
+section|FUNDS|BRL|p7|400000BRL@p7
+candidate|FUNDS|FUNDO FICTÍCIO MULTIMERCADO|<none>|<none>|p7
+holding|1000.000000000000@p7|2.00000000@p7
+amounts|200000BRL@p7|180000BRL@p7|199000BRL@p7|<none>|10000BRL@p7
+taxes|<unknown>@p7|1000BRL@p7
+candidate|FUNDS|FUNDO FICTÍCIO RENDA FIXA|<none>|<none>|p7
+holding|500.000000000000@p7|4.00000000@p7
+amounts|200000BRL@p7|190000BRL@p7|200000BRL@p7|<none>|<unknown>@p7
+taxes|<unknown>@p7|0BRL@p7
+issue|VALUE_ABSENT|INFO|sections[3].candidates[0].market|p5
+issue|VALUE_ABSENT|INFO|sections[3].candidates[1].market|p5
+issue|VALUE_ABSENT|INFO|sections[5].candidates[0].expectedIof|p7
+issue|VALUE_ABSENT|INFO|sections[5].candidates[1].redemptionAvailability|p7
+issue|VALUE_ABSENT|INFO|sections[5].candidates[1].expectedIof|p7
+
+=== summary-only ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|1200000BRL@p2
+temporality|2026-01-31|2026-02-02T11:15:00Z|<unknown>
+summary|BRL|p3|1200000BRL@p3
+allocation|Tesouro Direto|BRL|100000BRL@p3
+allocation|Renda Variável|BRL|200000BRL@p3
+allocation|Renda Fixa|BRL|300000BRL@p3
+allocation|Renda Variável Internacional|USD|40000USD@p3
+allocation|Fundos de Investimentos|BRL|400000BRL@p3
+
+=== treasury-only ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|<none>
+temporality|2026-01-31|<unknown>|<unknown>
+section|TREASURY|BRL|p1|100000BRL@p1
+candidate|TREASURY|Tesouro Fictício 2029|<none>|<none>|p1
+holding|0.500000000000@p1|<none>
+amounts|100000BRL@p1|90000BRL@p1|<none>|<none>|<none>
+schedule|2026-01-10@p1|2029-03-01@p1|<none>
+issue|VALUE_NOT_STATED|WARNING|temporality.generatedAt|<no page>
+
+=== brazilian-equity-only ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|<none>
+temporality|2026-01-31|<unknown>|<unknown>
+section|BRAZILIAN_EQUITY|BRL|p1|200000BRL@p1
+candidate|BRAZILIAN_EQUITY|AAAA3|AAAA3|<none>|p1
+holding|10.000000000000@p1|<none>
+amounts|100000BRL@p1|<none>|<none>|<none>|<none>
+candidate|BRAZILIAN_EQUITY|BBBB11|BBBB11|<none>|p1
+holding|5.000000000000@p1|<none>
+amounts|100000BRL@p1|<none>|<none>|<none>|<none>
+issue|VALUE_NOT_STATED|WARNING|temporality.generatedAt|<no page>
+
+=== fixed-income-only ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|<none>
+temporality|2026-01-31|<unknown>|2026-02-02
+section|FIXED_INCOME|BRL|p1|300000BRL@p1
+subtotal|290000BRL@p1|300000BRL@p1|300000BRL@p1
+candidate|FIXED_INCOME|LCI FICTÍCIA 3 ANOS|FICTICIO001|IPCA|p1
+holding|<none>|<none>
+amounts|125000BRL@p1|120000BRL@p1|125000BRL@p1|<unknown>@p1|<none>
+taxes|0BRL@p1|0BRL@p1
+schedule|2026-01-16@p1|2029-01-20@p1|1.000000000000@p1
+candidate|FIXED_INCOME|CDB FICTÍCIO|FICTICIO002|CDI|p1
+holding|<none>|<none>
+amounts|175000BRL@p1|170000BRL@p1|175000BRL@p1|<unknown>@p1|<none>
+taxes|0BRL@p1|0BRL@p1
+schedule|2026-07-16@p1|2029-07-07@p1|1.000000000000@p1
+issue|VALUE_NOT_STATED|WARNING|temporality.generatedAt|<no page>
+issue|VALUE_ABSENT|INFO|sections[0].candidates[0].market|p1
+issue|VALUE_ABSENT|INFO|sections[0].candidates[1].market|p1
+
+=== international-only ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|<none>
+temporality|2026-01-31|<unknown>|<unknown>
+section|INTERNATIONAL_EQUITY|USD|p1|40000USD@p1
+candidate|INTERNATIONAL_EQUITY|ZZZZ|ZZZZ|<none>|p1
+holding|0.500000000000@p1|<none>
+amounts|20000USD@p1|<none>|<none>|<none>|<none>
+candidate|INTERNATIONAL_EQUITY|YYYY|YYYY|<none>|p1
+holding|0.250000000000@p1|<none>
+amounts|20000USD@p1|<none>|<none>|<none>|<none>
+issue|VALUE_NOT_STATED|WARNING|temporality.generatedAt|<no page>
+
+=== funds-only ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|<none>
+temporality|2026-01-31|<unknown>|<unknown>
+section|FUNDS|BRL|p1|400000BRL@p1
+candidate|FUNDS|FUNDO FICTÍCIO MULTIMERCADO|<none>|<none>|p1
+holding|1000.000000000000@p1|2.00000000@p1
+amounts|200000BRL@p1|180000BRL@p1|199000BRL@p1|<none>|10000BRL@p1
+taxes|<unknown>@p1|1000BRL@p1
+candidate|FUNDS|FUNDO FICTÍCIO RENDA FIXA|<none>|<none>|p1
+holding|500.000000000000@p1|4.00000000@p1
+amounts|200000BRL@p1|190000BRL@p1|200000BRL@p1|<none>|<unknown>@p1
+taxes|<unknown>@p1|0BRL@p1
+issue|VALUE_NOT_STATED|WARNING|temporality.generatedAt|<no page>
+issue|VALUE_ABSENT|INFO|sections[0].candidates[0].expectedIof|p1
+issue|VALUE_ABSENT|INFO|sections[0].candidates[1].redemptionAvailability|p1
+issue|VALUE_ABSENT|INFO|sections[0].candidates[1].expectedIof|p1
+
+=== missing-optional-field ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|<none>
+temporality|2026-01-31|<unknown>|<unknown>
+section|FUNDS|BRL|p1|400000BRL@p1
+candidate|FUNDS|FUNDO FICTÍCIO MULTIMERCADO|<none>|<none>|p1
+holding|1000.000000000000@p1|2.00000000@p1
+amounts|200000BRL@p1|180000BRL@p1|199000BRL@p1|<none>|<unknown>@p1
+taxes|<unknown>@p1|1000BRL@p1
+candidate|FUNDS|FUNDO FICTÍCIO RENDA FIXA|<none>|<none>|p1
+holding|500.000000000000@p1|4.00000000@p1
+amounts|200000BRL@p1|190000BRL@p1|200000BRL@p1|<none>|<unknown>@p1
+taxes|<unknown>@p1|0BRL@p1
+issue|VALUE_NOT_STATED|WARNING|temporality.generatedAt|<no page>
+issue|VALUE_ABSENT|INFO|sections[0].candidates[0].redemptionAvailability|p1
+issue|VALUE_ABSENT|INFO|sections[0].candidates[0].expectedIof|p1
+issue|VALUE_ABSENT|INFO|sections[0].candidates[1].redemptionAvailability|p1
+issue|VALUE_ABSENT|INFO|sections[0].candidates[1].expectedIof|p1
+
+=== malformed-value ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|1200000BRL@p2
+temporality|2026-01-31|2026-02-02T11:15:00Z|2026-02-02
+summary|BRL|p3|1200000BRL@p3
+allocation|Tesouro Direto|BRL|100000BRL@p3
+allocation|Renda Variável|BRL|200000BRL@p3
+allocation|Renda Fixa|BRL|300000BRL@p3
+allocation|Renda Variável Internacional|USD|40000USD@p3
+allocation|Fundos de Investimentos|BRL|400000BRL@p3
+section|TREASURY|BRL|p4|100000BRL@p4
+candidate|TREASURY|Tesouro Fictício 2029|<none>|<none>|p4
+holding|0.500000000000@p4|<none>
+amounts|100000BRL@p4|90000BRL@p4|<none>|<none>|<none>
+schedule|2026-01-10@p4|2029-03-01@p4|<none>
+section|BRAZILIAN_EQUITY|BRL|p4|200000BRL@p4
+candidate|BRAZILIAN_EQUITY|AAAA3|AAAA3|<none>|p4
+holding|10.000000000000@p4|<none>
+amounts|100000BRL@p4|<none>|<none>|<none>|<none>
+candidate|BRAZILIAN_EQUITY|BBBB11|BBBB11|<none>|p4
+holding|5.000000000000@p4|<none>
+amounts|100000BRL@p4|<none>|<none>|<none>|<none>
+section|FIXED_INCOME|BRL|p5|300000BRL@p5
+subtotal|290000BRL@p5|300000BRL@p5|300000BRL@p5
+candidate|FIXED_INCOME|LCI FICTÍCIA 3 ANOS|FICTICIO001|IPCA|p5
+holding|<none>|<none>
+amounts|<unknown>@p5|120000BRL@p5|125000BRL@p5|<unknown>@p5|<none>
+taxes|0BRL@p5|0BRL@p5
+schedule|2026-01-16@p5|2029-01-20@p5|1.000000000000@p5
+candidate|FIXED_INCOME|CDB FICTÍCIO|FICTICIO002|CDI|p5
+holding|<none>|<none>
+amounts|175000BRL@p5|170000BRL@p5|175000BRL@p5|<unknown>@p5|<none>
+taxes|0BRL@p5|0BRL@p5
+schedule|2026-07-16@p5|2029-07-07@p5|1.000000000000@p5
+section|INTERNATIONAL_EQUITY|USD|p6|40000USD@p6
+candidate|INTERNATIONAL_EQUITY|ZZZZ|ZZZZ|<none>|p6
+holding|0.500000000000@p6|<none>
+amounts|20000USD@p6|<none>|<none>|<none>|<none>
+candidate|INTERNATIONAL_EQUITY|YYYY|YYYY|<none>|p6
+holding|0.250000000000@p6|<none>
+amounts|20000USD@p6|<none>|<none>|<none>|<none>
+section|FUNDS|BRL|p7|400000BRL@p7
+candidate|FUNDS|FUNDO FICTÍCIO MULTIMERCADO|<none>|<none>|p7
+holding|1000.000000000000@p7|2.00000000@p7
+amounts|200000BRL@p7|180000BRL@p7|199000BRL@p7|<none>|10000BRL@p7
+taxes|<unknown>@p7|1000BRL@p7
+candidate|FUNDS|FUNDO FICTÍCIO RENDA FIXA|<none>|<none>|p7
+holding|500.000000000000@p7|4.00000000@p7
+amounts|200000BRL@p7|190000BRL@p7|200000BRL@p7|<none>|<unknown>@p7
+taxes|<unknown>@p7|0BRL@p7
+issue|VALUE_MALFORMED|WARNING|sections[3].candidates[0].gross|p5
+issue|VALUE_ABSENT|INFO|sections[3].candidates[0].market|p5
+issue|VALUE_ABSENT|INFO|sections[3].candidates[1].market|p5
+issue|VALUE_ABSENT|INFO|sections[5].candidates[0].expectedIof|p7
+issue|VALUE_ABSENT|INFO|sections[5].candidates[1].redemptionAvailability|p7
+issue|VALUE_ABSENT|INFO|sections[5].candidates[1].expectedIof|p7
+
+=== controlled-mismatch ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|1200000BRL@p2
+temporality|2026-01-31|2026-02-02T11:15:00Z|2026-02-02
+summary|BRL|p3|1200000BRL@p3
+allocation|Tesouro Direto|BRL|100000BRL@p3
+allocation|Renda Variável|BRL|200000BRL@p3
+allocation|Renda Fixa|BRL|300000BRL@p3
+allocation|Renda Variável Internacional|USD|40000USD@p3
+allocation|Fundos de Investimentos|BRL|400000BRL@p3
+section|TREASURY|BRL|p4|100000BRL@p4
+candidate|TREASURY|Tesouro Fictício 2029|<none>|<none>|p4
+holding|0.500000000000@p4|<none>
+amounts|100000BRL@p4|90000BRL@p4|<none>|<none>|<none>
+schedule|2026-01-10@p4|2029-03-01@p4|<none>
+section|BRAZILIAN_EQUITY|BRL|p4|200000BRL@p4
+candidate|BRAZILIAN_EQUITY|AAAA3|AAAA3|<none>|p4
+holding|10.000000000000@p4|<none>
+amounts|100000BRL@p4|<none>|<none>|<none>|<none>
+candidate|BRAZILIAN_EQUITY|BBBB11|BBBB11|<none>|p4
+holding|5.000000000000@p4|<none>
+amounts|100000BRL@p4|<none>|<none>|<none>|<none>
+section|FIXED_INCOME|BRL|p5|300000BRL@p5
+subtotal|290000BRL@p5|290000BRL@p5|290000BRL@p5
+candidate|FIXED_INCOME|LCI FICTÍCIA 3 ANOS|FICTICIO001|IPCA|p5
+holding|<none>|<none>
+amounts|125000BRL@p5|120000BRL@p5|125000BRL@p5|<unknown>@p5|<none>
+taxes|0BRL@p5|0BRL@p5
+schedule|2026-01-16@p5|2029-01-20@p5|1.000000000000@p5
+candidate|FIXED_INCOME|CDB FICTÍCIO|FICTICIO002|CDI|p5
+holding|<none>|<none>
+amounts|175000BRL@p5|170000BRL@p5|175000BRL@p5|<unknown>@p5|<none>
+taxes|0BRL@p5|0BRL@p5
+schedule|2026-07-16@p5|2029-07-07@p5|1.000000000000@p5
+section|INTERNATIONAL_EQUITY|USD|p6|40000USD@p6
+candidate|INTERNATIONAL_EQUITY|ZZZZ|ZZZZ|<none>|p6
+holding|0.500000000000@p6|<none>
+amounts|20000USD@p6|<none>|<none>|<none>|<none>
+candidate|INTERNATIONAL_EQUITY|YYYY|YYYY|<none>|p6
+holding|0.250000000000@p6|<none>
+amounts|20000USD@p6|<none>|<none>|<none>|<none>
+section|FUNDS|BRL|p7|400000BRL@p7
+candidate|FUNDS|FUNDO FICTÍCIO MULTIMERCADO|<none>|<none>|p7
+holding|1000.000000000000@p7|2.00000000@p7
+amounts|200000BRL@p7|180000BRL@p7|199000BRL@p7|<none>|10000BRL@p7
+taxes|<unknown>@p7|1000BRL@p7
+candidate|FUNDS|FUNDO FICTÍCIO RENDA FIXA|<none>|<none>|p7
+holding|500.000000000000@p7|4.00000000@p7
+amounts|200000BRL@p7|190000BRL@p7|200000BRL@p7|<none>|<unknown>@p7
+taxes|<unknown>@p7|0BRL@p7
+issue|VALUE_ABSENT|INFO|sections[3].candidates[0].market|p5
+issue|VALUE_ABSENT|INFO|sections[3].candidates[1].market|p5
+issue|VALUE_ABSENT|INFO|sections[5].candidates[0].expectedIof|p7
+issue|VALUE_ABSENT|INFO|sections[5].candidates[1].redemptionAvailability|p7
+issue|VALUE_ABSENT|INFO|sections[5].candidates[1].expectedIof|p7
+
+=== unknown-section ===
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.2|1200000BRL@p2
+temporality|2026-01-31|2026-02-02T11:15:00Z|<unknown>
+summary|BRL|p3|1200000BRL@p3
+allocation|Tesouro Direto|BRL|100000BRL@p3
+allocation|Renda Variável|BRL|200000BRL@p3
+allocation|Renda Fixa|BRL|300000BRL@p3
+allocation|Renda Variável Internacional|USD|40000USD@p3
+allocation|Fundos de Investimentos|BRL|400000BRL@p3
+section|TREASURY|BRL|p4|100000BRL@p4
+candidate|TREASURY|Tesouro Fictício 2029|<none>|<none>|p4
+holding|0.500000000000@p4|<none>
+amounts|100000BRL@p4|90000BRL@p4|<none>|<none>|<none>
+schedule|2026-01-10@p4|2029-03-01@p4|<none>
+unknown|p4|PRODUTO ESTRUTURADO DESCONHECIDO|lines=2
+issue|SECTION_UNKNOWN|WARNING|sections[2]|p4

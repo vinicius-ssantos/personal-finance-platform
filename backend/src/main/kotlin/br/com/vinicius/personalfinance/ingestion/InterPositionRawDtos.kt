@@ -1,5 +1,7 @@
 package br.com.vinicius.personalfinance.ingestion
 
+import java.time.ZoneId
+
 object InterPositionLayout202407 {
     val descriptor: LayoutDescriptor =
         LayoutDescriptor(
@@ -9,7 +11,20 @@ object InterPositionLayout202407 {
         )
 
     const val PARSER_ID: String = "banco-inter-position"
-    const val PARSER_VERSION: String = "2024_07.1"
+
+    /**
+     * Bumped from `2024_07.1` because the parser now emits document temporality.
+     * `FR-PARSER-003` treats any change in what a version produces as a new
+     * version, even an additive one, so a reprocessed import stays auditable.
+     */
+    const val PARSER_VERSION: String = "2024_07.2"
+
+    /**
+     * The layout prints `Solicitado no dia` as a wall clock with no offset. The
+     * zone is a property of the issuer, not of the machine running the backend
+     * (`NFR-PARSER-DET-003`), so it belongs to the versioned layout definition.
+     */
+    val zone: ZoneId = ZoneId.of("America/Sao_Paulo")
 }
 
 data class SourceLine(
@@ -185,10 +200,29 @@ data class UnknownRawSection(
     override val type = InterPositionSectionType.UNKNOWN
 }
 
+data class InterPositionRawTemporality(
+    /** `Extrato de posição em/referente a`, the financial date of the position. */
+    val positionDate: SourceField?,
+    /** `Solicitado no dia`, when the report was produced. A different concept. */
+    val generatedAt: SourceField?,
+)
+
+/**
+ * The two equity sections differ only by currency and category, so they share a
+ * view instead of duplicating a mapper that would drift apart over time.
+ */
+internal data class EquitySectionView(
+    val pageNumber: Int,
+    val currencyToken: String,
+    val declaredGross: SourceField,
+    val records: List<EquityRawRecord>,
+)
+
 data class InterPositionSourceDocument(
     val descriptor: LayoutDescriptor,
     val parserId: String,
     val parserVersion: String,
+    val temporality: InterPositionRawTemporality,
     val declaredPositionTotalCurrencyToken: String?,
     val declaredPositionTotal: SourceField?,
     val sections: List<InterPositionRawSection>,

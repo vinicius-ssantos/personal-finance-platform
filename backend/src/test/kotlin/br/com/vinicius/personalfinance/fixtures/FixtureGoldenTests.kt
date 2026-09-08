@@ -62,7 +62,7 @@ class FixtureGoldenTests {
             Files
                 .list(FixturePaths.interPositionDirectory)
                 .use { entries -> entries.map { it.fileName.toString() }.toList() }
-                .filter { name -> name.endsWith(".golden.txt") && name != "raw-parser.golden.txt" }
+                .filter { name -> name.endsWith(".golden.txt") && name !in DOCUMENT_LEVEL_GOLDENS }
                 .toSet()
 
         assertEquals(expected, present, "golden files and fixture cases disagree")
@@ -191,5 +191,14 @@ class FixtureGoldenTests {
             extractor.extract(pdf, DocumentPassword.of(InterPositionFixture.TEST_PASSWORD))
 
         assertNotEquals(SourceFingerprint.of(pdf), SemanticFingerprint.of(document))
+    }
+
+    private companion object {
+        /**
+         * Goldens that cover every case in one artefact instead of one file per
+         * case, so the per-case pairing check must not treat them as orphans.
+         */
+        val DOCUMENT_LEVEL_GOLDENS =
+            setOf("raw-parser.golden.txt", "canonical.golden.txt")
     }
 }
