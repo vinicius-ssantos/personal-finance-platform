@@ -1,5 +1,5 @@
 === complete ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
 section|SUMMARY|p3|Seu patrimônio atual|R$|R$ 12.000,00~R$ 12.000,00~p3
 summary|Tesouro Direto|R$|R$ 1.000,00~R$ 1.000,00~p3
 summary|Renda Variável|R$|R$ 2.000,00~R$ 2.000,00~p3
@@ -23,7 +23,7 @@ fund|FUNDO FICTÍCIO MULTIMERCADO|1.000,00000000~1.000,00000000~p7|R$ 2,00~R$ 2,
 fund|FUNDO FICTÍCIO RENDA FIXA|500,00000000~500,00000000~p7|R$ 4,00~R$ 4,00~p7|R$ 1.900,00~R$ 1.900,00~p7|-~<absent>~p7|R$ 2.000,00~R$ 2.000,00~p7|R$ 2.000,00~R$ 2.000,00~p7|-~<absent>~p7|R$ 0,00~R$ 0,00~p7
 
 === summary-only ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
 section|SUMMARY|p3|Seu patrimônio atual|R$|R$ 12.000,00~R$ 12.000,00~p3
 summary|Tesouro Direto|R$|R$ 1.000,00~R$ 1.000,00~p3
 summary|Renda Variável|R$|R$ 2.000,00~R$ 2.000,00~p3
@@ -32,43 +32,43 @@ summary|Renda Variável Internacional|US$|US$ 400,00~US$ 400,00~p3
 summary|Fundos de Investimentos|R$|R$ 4.000,00~R$ 4.000,00~p3
 
 === treasury-only ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|<none>|<none>
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|<none>|<none>
 section|TREASURY|p1|10,00% Tesouro Direto Valor Bruto R$ 1.000,00|R$|R$ 1.000,00~R$ 1.000,00~p1
 treasury|Tesouro Fictício 2029|10/01/2026~10/01/2026~p1|01/03/2029~01/03/2029~p1|0,50~0,50~p1|R$ 900,00~R$ 900,00~p1|R$ 1.000,00~R$ 1.000,00~p1
 
 === brazilian-equity-only ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|<none>|<none>
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|<none>|<none>
 section|BRAZILIAN_EQUITY|p1|20,00% Renda Variável Valor Bruto R$ 2.000,00|R$|R$ 2.000,00~R$ 2.000,00~p1
 equity|AAAA3|10~10~p1|R$ 1.000,00~R$ 1.000,00~p1
 equity|BBBB11|5~5~p1|R$ 1.000,00~R$ 1.000,00~p1
 
 === fixed-income-only ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|<none>|<none>
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|<none>|<none>
 section|FIXED_INCOME|p1|30,00% Renda Fixa Valor Bruto R$ 3.000,00|R$|R$ 3.000,00~R$ 3.000,00~p1|02/02/2026
 fixed|LCI FICTÍCIA 3 ANOS|FICTICIO001|20/01/2029~20/01/2029~p1|16/01/2026~16/01/2026~p1|100,00%~100,00%~p1|IPCA|R$ 1.200,00~R$ 1.200,00~p1|0,00~0,00~p1|0,00~0,00~p1|R$ 1.250,00~R$ 1.250,00~p1|-~<absent>~p1|R$ 1.250,00~R$ 1.250,00~p1
 fixed|CDB FICTÍCIO|FICTICIO002|07/07/2029~07/07/2029~p1|16/07/2026~16/07/2026~p1|100,00%~100,00%~p1|CDI|R$ 1.700,00~R$ 1.700,00~p1|0,00~0,00~p1|0,00~0,00~p1|R$ 1.750,00~R$ 1.750,00~p1|-~<absent>~p1|R$ 1.750,00~R$ 1.750,00~p1
 subtotal|R$ 2.900,00~R$ 2.900,00~p1|R$ 3.000,00~R$ 3.000,00~p1|R$ 3.000,00~R$ 3.000,00~p1
 
 === international-only ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|<none>|<none>
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|<none>|<none>
 section|INTERNATIONAL_EQUITY|p1|4,00% Renda Variável Internacional Valor Bruto US$ 400,00|US$|US$ 400,00~US$ 400,00~p1
 equity|ZZZZ|0,50000~0,50000~p1|US$ 200,00~US$ 200,00~p1
 equity|YYYY|0,25000~0,25000~p1|US$ 200,00~US$ 200,00~p1
 
 === funds-only ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|<none>|<none>
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|<none>|<none>
 section|FUNDS|p1|40,00% Fundos de Investimentos Valor Bruto R$ 4.000,00|R$|R$ 4.000,00~R$ 4.000,00~p1
 fund|FUNDO FICTÍCIO MULTIMERCADO|1.000,00000000~1.000,00000000~p1|R$ 2,00~R$ 2,00~p1|R$ 1.800,00~R$ 1.800,00~p1|R$ 100,00~R$ 100,00~p1|R$ 2.000,00~R$ 2.000,00~p1|R$ 1.990,00~R$ 1.990,00~p1|-~<absent>~p1|R$ 10,00~R$ 10,00~p1
 fund|FUNDO FICTÍCIO RENDA FIXA|500,00000000~500,00000000~p1|R$ 4,00~R$ 4,00~p1|R$ 1.900,00~R$ 1.900,00~p1|-~<absent>~p1|R$ 2.000,00~R$ 2.000,00~p1|R$ 2.000,00~R$ 2.000,00~p1|-~<absent>~p1|R$ 0,00~R$ 0,00~p1
 
 === missing-optional-field ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|<none>|<none>
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|<none>|<none>
 section|FUNDS|p1|40,00% Fundos de Investimentos Valor Bruto R$ 4.000,00|R$|R$ 4.000,00~R$ 4.000,00~p1
 fund|FUNDO FICTÍCIO MULTIMERCADO|1.000,00000000~1.000,00000000~p1|R$ 2,00~R$ 2,00~p1|R$ 1.800,00~R$ 1.800,00~p1|-~<absent>~p1|R$ 2.000,00~R$ 2.000,00~p1|R$ 1.990,00~R$ 1.990,00~p1|-~<absent>~p1|R$ 10,00~R$ 10,00~p1
 fund|FUNDO FICTÍCIO RENDA FIXA|500,00000000~500,00000000~p1|R$ 4,00~R$ 4,00~p1|R$ 1.900,00~R$ 1.900,00~p1|-~<absent>~p1|R$ 2.000,00~R$ 2.000,00~p1|R$ 2.000,00~R$ 2.000,00~p1|-~<absent>~p1|R$ 0,00~R$ 0,00~p1
 
 === malformed-value ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
 section|SUMMARY|p3|Seu patrimônio atual|R$|R$ 12.000,00~R$ 12.000,00~p3
 summary|Tesouro Direto|R$|R$ 1.000,00~R$ 1.000,00~p3
 summary|Renda Variável|R$|R$ 2.000,00~R$ 2.000,00~p3
@@ -92,7 +92,7 @@ fund|FUNDO FICTÍCIO MULTIMERCADO|1.000,00000000~1.000,00000000~p7|R$ 2,00~R$ 2,
 fund|FUNDO FICTÍCIO RENDA FIXA|500,00000000~500,00000000~p7|R$ 4,00~R$ 4,00~p7|R$ 1.900,00~R$ 1.900,00~p7|-~<absent>~p7|R$ 2.000,00~R$ 2.000,00~p7|R$ 2.000,00~R$ 2.000,00~p7|-~<absent>~p7|R$ 0,00~R$ 0,00~p7
 
 === controlled-mismatch ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
 section|SUMMARY|p3|Seu patrimônio atual|R$|R$ 12.000,00~R$ 12.000,00~p3
 summary|Tesouro Direto|R$|R$ 1.000,00~R$ 1.000,00~p3
 summary|Renda Variável|R$|R$ 2.000,00~R$ 2.000,00~p3
@@ -116,7 +116,7 @@ fund|FUNDO FICTÍCIO MULTIMERCADO|1.000,00000000~1.000,00000000~p7|R$ 2,00~R$ 2,
 fund|FUNDO FICTÍCIO RENDA FIXA|500,00000000~500,00000000~p7|R$ 4,00~R$ 4,00~p7|R$ 1.900,00~R$ 1.900,00~p7|-~<absent>~p7|R$ 2.000,00~R$ 2.000,00~p7|R$ 2.000,00~R$ 2.000,00~p7|-~<absent>~p7|R$ 0,00~R$ 0,00~p7
 
 === unknown-section ===
-document|LayoutDescriptor(institution=BANCO_INTER, documentFamily=POSITION_CONSOLIDATED, layoutVersion=2024_07)|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
+document|BANCO_INTER/POSITION_CONSOLIDATED@2024_07|banco-inter-position|2024_07.1|R$|R$ 12.000,00~R$ 12.000,00~p2
 section|SUMMARY|p3|Seu patrimônio atual|R$|R$ 12.000,00~R$ 12.000,00~p3
 summary|Tesouro Direto|R$|R$ 1.000,00~R$ 1.000,00~p3
 summary|Renda Variável|R$|R$ 2.000,00~R$ 2.000,00~p3
