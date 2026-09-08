@@ -1,0 +1,105 @@
+=== complete ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[1]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[2]|200000BRL|200000BRL|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[3]|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_FIXED_INCOME_SUBTOTAL|SECTION_SUBTOTAL|BRL|sections[3].subtotal|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|USD|sections[4]|40000USD|40000USD|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[5]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Tesouro Direto]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Variável]|200000BRL|200000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Fixa]|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|USD|summary[Renda Variável Internacional]|40000USD|40000USD|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Fundos de Investimentos]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|1200000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|UNEVIDENCED_CONVERSION
+blocking|0
+
+=== summary-only ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Tesouro Direto]|100000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Variável]|200000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Fixa]|300000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|USD|summary[Renda Variável Internacional]|40000USD|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Fundos de Investimentos]|400000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|1200000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0
+
+=== treasury-only ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[0]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|<none>|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0
+
+=== brazilian-equity-only ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[0]|200000BRL|200000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|<none>|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0
+
+=== fixed-income-only ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[0]|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_FIXED_INCOME_SUBTOTAL|SECTION_SUBTOTAL|BRL|sections[0].subtotal|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|<none>|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0
+
+=== international-only ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|USD|sections[0]|40000USD|40000USD|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|<none>|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0
+
+=== funds-only ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[0]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|<none>|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0
+
+=== missing-optional-field ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[0]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|<none>|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0
+
+=== malformed-value ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[1]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[2]|200000BRL|200000BRL|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[3]|300000BRL|<none>|<none>|tol=1|BLOCKER|UNKNOWN_INPUT
+recon|RECON_FIXED_INCOME_SUBTOTAL|SECTION_SUBTOTAL|BRL|sections[3].subtotal|300000BRL|<none>|<none>|tol=1|BLOCKER|UNKNOWN_INPUT
+recon|RECON_SECTION_GROSS|SECTION|USD|sections[4]|40000USD|40000USD|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[5]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Tesouro Direto]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Variável]|200000BRL|200000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Fixa]|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|USD|summary[Renda Variável Internacional]|40000USD|40000USD|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Fundos de Investimentos]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|1200000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|UNEVIDENCED_CONVERSION
+blocking|2
+
+=== controlled-mismatch ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[1]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[2]|200000BRL|200000BRL|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[3]|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_FIXED_INCOME_SUBTOTAL|SECTION_SUBTOTAL|BRL|sections[3].subtotal|290000BRL|300000BRL|-10000|tol=1|BLOCKER|DIFFERENCE_ABOVE_TOLERANCE
+recon|RECON_SECTION_GROSS|SECTION|USD|sections[4]|40000USD|40000USD|0|tol=1|PASS|<none>
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[5]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Tesouro Direto]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Variável]|200000BRL|200000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Fixa]|300000BRL|300000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|USD|summary[Renda Variável Internacional]|40000USD|40000USD|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Fundos de Investimentos]|400000BRL|400000BRL|0|tol=1|PASS|<none>
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|1200000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|UNEVIDENCED_CONVERSION
+blocking|1
+
+=== unknown-section ===
+tolerance|release-0.1/one-minor-unit
+recon|RECON_SECTION_GROSS|SECTION|BRL|sections[1]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Tesouro Direto]|100000BRL|100000BRL|0|tol=1|PASS|<none>
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Variável]|200000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Renda Fixa]|300000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|USD|summary[Renda Variável Internacional]|40000USD|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_SUMMARY_ALLOCATION|CATEGORY|BRL|summary[Fundos de Investimentos]|400000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+recon|RECON_DOCUMENT_TOTAL|DOCUMENT|BRL|declaredPositionTotal|1200000BRL|<none>|<none>|tol=1|NOT_EVIDENCED|NO_DECLARED_TOTAL
+blocking|0

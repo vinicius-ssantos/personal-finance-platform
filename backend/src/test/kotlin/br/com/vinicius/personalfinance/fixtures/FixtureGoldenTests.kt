@@ -203,6 +203,7 @@ class FixtureGoldenTests {
                 "raw-parser.golden.txt",
                 "canonical.golden.txt",
                 "asset-resolution.golden.txt",
+                "reconciliation.golden.txt",
             )
     }
 }
