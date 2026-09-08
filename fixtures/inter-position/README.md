@@ -160,6 +160,19 @@ Os PDFs são gerados em tempo de teste por `FixturePdfBuilder`:
 
 O que fica em `fixtures/` são os goldens da forma canônica do texto extraído.
 
+## Goldens versionados
+
+| Arquivo | O que fixa |
+|---|---|
+| `<caso>.golden.txt` | texto canônico extraído, um arquivo por caso |
+| `raw-parser.golden.txt` | DTO cru do parser para todos os casos parseáveis |
+| `canonical.golden.txt` | representação canônica normalizada, com issues e evidência |
+
+O golden canônico registra dinheiro em minor units com a moeda (`100000BRL`),
+para que um diff mostre mudança de valor e não de formatação, e marca valor
+desconhecido como `<unknown>` em vez de deixar em branco — o que mantém o
+`INV-003` visível no próprio artefato revisado.
+
 ## Regenerar os goldens
 
 ```bash

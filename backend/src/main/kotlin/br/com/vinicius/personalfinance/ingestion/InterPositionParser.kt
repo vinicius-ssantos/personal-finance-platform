@@ -80,6 +80,11 @@ class InterPositionDocumentParser : DocumentParser {
         val lines = sourceLines(document)
         val total = parseDeclaredPositionTotal(lines)
         val starts = sectionStarts(lines)
+        val temporality =
+            InterPositionRawTemporality(
+                positionDate = singleAgreedMatch(lines, POSITION_DATE, "position date"),
+                generatedAt = singleAgreedMatch(lines, GENERATED_AT, "generated instant"),
+            )
         val sections =
             starts.mapIndexed { index, start ->
                 val end = starts.getOrNull(index + 1)?.lineIndex ?: lines.size
@@ -89,6 +94,7 @@ class InterPositionDocumentParser : DocumentParser {
             descriptor = descriptor,
             parserId = parserId,
             parserVersion = parserVersion,
+            temporality = temporality,
             declaredPositionTotalCurrencyToken = total?.first,
             declaredPositionTotal = total?.second,
             sections = sections,
@@ -104,6 +110,28 @@ class InterPositionDocumentParser : DocumentParser {
         val matched = matches.singleOrNull() ?: return null
         val (currency, amount) = matched.first.destructured
         return currency to SourceField.present("$currency $amount", matched.second.pageNumber)
+    }
+
+    /**
+     * The layout repeats the position date on every content page and prints the
+     * request instant once. Repetition is expected; disagreement is not, so a
+     * document that states two different dates fails closed instead of letting
+     * the parser pick one (`FR-LAYOUT-002`).
+     */
+    private fun singleAgreedMatch(
+        lines: List<SourceLine>,
+        pattern: Regex,
+        what: String,
+    ): SourceField? {
+        val matches =
+            lines.mapNotNull { line ->
+                pattern.matchEntire(line.raw)?.let { match -> match.groupValues[1] to line }
+            }
+        val distinct = matches.map { matched -> matched.first }.distinct()
+        if (distinct.size > 1) parserFailure("document declares more than one $what")
+        return matches.firstOrNull()?.let { matched ->
+            SourceField.present(matched.first, matched.second.pageNumber)
+        }
     }
 
     private fun sectionStarts(lines: List<SourceLine>): List<SectionStart> =
@@ -148,6 +176,8 @@ internal const val FUNDS_HEADER_1 =
     "Quantidade de cotas Preço mercado (R$) Valor aplicado (R$) Disp. Resgate (R$)"
 internal const val FUNDS_HEADER_2 = "Valor Bruto (R$) Valor Líquido (R$) Valor IOF (R$) Valor IR (R$)"
 
+private val POSITION_DATE = Regex("^Extrato de posição (?:em|referente a) (\\S+)$")
+private val GENERATED_AT = Regex("^Solicitado no dia (\\S+ \\S+)$")
 private val DECLARED_POSITION_TOTAL = Regex("^Posição Total (R\\$|US\\$) (\\S+)$")
 internal val SUMMARY_TOTAL = Regex("^(R\\$|US\\$) (\\S+)$")
 internal val SUMMARY_ALLOCATION =

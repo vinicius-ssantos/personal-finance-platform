@@ -146,6 +146,38 @@ A data de geração não substitui automaticamente a data financeira.
 - evidência, qualidade e confiança;
 - ausências como desconhecidas, nunca zero.
 
+### Estado da implementação
+
+A normalização de valores está implementada para o layout
+`BANCO_INTER / POSITION_CONSOLIDATED / 2024_07`. A resolução canônica de ativo
+ainda não: `PositionIdentityHints` carrega descrição, código e indexador crus,
+e nenhum `Asset` é criado ou associado.
+
+A gramática de tokens é escopada ao layout, não global. `PtBrTokens` interpreta
+agrupamento de milhar por ponto, decimal por vírgula, símbolo `R$`/`US$` e datas
+`DD/MM/YYYY`, sem consultar locale, timezone ou relógio da máquina. Um token que
+não satisfaz a gramática é recusado; não existe leitura permissiva de fallback.
+
+Cada campo canônico é um `EvidencedValue`: o valor mais a página e o token cru
+que o originaram. Valor desconhecido com evidência presente é o par que expressa
+"a coluna existia e nós nos recusamos a interpretá-la" — o oposto de zero.
+
+As falhas de leitura viram `NormalizationIssue`, com código estável, caminho do
+campo e página. A issue não carrega o valor: o token cru já vive no DTO do
+parser, e duplicá-lo espalharia dado C2 por um canal que prévia, log e auditoria
+leem.
+
+O total declarado do documento é preservado como a fonte o publicou e nunca
+recalculado. O relatório observado declara um total em BRL que já absorve a
+parcela em USD sem publicar a taxa usada, então reconstruí-lo exigiria inventar
+um câmbio (ADR 0034, `INV-002`).
+
+A temporalidade canônica mantém as três datas separadas e cada uma pode ser
+desconhecida de forma independente. Ela não é um `FinancialTimeline`: aquele
+tipo exige data de posição e instante de geração conhecidos, e um documento que
+omite qualquer um dos dois precisa continuar representável sem ser completado
+por suposição.
+
 ## Reconciliação de posições
 
 1. reconciliar cada moeda separadamente;

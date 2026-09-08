@@ -13,6 +13,10 @@ internal fun renderRawSnapshot(document: InterPositionSourceDocument): String =
                 document.declaredPositionTotal.snapshot(),
             ).joinToString("|"),
         )
+        appendLine(
+            "temporality|${document.temporality.positionDate.snapshot()}|" +
+                document.temporality.generatedAt.snapshot(),
+        )
         document.sections.forEach { section -> appendSection(section) }
     }.trimEnd()
 
