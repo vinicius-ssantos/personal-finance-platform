@@ -148,10 +148,9 @@ A data de geração não substitui automaticamente a data financeira.
 
 ### Estado da implementação
 
-A normalização de valores está implementada para o layout
-`BANCO_INTER / POSITION_CONSOLIDATED / 2024_07`. A resolução canônica de ativo
-ainda não: `PositionIdentityHints` carrega descrição, código e indexador crus,
-e nenhum `Asset` é criado ou associado.
+Normalização de valores e resolução canônica de ativo estão implementadas para o
+layout `BANCO_INTER / POSITION_CONSOLIDATED / 2024_07`. Nenhum `Asset` é criado
+ou persistido: a resolução produz decisão, não estado.
 
 A gramática de tokens é escopada ao layout, não global. `PtBrTokens` interpreta
 agrupamento de milhar por ponto, decimal por vírgula, símbolo `R$`/`US$` e datas
@@ -177,6 +176,40 @@ desconhecida de forma independente. Ela não é um `FinancialTimeline`: aquele
 tipo exige data de posição e instante de geração conhecidos, e um documento que
 omite qualquer um dos dois precisa continuar representável sem ser completado
 por suposição.
+
+### Identidade de ativo
+
+A fronteira: o mapeamento de "o que este layout imprime" para uma reivindicação
+de identidade é conhecimento de ingestão; a decisão que segue da reivindicação é
+do `portfolio`, que não conhece Banco Inter. `ingestion` depende de `portfolio`,
+nunca o contrário.
+
+Identificadores aceitos como fortes no primeiro layout:
+
+| Seção | Identificador | Tipo |
+|---|---|---|
+| Renda Variável | ticker escopado em B3 | `EQUITY`, exceto sufixo `11` |
+| Renda Fixa | código do ativo, escopado na instituição | `FIXED_INCOME` |
+| Tesouro Direto | nenhum | `FIXED_INCOME` |
+| Renda Variável Internacional | nenhum | `FOREIGN_ASSET` |
+| Fundos | nenhum | `FUND` |
+
+Duas decisões conservadoras merecem destaque. O ticker internacional vem sem o
+mercado que o escopa, e o mesmo símbolo denota ativos diferentes em bolsas
+diferentes, então ele não é identificador forte. O sufixo `11` na B3 cobre
+units, ETFs e fundos imobiliários, então o ticker resolve *qual* ativo é sem
+dizer *o que* ele é, e o tipo fica indeterminado em vez de ser forçado.
+
+Só resolve automaticamente quem tem identificador forte e tipo determinado. Todo
+o resto vira revisão com motivo e confiança explícitos, que a prévia converte em
+blocker. A assimetria é deliberada: um merge indevido corrompe patrimônio em
+silêncio e é caro de desfazer, enquanto uma revisão desnecessária custa um
+clique.
+
+O fingerprint derivado de identificador forte é seguro para agrupar. O derivado
+de nome não é, e viaja sempre acompanhado de revisão. A normalização de nome
+mexe em espaçamento, forma Unicode e caixa, e nunca em dígitos — `Tesouro
+Fictício 2029` e `2030` não podem colidir.
 
 ## Reconciliação de posições
 

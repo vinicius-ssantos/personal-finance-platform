@@ -18,6 +18,7 @@ internal fun treasurySection(
     return CanonicalSection(
         category = PositionCategory.TREASURY,
         currency = currency,
+        sourceIndex = index,
         pageNumber = section.pageNumber,
         declaredGross = issues.money(section.declaredGross, "$path.declaredGross", currency),
         declaredSubtotal = null,
@@ -79,6 +80,7 @@ internal fun equitySection(
     return CanonicalSection(
         category = category,
         currency = currency,
+        sourceIndex = index,
         pageNumber = section.pageNumber,
         declaredGross = issues.money(section.declaredGross, "$path.declaredGross", currency),
         declaredSubtotal = null,

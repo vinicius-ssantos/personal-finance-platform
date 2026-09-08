@@ -129,7 +129,7 @@ Estado verificado em 2026-09-08.
 
 - [x] fixtures sintéticas e golden files — #9
 - [x] detector de layout, parser registry e parsers de seção — #10
-- [ ] normalização, evidência e resolução de ativo — #11
+- [x] normalização, evidência e resolução de ativo — #11
 
 ### Confirmação
 
@@ -173,8 +173,11 @@ knownLimitations:
     sem expor a taxa de câmbio, então é preservada como valor bruto da
     fonte e nunca reconstruída por conversão implícita (ADR 0034);
   - sem OCR: relatório digitalizado não é suportado;
-  - a normalização produz candidatos canônicos, não posições confirmadas;
-    resolução de ativo e reconciliação chegam com as issues #11 e #12.
+  - normalização e resolução de identidade produzem candidatos e decisões,
+    não posições confirmadas; reconciliação e commit chegam com as issues
+    #12 e #13;
+  - ativo sem identificador forte, e ticker de sufixo ambíguo na B3, exigem
+    revisão humana em vez de merge automático.
 ```
 
 ## Definition of Done

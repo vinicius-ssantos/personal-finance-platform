@@ -1,0 +1,127 @@
+=== complete ===
+claim|sections[1].candidates[0]|Tesouro Fictício 2029|FIXED_INCOME|BRL|[]
+decision|sections[1].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FIXED_INCOME:BRL:tesouro fictício 2029
+claim|sections[2].candidates[0]|AAAA3|EQUITY|BRL|[ticker(AAAA3@B3)]
+decision|sections[2].candidates[0]|RESOLVED|STRONG|EQUITY|ticker(AAAA3@B3)|ticker:b3:aaaa3
+claim|sections[2].candidates[1]|BBBB11|<untyped>|BRL|[ticker(BBBB11@B3)]
+decision|sections[2].candidates[1]|REVIEW|MEDIUM|UNDETERMINED_TYPE|ticker:b3:bbbb11
+claim|sections[3].candidates[0]|LCI FICTÍCIA 3 ANOS|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO001)]
+decision|sections[3].candidates[0]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO001)|code:banco_inter:ficticio001
+claim|sections[3].candidates[1]|CDB FICTÍCIO|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO002)]
+decision|sections[3].candidates[1]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO002)|code:banco_inter:ficticio002
+claim|sections[4].candidates[0]|ZZZZ|FOREIGN_ASSET|USD|[]
+decision|sections[4].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:zzzz
+claim|sections[4].candidates[1]|YYYY|FOREIGN_ASSET|USD|[]
+decision|sections[4].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:yyyy
+claim|sections[5].candidates[0]|FUNDO FICTÍCIO MULTIMERCADO|FUND|BRL|[]
+decision|sections[5].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício multimercado
+claim|sections[5].candidates[1]|FUNDO FICTÍCIO RENDA FIXA|FUND|BRL|[]
+decision|sections[5].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício renda fixa
+review|sections[1].candidates[0]|p4|NO_STRONG_IDENTIFIER|LOW
+review|sections[2].candidates[1]|p4|UNDETERMINED_TYPE|MEDIUM
+review|sections[4].candidates[0]|p6|NO_STRONG_IDENTIFIER|LOW
+review|sections[4].candidates[1]|p6|NO_STRONG_IDENTIFIER|LOW
+review|sections[5].candidates[0]|p7|NO_STRONG_IDENTIFIER|LOW
+review|sections[5].candidates[1]|p7|NO_STRONG_IDENTIFIER|LOW
+
+=== summary-only ===
+
+
+=== treasury-only ===
+claim|sections[0].candidates[0]|Tesouro Fictício 2029|FIXED_INCOME|BRL|[]
+decision|sections[0].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FIXED_INCOME:BRL:tesouro fictício 2029
+review|sections[0].candidates[0]|p1|NO_STRONG_IDENTIFIER|LOW
+
+=== brazilian-equity-only ===
+claim|sections[0].candidates[0]|AAAA3|EQUITY|BRL|[ticker(AAAA3@B3)]
+decision|sections[0].candidates[0]|RESOLVED|STRONG|EQUITY|ticker(AAAA3@B3)|ticker:b3:aaaa3
+claim|sections[0].candidates[1]|BBBB11|<untyped>|BRL|[ticker(BBBB11@B3)]
+decision|sections[0].candidates[1]|REVIEW|MEDIUM|UNDETERMINED_TYPE|ticker:b3:bbbb11
+review|sections[0].candidates[1]|p1|UNDETERMINED_TYPE|MEDIUM
+
+=== fixed-income-only ===
+claim|sections[0].candidates[0]|LCI FICTÍCIA 3 ANOS|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO001)]
+decision|sections[0].candidates[0]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO001)|code:banco_inter:ficticio001
+claim|sections[0].candidates[1]|CDB FICTÍCIO|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO002)]
+decision|sections[0].candidates[1]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO002)|code:banco_inter:ficticio002
+
+=== international-only ===
+claim|sections[0].candidates[0]|ZZZZ|FOREIGN_ASSET|USD|[]
+decision|sections[0].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:zzzz
+claim|sections[0].candidates[1]|YYYY|FOREIGN_ASSET|USD|[]
+decision|sections[0].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:yyyy
+review|sections[0].candidates[0]|p1|NO_STRONG_IDENTIFIER|LOW
+review|sections[0].candidates[1]|p1|NO_STRONG_IDENTIFIER|LOW
+
+=== funds-only ===
+claim|sections[0].candidates[0]|FUNDO FICTÍCIO MULTIMERCADO|FUND|BRL|[]
+decision|sections[0].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício multimercado
+claim|sections[0].candidates[1]|FUNDO FICTÍCIO RENDA FIXA|FUND|BRL|[]
+decision|sections[0].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício renda fixa
+review|sections[0].candidates[0]|p1|NO_STRONG_IDENTIFIER|LOW
+review|sections[0].candidates[1]|p1|NO_STRONG_IDENTIFIER|LOW
+
+=== missing-optional-field ===
+claim|sections[0].candidates[0]|FUNDO FICTÍCIO MULTIMERCADO|FUND|BRL|[]
+decision|sections[0].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício multimercado
+claim|sections[0].candidates[1]|FUNDO FICTÍCIO RENDA FIXA|FUND|BRL|[]
+decision|sections[0].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício renda fixa
+review|sections[0].candidates[0]|p1|NO_STRONG_IDENTIFIER|LOW
+review|sections[0].candidates[1]|p1|NO_STRONG_IDENTIFIER|LOW
+
+=== malformed-value ===
+claim|sections[1].candidates[0]|Tesouro Fictício 2029|FIXED_INCOME|BRL|[]
+decision|sections[1].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FIXED_INCOME:BRL:tesouro fictício 2029
+claim|sections[2].candidates[0]|AAAA3|EQUITY|BRL|[ticker(AAAA3@B3)]
+decision|sections[2].candidates[0]|RESOLVED|STRONG|EQUITY|ticker(AAAA3@B3)|ticker:b3:aaaa3
+claim|sections[2].candidates[1]|BBBB11|<untyped>|BRL|[ticker(BBBB11@B3)]
+decision|sections[2].candidates[1]|REVIEW|MEDIUM|UNDETERMINED_TYPE|ticker:b3:bbbb11
+claim|sections[3].candidates[0]|LCI FICTÍCIA 3 ANOS|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO001)]
+decision|sections[3].candidates[0]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO001)|code:banco_inter:ficticio001
+claim|sections[3].candidates[1]|CDB FICTÍCIO|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO002)]
+decision|sections[3].candidates[1]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO002)|code:banco_inter:ficticio002
+claim|sections[4].candidates[0]|ZZZZ|FOREIGN_ASSET|USD|[]
+decision|sections[4].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:zzzz
+claim|sections[4].candidates[1]|YYYY|FOREIGN_ASSET|USD|[]
+decision|sections[4].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:yyyy
+claim|sections[5].candidates[0]|FUNDO FICTÍCIO MULTIMERCADO|FUND|BRL|[]
+decision|sections[5].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício multimercado
+claim|sections[5].candidates[1]|FUNDO FICTÍCIO RENDA FIXA|FUND|BRL|[]
+decision|sections[5].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício renda fixa
+review|sections[1].candidates[0]|p4|NO_STRONG_IDENTIFIER|LOW
+review|sections[2].candidates[1]|p4|UNDETERMINED_TYPE|MEDIUM
+review|sections[4].candidates[0]|p6|NO_STRONG_IDENTIFIER|LOW
+review|sections[4].candidates[1]|p6|NO_STRONG_IDENTIFIER|LOW
+review|sections[5].candidates[0]|p7|NO_STRONG_IDENTIFIER|LOW
+review|sections[5].candidates[1]|p7|NO_STRONG_IDENTIFIER|LOW
+
+=== controlled-mismatch ===
+claim|sections[1].candidates[0]|Tesouro Fictício 2029|FIXED_INCOME|BRL|[]
+decision|sections[1].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FIXED_INCOME:BRL:tesouro fictício 2029
+claim|sections[2].candidates[0]|AAAA3|EQUITY|BRL|[ticker(AAAA3@B3)]
+decision|sections[2].candidates[0]|RESOLVED|STRONG|EQUITY|ticker(AAAA3@B3)|ticker:b3:aaaa3
+claim|sections[2].candidates[1]|BBBB11|<untyped>|BRL|[ticker(BBBB11@B3)]
+decision|sections[2].candidates[1]|REVIEW|MEDIUM|UNDETERMINED_TYPE|ticker:b3:bbbb11
+claim|sections[3].candidates[0]|LCI FICTÍCIA 3 ANOS|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO001)]
+decision|sections[3].candidates[0]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO001)|code:banco_inter:ficticio001
+claim|sections[3].candidates[1]|CDB FICTÍCIO|FIXED_INCOME|BRL|[code(BANCO_INTER:FICTICIO002)]
+decision|sections[3].candidates[1]|RESOLVED|STRONG|FIXED_INCOME|code(BANCO_INTER:FICTICIO002)|code:banco_inter:ficticio002
+claim|sections[4].candidates[0]|ZZZZ|FOREIGN_ASSET|USD|[]
+decision|sections[4].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:zzzz
+claim|sections[4].candidates[1]|YYYY|FOREIGN_ASSET|USD|[]
+decision|sections[4].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FOREIGN_ASSET:USD:yyyy
+claim|sections[5].candidates[0]|FUNDO FICTÍCIO MULTIMERCADO|FUND|BRL|[]
+decision|sections[5].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício multimercado
+claim|sections[5].candidates[1]|FUNDO FICTÍCIO RENDA FIXA|FUND|BRL|[]
+decision|sections[5].candidates[1]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FUND:BRL:fundo fictício renda fixa
+review|sections[1].candidates[0]|p4|NO_STRONG_IDENTIFIER|LOW
+review|sections[2].candidates[1]|p4|UNDETERMINED_TYPE|MEDIUM
+review|sections[4].candidates[0]|p6|NO_STRONG_IDENTIFIER|LOW
+review|sections[4].candidates[1]|p6|NO_STRONG_IDENTIFIER|LOW
+review|sections[5].candidates[0]|p7|NO_STRONG_IDENTIFIER|LOW
+review|sections[5].candidates[1]|p7|NO_STRONG_IDENTIFIER|LOW
+
+=== unknown-section ===
+claim|sections[1].candidates[0]|Tesouro Fictício 2029|FIXED_INCOME|BRL|[]
+decision|sections[1].candidates[0]|REVIEW|LOW|NO_STRONG_IDENTIFIER|name:FIXED_INCOME:BRL:tesouro fictício 2029
+review|sections[1].candidates[0]|p4|NO_STRONG_IDENTIFIER|LOW
