@@ -110,24 +110,24 @@ PDF protegido
 
 ## Gates de execução
 
-Estado verificado em 2026-09-04.
+Estado verificado em 2026-09-08.
 
 ### Fundação
 
 - [x] Kotlin/JVM e monorepo — #2
 - [x] PostgreSQL, Flyway e Testcontainers — #3
 - [x] fronteiras modulares e ADRs bloqueantes — #4
-- [ ] primitivos financeiros e temporais — #5
+- [x] primitivos financeiros e temporais — #5
 
 ### Núcleo de importação
 
-- [ ] ImportBatch, auditoria e catálogo de erros — #6
-- [ ] upload, fingerprint e storage efêmero — #7
-- [ ] continuidade de senha e extração PDFBox — #8
+- [x] ImportBatch, auditoria e catálogo de erros — #6
+- [x] upload, fingerprint e storage efêmero — #7
+- [x] continuidade de senha e extração PDFBox — #8
 
 ### Parsing
 
-- [ ] fixtures sintéticas e golden files — #9
+- [x] fixtures sintéticas e golden files — #9
 - [ ] detector de layout, parser registry e parsers de seção — #10
 - [ ] normalização, evidência e resolução de ativo — #11
 
