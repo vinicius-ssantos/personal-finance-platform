@@ -20,10 +20,11 @@ class InterPositionLayoutDetector : LayoutDetector {
 
     private fun knownStructuresAreValid(lines: List<SourceLine>): Boolean {
         val starts = lines.indices.filter { index -> knownSectionHeading(lines[index].raw) }
-        return starts.mapIndexed { index, start ->
-            val end = starts.getOrNull(index + 1) ?: lines.size
-            lines.subList(start, end)
-        }.all(::knownStructureIsValid)
+        return starts
+            .mapIndexed { index, start ->
+                val end = starts.getOrNull(index + 1) ?: lines.size
+                lines.subList(start, end)
+            }.all(::knownStructureIsValid)
     }
 
     private fun knownStructureIsValid(block: List<SourceLine>): Boolean {
