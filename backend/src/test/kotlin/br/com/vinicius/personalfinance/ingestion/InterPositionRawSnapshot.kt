@@ -5,7 +5,8 @@ internal fun renderRawSnapshot(document: InterPositionSourceDocument): String =
         appendLine(
             listOf(
                 "document",
-                "${document.descriptor.institution}/${document.descriptor.documentFamily}@${document.descriptor.layoutVersion}",
+                "${document.descriptor.institution}/${document.descriptor.documentFamily}@" +
+                    document.descriptor.layoutVersion,
                 document.parserId,
                 document.parserVersion,
                 document.declaredPositionTotalCurrencyToken ?: "<none>",
