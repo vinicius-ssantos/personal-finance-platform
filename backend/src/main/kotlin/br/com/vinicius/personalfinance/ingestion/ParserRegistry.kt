@@ -2,12 +2,14 @@ package br.com.vinicius.personalfinance.ingestion
 
 import org.springframework.stereotype.Component
 
+/** Marker for deterministic raw parser output before normalization. */
+interface ParsedSourceDocument
+
 /**
  * Turns a recognised layout into structured data.
  *
- * This issue defines the contract and the selection rules; the first concrete
- * parser arrives with the Banco Inter layout. [parserVersion] is persisted on
- * the batch, so a later reinterpretation is auditable (`FR-PARSER-004`).
+ * [parserVersion] is persisted on the batch, so a later reinterpretation is
+ * auditable (`FR-PARSER-004`).
  *
  * `FR-PARSER-003`: an incompatible change means a new [parserVersion], never an
  * edit that silently changes what past imports would have produced.
@@ -18,6 +20,8 @@ interface DocumentParser {
     val parserId: String
 
     val parserVersion: String
+
+    fun parse(document: ExtractedDocument): ParsedSourceDocument
 }
 
 /** The outcome of asking the registry to handle a document. */
@@ -51,7 +55,7 @@ sealed interface LayoutSelection {
  *
  * Ambiguity is a refusal, not a tie-break. Two detectors claiming the same
  * document means the detectors are wrong, and picking the more confident one
- * would hide that.
+ * would hide that. Claims are checked for ambiguity before confidence filtering.
  */
 @Component
 class ParserRegistry(
@@ -77,7 +81,6 @@ class ParserRegistry(
 
     fun select(document: ExtractedDocument): LayoutSelection {
         val claims = detectors.mapNotNull { detector -> detector.detect(document) }
-        val confident = claims.filter { claim -> claim.confidence >= minimumConfidence }
         return when {
             claims.isEmpty() ->
                 unsupported(
@@ -85,20 +88,20 @@ class ParserRegistry(
                     "no detector recognised the document",
                 )
 
-            confident.isEmpty() ->
-                unsupported(
-                    LayoutSelection.Unsupported.Reason.BELOW_CONFIDENCE_THRESHOLD,
-                    "best confidence ${claims.maxOf { it.confidence }} is below $minimumConfidence",
-                )
-
-            confident.map { it.descriptor }.distinct().size > 1 ->
+            claims.size > 1 ->
                 unsupported(
                     LayoutSelection.Unsupported.Reason.AMBIGUOUS_LAYOUT,
-                    "several layouts claimed the document: " +
-                        confident.map { it.descriptor.toString() }.sorted().joinToString(),
+                    "several detectors claimed the document: " +
+                        claims.map { it.descriptor.toString() }.sorted().joinToString(),
                 )
 
-            else -> selectParser(confident.maxBy { it.confidence })
+            claims.single().confidence < minimumConfidence ->
+                unsupported(
+                    LayoutSelection.Unsupported.Reason.BELOW_CONFIDENCE_THRESHOLD,
+                    "confidence ${claims.single().confidence} is below $minimumConfidence",
+                )
+
+            else -> selectParser(claims.single())
         }
     }
 
